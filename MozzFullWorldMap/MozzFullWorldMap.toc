@@ -1,0 +1,7 @@
+﻿## Interface: 11200
+## Title: MozzFullWorldMap
+## Notes: Adds a checkbox to world map which shows unexplored areas of the map at 30% opacity.
+## Notes-zhCN: 本插件由 ★枫浪★ 整理修改
+## UIType: 地图相关
+## SavedVariables: MozzFullWorldMap
+MozzFullWorldMap.xml

@@ -1,0 +1,5 @@
+<Bindings>
+  <Binding name="smm_TOGGLE" header="smm_TITLE">
+    if(MinimapCluster:IsVisible()) then MinimapCluster:Hide() else MinimapCluster:Show() end
+  </Binding>
+</Bindings>

@@ -1,0 +1,12 @@
+## Interface: 11200
+## Version: 1.0
+## Title: GMail |cff7fff7f -Ace2-|r
+## Notes: Grennon Mail
+## Author: Grennon
+## X-Category: Mail
+## OptionalDeps: !!!Libs,Ace2
+
+localization.lua
+localization.zhcn.lua
+GMail.lua
+GMail.xml

@@ -1,0 +1,16 @@
+## Interface:11200
+## Title: SlashLib
+## Title-zhCN:|CFFFF8000辅助|R 插件命令控制台
+## Notes-zhCN: |CFFDD66DDSlashLib|R 单体插件快速设置命令的控制台。|N命令：/cj
+## Author:狗血编剧男
+## Version:1.0
+## X-Repple: 辅助
+## RequiredDeps: Blizzard_AuctionUI
+## SavedVariables:SlashLibSaved,SlashLibSavedData
+SlashLib.lua
+SlashLibMinimap.lua
+SlashLib.xml
+SlashLibList.xml
+
+
+

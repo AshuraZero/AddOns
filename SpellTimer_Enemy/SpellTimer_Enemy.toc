@@ -1,0 +1,11 @@
+## Interface: 11200
+## Title: Spell Timer Enemy v1.12
+## Notes: Dispaly some timer with progress bar to remind user how long the target's spells will remains.
+## Title-zhCN: 目标施法计时器 v1.12
+## Notes-zhCN: 显示目标部分的施法进度和获得Buff的时间,并以进度条来表示.
+## Title-zhTW: 目標施法計時器 v1.12
+## Notes-zhTW: 顯示目標部分的施法進度和獲得Buff的時間,並以進度條來表示.
+## Dependencies: SpellTimer
+## SavedVariables: EnemyConfig
+## LoadOnDemand: 1
+SpellTimer_Enemy.xml
