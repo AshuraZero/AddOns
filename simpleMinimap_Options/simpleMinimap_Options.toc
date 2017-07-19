@@ -1,6 +1,0 @@
-## Interface: 11200
-## Title: |cFF778899[地图]|r-SimpleMinimap Options v18
-## Notes: SimpleMinimap的配置窗口。在UI本身上配置！(汉化：南海飞浪@wow.game.mop.com）
-## Author: arJUna
-## LoadOnDemand: 1
-simpleMinimap_Options.xml

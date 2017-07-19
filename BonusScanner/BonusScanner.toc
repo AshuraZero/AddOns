@@ -1,9 +1,0 @@
-## Interface: 11200
-## Title: BonusScanner 函数库
-## Notes: 提供扫描你的装备各种属性的功能，泰坦装备需要的函数库。
-## Notes-deDE: Durchsucht die Ausrüstung nach Gegenstandboni und zählt diese zusammen.
-## Author: crowley@headshot.de
-## SavedVariables: 
-## OptionalDeps: 
-## Dependencies: 
-BonusScanner.xml

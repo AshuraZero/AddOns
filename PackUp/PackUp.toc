@@ -1,8 +1,0 @@
-## Interface: 11200
-## Title: PackUp
-## Notes: Pack Up Items of Invertory & Bank
-## Author: Cosin
-## Version: 0.7.0 Alpha
-## Dependencies:
-## OptionalDeps: !!Warmup
-PackUp.xml
