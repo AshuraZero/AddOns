@@ -1,0 +1,10 @@
+## Interface: 11200
+## Title: DistanceWarning
+## Title-zhCN: |cFFFFFFFF[扩展]|r DistanceWarning
+## Notes: DistanceWarning
+## Author: 卡特铁角
+## Version: V 1.7.0
+## SavedVariables: DISTANCEWARNING_SAVE
+## OptionalDeps:
+## Dependencies: 
+DistanceWarning.xml

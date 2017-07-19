@@ -1,0 +1,794 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+    <meta name="generator" content=
+    "HTML Tidy for Windows (vers 1 June 2005), see www.w3.org">
+    <meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+    <title>
+      ChatMOD Readme
+    </title>
+  </head>
+  <body>
+    <h1>
+      <span style="font-family: Helvetica,Arial,sans-serif;">ChatMOD
+      README</span>
+    </h1><br>
+    <br>
+    <h3>
+      <span style="font-family: Helvetica,Arial,sans-serif;">How to Install
+      ?</span><br style="font-family: Helvetica,Arial,sans-serif;">
+    </h3>
+    <div style="margin-left: 40px;">
+      <span style="font-family: Helvetica,Arial,sans-serif;">Extract the
+      content of the ZIP File to you World of Warcraft Addon
+      directory.<br></span> <span style=
+      "font-family: Helvetica,Arial,sans-serif;">e.g.:<span style=
+      "font-style: italic; color: rgb(153, 153, 153);">"C:\GAMES\World of
+      Warcraft\Interface\AddOns\"</span><br></span> <span style=
+      "font-family: Helvetica,Arial,sans-serif;">Make sure to extract this
+      files into a directory called "ChatMOD" else it wouldn't
+      work.</span><br style="font-family: Helvetica,Arial,sans-serif;">
+    </div><br style="font-family: Helvetica,Arial,sans-serif;">
+    <h3>
+      <span style="font-family: Helvetica,Arial,sans-serif;">How to use
+      ?</span>
+    </h3>
+    <div style="margin-left: 40px;">
+      <span style="font-family: Helvetica,Arial,sans-serif;">Just type
+      <span style="font-weight: bold;">/chatmod</span> in game and use the GUI
+      or /chatmod ? for command line options.<br>
+      There are some additional Commands which can be used. In general each GUI
+      Command<br>
+      is also available by commandline but not every commandline option is
+      toggleable by the UI.<br>
+      <br>
+      To keep this short I only write down the commands which are not
+      accessible by the GUI.<br>
+      Each command have to be passed to Chatmod as paramenter /chatmod
+      &lt;parameter&gt; for<br>
+      example to pass the timestamp command to Chatmod you have to type in
+      <span style="color: rgb(0, 153, 0); font-weight: bold;">/chatmod
+      timestamp<br></span></span> <span style=
+      "font-family: Helvetica,Arial,sans-serif;"><br>
+      <br>
+      /chatmod <span style="font-weight: bold;">timestamp</span>   <br></span>
+      <div style="margin-left: 40px;">
+        <span style="font-family: Helvetica,Arial,sans-serif;">This command
+        alow to customize the timestamp. It is neccessary to provide
+        a</span><br>
+        <span style="font-family: Helvetica,Arial,sans-serif;">2nd parameter
+        which is interpreted as the Timestamp. If you leave this 2nd
+        par.</span><br>
+        <span style="font-family: Helvetica,Arial,sans-serif;">empty the
+        timestamp is disabled. Example: <span style=
+        "font-weight: bold; color: rgb(0, 153, 0);">/chatmod timestamp
+        help</span></span><br>
+        <span style="font-family: Helvetica,Arial,sans-serif;">this help will
+        popup a screen with some hints how to configure the
+        timestamp.</span><br>
+        <span style="font-family: Helvetica,Arial,sans-serif;">Example:  
+         /chatmod timestamp #FF0000$h:$m</span><br>
+        <span style="font-family: Helvetica,Arial,sans-serif;">Result:       
+        <span style="color: rgb(204, 0, 0);">10:23<br>
+        <br></span></span>
+        <div style="margin-left: 40px;">
+          <span style="font-family: Helvetica,Arial,sans-serif;">Available
+          Format Strings are:</span><br>
+        </div>
+        <table style=
+        "text-align: left; width: 250px; height: 60px; margin-left: 40px;"
+        border="1" cellpadding="1" cellspacing="0">
+          <tbody>
+            <tr>
+              <td style=
+              "background-color: rgb(204, 204, 204); font-weight: bold;" width=
+              "50">
+                $h
+              </td>
+              <td>
+                Hour in 24h format
+              </td>
+            </tr>
+            <tr>
+              <td style=
+              "background-color: rgb(204, 204, 204); font-weight: bold;" width=
+              "50">
+                $t
+              </td>
+              <td>
+                Hour in 12h format
+              </td>
+            </tr>
+            <tr>
+              <td style=
+              "background-color: rgb(204, 204, 204); font-weight: bold;">
+                $m
+              </td>
+              <td>
+                Minute
+              </td>
+            </tr>
+            <tr>
+              <td style=
+              "background-color: rgb(204, 204, 204); font-weight: bold;">
+                $s
+              </td>
+              <td>
+                Second
+              </td>
+            </tr>
+            <tr>
+              <td style=
+              "background-color: rgb(204, 204, 204); font-weight: bold;">
+                $p
+              </td>
+              <td>
+                AM / PM
+              </td>
+            </tr>
+            <tr>
+              <td style=
+              "background-color: rgb(204, 204, 204); font-weight: bold;">
+                #XXXXXX
+              </td>
+              <td>
+                Html Color Code
+              </td>
+            </tr>
+          </tbody>
+        </table><br>
+        Timestamps can be disabled by entering: <span style=
+        "font-weight: bold; color: rgb(0, 153, 0);">/chatmod
+        timestamp</span><span style=
+        "font-family: Helvetica,Arial,sans-serif;"><br>
+        <br></span>
+      </div><span style="font-family: Helvetica,Arial,sans-serif;">/chatmod
+      <span style="font-weight: bold;">clear    </span> <span style=
+      "font-style: italic;">or</span> <span style="font-weight: bold;">   
+      cls<br></span></span>
+      <div style="margin-left: 40px;">
+        This commands clear every visible chatframe.<br>
+        <br>
+      </div><span style=
+      "font-family: Helvetica,Arial,sans-serif;">/chatmod<span style=
+      "font-weight: bold;"> initchan <small><span style=
+      "font-style: italic;">&lt;channelname&gt;</span></small></span></span><br>
+
+      <div style="margin-left: 40px;">
+        Since 1.11 wow set the last joined channel as default channel for
+        startup. With this command<br>
+        you can set any channel as default channel. The specified
+        &lt;channelname&gt; will be initialized at<br>
+        the loading process. <span style="color: rgb(153, 0, 0);">Tip:
+        Casesensitive!</span>
+      </div>
+    </div>
+    <h3>
+      <span style="font-family: Helvetica,Arial,sans-serif;">ChatSound
+      Feature</span>
+    </h3>
+    <div style="margin-left: 40px;">
+      Since 1.05 beta 3 it is possible to setup own mp3 files as sound
+      notification event sounds. You can do this<br>
+      by replacing the 5 existing mp3 in the subfolder /audio/ in the
+      Addons/ChatMOD/ Directory. This can be<br>
+      normal mp3s of your choice. You can setup them later in the game by
+      entering the ChatSound menue in the<br>
+      ChatMOD GUI by typing /chatmod
+    </div>
+    <h3>
+      <span style="font-family: Helvetica,Arial,sans-serif;">The chatframe
+      Scrolldown Button<br></span>
+    </h3>
+    <div style="margin-left: 40px;">
+      After requested by several users ChatMOD  now adds a button to the
+      chatframe which is only visible if you<br>
+      have scrolled up in the window. If you click this button you automaticaly
+      going down. Time to time on some<br>
+      Clients the button is set to the middle of the screen. But this is not a
+      huge problem you can move the button<br>
+      individualy like you wish. Simple hold down the &lt;CTRL&gt; Key and drag
+      the button to the Postition you want.<br>
+      After you stop draging and klick on the button this position is saved and
+      will be restored each time your<br>
+      UI loads. This is save per Charackter .
+    </div>
+    <h3>
+      <span style="font-family: Helvetica,Arial,sans-serif;">Mousewheel
+      Chatscrolling<br></span>
+    </h3>
+    <div style="margin-left: 40px;">
+      With Chatmod you are able to use your Mousewheel to scoll the
+      Chatwindow:<br>
+      <div style="margin-left: 40px;">
+        <small style="color: rgb(0, 102, 0);">MOUSE-WHEEL-UP:             1
+        line up</small><br style="color: rgb(0, 102, 0);">
+        <small style="color: rgb(0, 102, 0);">MOUSE-WHEEL-DOWN:     1 line
+        down</small><br style="color: rgb(0, 102, 0);">
+        <small style="color: rgb(0, 102, 0);">&lt;SHIFT&gt;    MOUSE-WHEEL-UP:
+            3 lines up</small><br style="color: rgb(0, 102, 0);">
+        <small style="color: rgb(0, 102, 0);">&lt;SHIFT&gt;  
+         MOUSE-WHEEL-DOWN:     3 lines down</small><br style=
+        "color: rgb(0, 102, 0);">
+        <small style="color: rgb(0, 102, 0);">&lt;CTRL&gt;    MOUSE-WHEEL-UP:
+            Jump to top</small><br style="color: rgb(0, 102, 0);">
+        <small style="color: rgb(0, 102, 0);">&lt;CTRL&gt;    MOUSE-WHEEL-DOWN:
+            Jump to Bottom</small><br>
+      </div><br>
+    </div>
+    <h3>
+      <span style="font-family: Helvetica,Arial,sans-serif;">Found a Bug or
+      have a Feature Request ?</span>
+    </h3>
+    <div style="margin-left: 40px;">
+      If you found a Bug or have a Featurerequest please use the <a href=
+      "http://www.solariz.de/bugs">provided Form on my Website</a> to Submit
+      this.<br>
+      You don't have to register, you can submit Bugs / Requests Anonymous if
+      you want to. Please use this Form<br>
+      because for me it is hard to recheck every Addonwebsite day by day and
+      browsing the comments, writing down,<br>
+      checking and finaly do the work. Because this Addon is, like all other
+      WoW Addons too, developed in the<br>
+      sparetime of a hobby programmer I don't want to stick in support and
+      concentrate on the actual thing.<br>
+      <br>
+    </div>
+    <h3>
+      <span style="font-family: Helvetica,Arial,sans-serif;">Donate ?</span>
+    </h3>
+    <div style="margin-left: 40px;">
+      <span style="font-family: Helvetica,Arial,sans-serif;">If you would
+      donate $1 to whatever, please feel free to do so ;) <br></span>
+      <table style="text-align: left;" border="0" cellpadding="2" cellspacing=
+      "2">
+        <tbody>
+          <tr>
+            <td>
+              <form action="https://www.paypal.com/cgi-bin/webscr" method=
+              "post">
+                <input name="cmd" value="_s-xclick" type="hidden"> <input src=
+                "https://www.paypal.com/de_DE/i/btn/x-click-butcc-donate.gif"
+                name="submit" alt=
+                "Zahlen Sie mit PayPal - schnell, kostenlos und sicher!"
+                border="0" type="image"><img alt="" src=
+                "https://www.paypal.com/de_DE/i/scr/pixel.gif" border="0"
+                height="1" width="1"> <input name="encrypted" value=
+                "-----BEGIN PKCS7-----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-----END PKCS7-----"
+                type="hidden">
+              </form>
+            </td>
+            <td>
+                     
+            </td>
+            <td>
+              <form action="https://www.paypal.com/cgi-bin/webscr" method=
+              "post">
+                <input name="cmd" value="_s-xclick" type="hidden"> <input src=
+                "https://www.paypal.com/de_DE/i/btn/x-click-but04.gif" name=
+                "submit" alt=
+                "Zahlen Sie mit PayPal - schnell, kostenlos und sicher!"
+                border="0" type="image"> <img alt="" src=
+                "https://www.paypal.com/de_DE/i/scr/pixel.gif" border="0"
+                height="1" width="1"> <input name="encrypted" value=
+                "-----BEGIN PKCS7-----MIIHTwYJKoZIhvcNAQcEoIIHQDCCBzwCAQExggEwMIIBLAIBADCBlDCBjjELMAkGA1UEBhMCVVMxCzAJBgNVBAgTAkNBMRYwFAYDVQQHEw1Nb3VudGFpbiBWaWV3MRQwEgYDVQQKEwtQYXlQYWwgSW5jLjETMBEGA1UECxQKbGl2ZV9jZXJ0czERMA8GA1UEAxQIbGl2ZV9hcGkxHDAaBgkqhkiG9w0BCQEWDXJlQHBheXBhbC5jb20CAQAwDQYJKoZIhvcNAQEBBQAEgYB44QYBtEsfubSfkW9ECB1DbqPPdOcsYeDMRni3FNLVog4pDJWavhzKN3VQcx25FY4THCBg/8QRSOTa1BzXF/ci3fM/zYjn6B/i1WhJfJtmHF1kqxHwxpQEmmPdIWUZfDCdBJVO+CC7t4kVyLo2nNR63idBP0wGYR8cGIffnte1rDELMAkGBSsOAwIaBQAwgcwGCSqGSIb3DQEHATAUBggqhkiG9w0DBwQIPWmKQEUEAlKAgajZhdHIpwenHS9cJdRnZqjryL6lCKd7P/dcajSNyKc60/Nbs7Z5Z3Yc/h9d+5+MGwE1DTz0JYGJIllcNDpNSEhP3zS3JftM28y7d/LaaBqNtQPBS8we7ZNUHGVloY/vj9zOkWe0fpBMCEJfrGSlHDo8QZFuENayqX0ymnMuAXBXQ4wr16eqBiy+1QqQoiNQOwP3CQlS2GYFXVLfJsCytCv61yTbOB8uHbygggOHMIIDgzCCAuygAwIBAgIBADANBgkqhkiG9w0BAQUFADCBjjELMAkGA1UEBhMCVVMxCzAJBgNVBAgTAkNBMRYwFAYDVQQHEw1Nb3VudGFpbiBWaWV3MRQwEgYDVQQKEwtQYXlQYWwgSW5jLjETMBEGA1UECxQKbGl2ZV9jZXJ0czERMA8GA1UEAxQIbGl2ZV9hcGkxHDAaBgkqhkiG9w0BCQEWDXJlQHBheXBhbC5jb20wHhcNMDQwMjEzMTAxMzE1WhcNMzUwMjEzMTAxMzE1WjCBjjELMAkGA1UEBhMCVVMxCzAJBgNVBAgTAkNBMRYwFAYDVQQHEw1Nb3VudGFpbiBWaWV3MRQwEgYDVQQKEwtQYXlQYWwgSW5jLjETMBEGA1UECxQKbGl2ZV9jZXJ0czERMA8GA1UEAxQIbGl2ZV9hcGkxHDAaBgkqhkiG9w0BCQEWDXJlQHBheXBhbC5jb20wgZ8wDQYJKoZIhvcNAQEBBQADgY0AMIGJAoGBAMFHTt38RMxLXJyO2SmS+Ndl72T7oKJ4u4uw+6awntALWh03PewmIJuzbALScsTS4sZoS1fKciBGoh11gIfHzylvkdNe/hJl66/RGqrj5rFb08sAABNTzDTiqqNpJeBsYs/c2aiGozptX2RlnBktH+SUNpAajW724Nv2Wvhif6sFAgMBAAGjge4wgeswHQYDVR0OBBYEFJaffLvGbxe9WT9S1wob7BDWZJRrMIG7BgNVHSMEgbMwgbCAFJaffLvGbxe9WT9S1wob7BDWZJRroYGUpIGRMIGOMQswCQYDVQQGEwJVUzELMAkGA1UECBMCQ0ExFjAUBgNVBAcTDU1vdW50YWluIFZpZXcxFDASBgNVBAoTC1BheVBhbCBJbmMuMRMwEQYDVQQLFApsaXZlX2NlcnRzMREwDwYDVQQDFAhsaXZlX2FwaTEcMBoGCSqGSIb3DQEJARYNcmVAcGF5cGFsLmNvbYIBADAMBgNVHRMEBTADAQH/MA0GCSqGSIb3DQEBBQUAA4GBAIFfOlaagFrl71+jq6OKidbWFSE+Q4FqROvdgIONth+8kSK//Y/4ihuE4Ymvzn5ceE3S/iBSQQMjyvb+s2TWbQYDwcp129OPIbD9epdr4tJOUNiSojw7BHwYRiPh58S1xGlFgHFXwrEBb3dgNbMUa+u4qectsMAXpVHnD9wIyfmHMYIBmjCCAZYCAQEwgZQwgY4xCzAJBgNVBAYTAlVTMQswCQYDVQQIEwJDQTEWMBQGA1UEBxMNTW91bnRhaW4gVmlldzEUMBIGA1UEChMLUGF5UGFsIEluYy4xEzARBgNVBAsUCmxpdmVfY2VydHMxETAPBgNVBAMUCGxpdmVfYXBpMRwwGgYJKoZIhvcNAQkBFg1yZUBwYXlwYWwuY29tAgEAMAkGBSsOAwIaBQCgXTAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJBTEPFw0wNjA3MTcxODI4NTJaMCMGCSqGSIb3DQEJBDEWBBStERibf8pthbBTGshgWkvitzAr0DANBgkqhkiG9w0BAQEFAASBgLWcV7xxT031bXO3vo371qN5QFeSsjpl32qFKR1Zq1znqtXu2NiSuvSIOWa1oyOTRW81LpWu9UDMN4YdgmgEba62zB3+IR2/QcnIWxVLCoL9ywHQDoKPuf8vgGWL/UP3GHXa/PoDuIINtY6s1sA3Ez7ge77b7taXKgCZvIpb6xom-----END PKCS7-----"
+                type="hidden">
+              </form>
+            </td>
+          </tr>
+        </tbody>
+      </table><span style="font-family: Helvetica,Arial,sans-serif;"><br>
+      <br></span><br style="font-family: Helvetica,Arial,sans-serif;">
+    </div><br style="font-family: Helvetica,Arial,sans-serif;">
+    <br>
+    <table style="text-align: left; width: 100%;" border="0" cellpadding="2"
+    cellspacing="2">
+      <tbody>
+        <tr>
+          <td style="background-color: rgb(255, 255, 153);">
+            <big><big><span style=
+            "font-weight: bold; font-family: monospace;">CHANGE
+            LOG<br></span></big></big> <span style=
+            "font-family: Helvetica,Arial,sans-serif;">You can find a detailed
+            Changelog in the <a href=
+            "http://www.solariz.de/websnv/log.php?repname=SCCN">WebSVN</a></span>
+          </td>
+        </tr>
+        <tr style="font-family: monospace;">
+          <td style="background-color: rgb(216, 216, 216);">
+            <span style="font-weight: bold;">1.05<br></span>
+            <ul>
+              <li>Fixed bug <a href=
+              "http://www.solariz.de/bugs/showreport.php?bugid=53">#53</a> -
+              Sticky Chat improvements
+              </li>
+              <li>Fixed bug <a href=
+              "http://www.solariz.de/bugs/showreport.php?bugid=58">#58</a> -
+              Old Zone optimizations removed
+              </li>
+              <li>Fixed bug <a href=
+              "http://www.solariz.de/bugs/showreport.php?bugid=48">#48</a> -
+              GossipSkip fix for BWL NPC
+              </li>
+              <li>Fixed bug <a href=
+              "http://www.solariz.de/bugs/showreport.php?bugid=54">#54</a> -
+              Veyska class colors
+              </li>
+              <li>Fixed bug <a href=
+              "http://www.solariz.de/bugs/showreport.php?bugid=46">#46</a> -
+              More Keybindings /1 /2 /3 ...
+              </li>
+              <li>Fixed bug <a href=
+              "http://www.solariz.de/bugs/showreport.php?bugid=57">#57</a> -
+              fix for Apostrophes in URL's
+              </li>
+              <li>Testing Code for Sync capability inserted
+              </li>
+              <li>Feature Req. <a href=
+              "http://www.solariz.de/bugs/showreport.php?bugid=64">#64</a> -
+              Ability to define the default chatframe on startup. Type
+              <span style="font-weight: bold;">/chatmod initchan General</span>
+              to set General as initial chattab. <span style=
+              "color: rgb(255, 0, 0);">*still buggy*</span>
+              </li>
+              <li>Fixed bug <a href=
+              "http://www.solariz.de/bugs/showreport.php?bugid=65">#65</a> -
+              Gossip Talk to NPC's fix
+              </li>
+              <li>Fixed 1,05 beta 1 sync bug where General is on 2 instead of 1
+              </li>
+              <li>Fixed bug <a href=
+              "http://www.solariz.de/bugs/showreport.php?bugid=63">#63</a> -
+              Bliz. default sitcky behavior 
+              </li>
+              <li>Fixed bug <a href=
+              "http://www.solariz.de/bugs/showreport.php?bugid=61">#61</a> -
+              highlight bug
+              </li>
+              <li>Changed used Fonts to system wildcards to prevent Chineese /
+              Korean client problems
+              </li>
+              <li>New Command <span style="font-weight: bold;">/clear</span> or
+              <span style="font-weight: bold;">/cls</span> clear all visible
+              chatboxes
+              </li>
+              <li>Feature Req. <a href=
+              "http://www.solariz.de/bugs/showreport.php?bugid=28">#28</a> -
+              Added Scroll down button
+              </li>
+              <li>Fixed bug <a href=
+              "http://www.solariz.de/bugs/showreport.php?bugid=74">#74</a> -
+              Only process CHAT_MSG
+              </li>
+              <li>Fixed bug <a href=
+              "http://www.solariz.de/bugs/showreport.php?bugid=74">#73</a> -
+              /chatmod initchan cutoff first letter
+              </li>
+              <li>General Tidyup in function S_AddMessage
+              </li>
+              <li>Feature Req. <a href=
+              "http://www.solariz.de/bugs/showreport.php?bugid=59">#59</a> -
+              Abilty to use custom sounds (mp3) in Chatsound, just move them in
+              the audio dir and replace the existing 1-5
+              </li>
+              <li>Fixed bug <a href=
+              "http://www.solariz.de/bugs/showreport.php?bugid=75">#75</a> -
+              Sticky is now toggle able in GUI (/chatmod nofade)
+              </li>
+              <li>Fixed bug <a href=
+              "http://www.solariz.de/bugs/showreport.php?bugid=60">#60</a> -
+              /who windows keeps opening fix didn't work on all clients have to
+              figure out why
+              </li>
+              <li>removed Sync testing code
+              </li>
+              <li>Fixed bug <a href=
+              "http://www.solariz.de/bugs/showreport.php?bugid=77">#77</a> -
+              The Chatframe scroll down button is now individual placeable by
+              draging the button where you want. Just hold down &lt;CTRL&gt;
+              and drag it.
+              </li>
+              <li>Fixed bug <a href=
+              "http://www.solariz.de/bugs/showreport.php?bugid=73">#73</a> -
+              Updated Korean Language
+              </li>
+              <li>Fixed bug <a href=
+              "http://www.solariz.de/bugs/showreport.php?bugid=80">#80</a> -
+              Inchat highlighter shouldn't highlight names in items [xyz abc]
+              any more
+              </li>
+              <li>Fixed bug <a href=
+              "http://www.solariz.de/bugs/showreport.php?bugid=85">#85</a> -
+              Gossip window of MC and BWL stays open after entering instance
+              </li>
+              <li>Fixed bug <a href=
+              "http://www.solariz.de/bugs/showreport.php?bugid=76">#76</a> -
+              Initchan should work now as it actually should
+              </li>
+              <li>Fixed bug <a href=
+              "http://www.solariz.de/bugs/showreport.php?bugid=56">#56</a> -
+              The general gossip bugs which prevent from talking to some NPCs
+              should be fixed
+              </li>
+              <li>Fixed bug <a href=
+              "http://www.solariz.de/bugs/showreport.php?bugid=89">#89</a> -
+              Gossip window won't close in BWL/MC and no window on no option
+              </li>
+              <li>Fixed bug <a href=
+              "http://www.solariz.de/bugs/showreport.php?bugid=88">#88</a> -
+              "-" character will be correctly handeled in URL's
+              </li>
+              <li>New Command (Bug <a href=
+              "http://www.solariz.de/bugs/showreport.php?bugid=60">#60</a>) -
+              <span style="font-weight: bold;">/chatmod disablewho</span>
+              disables the who check to prevent the popping up who box on some
+              clients
+              </li>
+              <li>Fixed bug <a href=
+              "http://www.solariz.de/bugs/showreport.php?bugid=88">#102</a> -
+              Gossip Window handling
+              </li>
+              <li>Fixed Save Bug <a href=
+              "http://www.solariz.de/bugs/showreport.php?bugid=124">#124</a>.
+              Chatmod lua didn't saved correctly since last wow patch
+              </li>
+              <li>Fixed Bug <a href=
+              "http://www.solariz.de/bugs/showreport.php?bugid=128">#128</a>. First char after highlighted name was stripped
+              </li>
+              <li>Fixed Bug <a href=
+              "http://www.solariz.de/bugs/showreport.php?bugid=136">#136</a>. NPC Frames stay open.
+              </li>
+              <li>Fixed Bug <a href=
+              "http://www.solariz.de/bugs/showreport.php?bugid=113">#113</a>. Banker Gossip error
+              </li>
+              <li>I Reverted the skip gossip function to pre 1.04 one. This is slower but more reliable. Many users got huge errors with the new routines.</li>
+            </ul><span style="font-weight: bold;">1.04</span><br>
+            <ul>
+              <li>SCCN_InChatHighlight added this will highlight known names in
+              chatmessages and make them clickable  "/chatmod inchathighlight"
+              </li>
+              <li>SCCN_AllSticky added to GUI / toggle Sticky mode, Bug
+                <a href="http://www.solariz.de/bugs/showreport.php?bugid=37">#37</a>
+              </li>
+              <li>Storage method of playernames changed to lowercase, first
+              preperal for unicode names
+              </li>
+              <li>Updated the colortable, class colors should be brighter now
+              </li>
+              <li>WHISPER is no Sticky Channel anymore, use the 'R' key ;p
+              </li>
+              <li>Fixed [invite] Bug <a href=
+              "http://www.solariz.de/bugs/showreport.php?bugid=36">#36</a><br>
+
+                Invites not clickable anymore if from person in raid or from
+                self
+              </li>
+              <li>My Guild on EU-Aegwynn, <a href=
+              "http://www.united-gilde.net">United</a> have <a href=
+              "http://www.solariz.de/index.php?article_id=39&amp;img=25196442">
+                defeated</a> the Twin Emperors :D
+              </li>
+              <li>Class colors updated again; Priest=brighter, Druid=more
+              orange, Pala=better Pink (who gave the pala this color *cough*)
+              </li>
+              <li>Fix for Bug <a href=
+              "http://www.solariz.de/bugs/showreport.php?bugid=32">#32</a>
+              "Double lines in center of screen"
+              </li>
+              <li>Request <a href=
+              "http://www.solariz.de/bugs/showreport.php?bugid=31">#31</a>
+              included, Gossip skip more fluently
+              </li>
+              <li>Gossip skip now includes Vendors
+              </li>
+            </ul><span style="font-weight: bold;">1.03</span><br>
+            <ul>
+              <li>Enable Chat Stickyness by Default for
+              GUILD,PARTY,RAID,OFFICER,SAY,WHISPER
+              </li>
+              <li>Updated who Hide channel names work. This should now also
+              hide custom channel names to it's number<br>
+                e.g.  [6. GuildsDruidChannel] will be [6] by clicking on [6] it
+                will say 6 = GuildsDruidChannel
+              </li>
+              <li>BG Minimap shouldnt toggle anymore if you switching between
+              two BG's
+              </li>
+              <li>Fix bug <a href=
+              "http://www.solariz.de/bugs/showreport.php?bugid=22">#22</a> -
+              GEM's output shouldnt be visible in chatframes anymore
+              </li>
+              <li>Fix bug <a href=
+              "http://www.solariz.de/bugs/showreport.php?bugid=19">#19</a> -
+              Should intefere with CTRA anymore
+              </li>
+              <li>Added KLHTM strip mentioned in Bug <a href=
+              "http://www.solariz.de/bugs/showreport.php?bugid=22">#22</a>
+              </li>
+            </ul><span style="font-weight: bold;">1.02</span><br>
+            <ul>
+              <li>Fix bug <a href=
+              "http://www.solariz.de/bugs/showreport.php?bugid=10">#10</a>
+              (Line 159 error)
+              </li>
+              <li>Fix bug <a href=
+              "http://www.solariz.de/bugs/showreport.php?bugid=11">#11</a>
+              (Chronos check)
+              </li>
+              <li>Fix bug <a href=
+              "http://www.solariz.de/bugs/showreport.php?bugid=4">#4</a> 
+              (Officer Chat)
+              </li>
+              <li>Fix bug <a href=
+              "http://www.solariz.de/bugs/showreport.php?bugid=16">#16</a>
+              (Party chat hotkey)
+              </li>
+              <li>Preperal for bug <a href=
+              "http://www.solariz.de/bugs/showreport.php?bugid=15">#15</a>
+              added a advanced DKPTable restore functionality. This requires
+              interaction of the DKPTable mod author *Corss your fingers and
+              ask him* I send him the neccesary fix information by PM on Curse.
+              </li>
+              <li>Added command /chatmod fix to reHook the functions
+              </li>
+            </ul><span style="font-weight: bold;">1.01</span><br>
+            - Fixed compatibility to DKP_Table Addon. For this compatibility
+            Feature it is required to also have Chronos or Timex installed.<br>
+            - Fix for Error in Line 654
+          </td>
+        </tr>
+        <tr style="font-family: monospace;">
+          <td style="background-color: rgb(255, 255, 255);">
+            <span style="font-family: monospace;"><br></span>
+          </td>
+        </tr>
+        <tr>
+          <td style="background-color: rgb(246, 246, 147);">
+            <span style="font-family: monospace;">At this Point The Addon was
+            renamed from Sol's Color chat Nicks (SCCN) to ChatMOD.<br>
+            The version will start again at 1.0</span>
+          </td>
+        </tr>
+        <tr style="font-family: monospace;">
+          <td style="background-color: rgb(216, 216, 216);">
+            [1.9 &amp; 1.9b]<br>
+            - new: Chatsound Feature<br>
+            - upd: highlighter now un case sensitive<br>
+            - upd: chinese localisation updated<br>
+            - upd: LookingForGroup naming fixed<br>
+            - upd: keybinding file updated<br>
+            - upd: removed OnEscapePressed events they are no longer valid<br>
+            - upd: tidy up old code parts<br>
+            <br>
+            <br>
+            [1.8]<br>
+            - new: GUI to specify channel shortcuts (shortchannelname)<br>
+            - new: added Option to toggle gossip skip to GUI<br>
+            - new: added Option to toggle Auto Dismount to GUI<br>
+            - new: /SCCN autodismount  toggle Auto Dismount feature<br>
+            - new: /SCCN autogossipskip  toggle Gossip Skip Feature<br>
+            - new: added GUI for Shortchanname config<br>
+            - upd: Gossip Skip Msg removed<br>
+            - upd: removed Zoning Time display, if you need it use catalyst<br>
+            - upd: added KeyBindung for Chat /9 &amp; /10<br>
+                 <br>
+            <br>
+            <br>
+            [1.7]<br>
+            - new: The GUI. Bring it up with /SCCN<br>
+            - new: /SCCN shortchanname ,displays a shorter version of the
+            channelname<br>
+            - new: Zone Loading times are displayed after loading screens<br>
+            - new: Known Gossip Frames are skipped<br>
+            (can temporary disabled by holding &lt;CTRL&gt; when NPC talk is
+            initialized)<br>
+            - new: Auto Dismount on talking to a Taxi NPC<br>
+            (can disabled by holding &lt;CTRL&gt;)<br>
+            - new: Unregistering Event handlers after player leaving world.
+            (speedup)<br>
+            - upd: fixed the invite highlight   [invite]d  thinks like this
+            shouldnt happen anymore<br>
+            - upd: general cleanup and optimization<br>
+            <br>
+            [1.6]<br>
+            - new: added Chinese Simplified (zhCN) translation by q09q09<br>
+            - new: /SCCN highlight ; Specify customized highlightwords<br>
+            - new: /SCCN AutoBGMap ; toggle bgminimap autotoggeling<br>
+            - fix: some highlight problems fixed<br>
+            - fix: some translationg problems fixed<br>
+            <br>
+            [1.5]<br>
+            - new: As soon as you enter a Battleground the BG Minimap
+            automaticaly opens<br>
+            - fix: /SCCN editboxkeys are back<br>
+            <br>
+            [1.4]<br>
+            - new: usage of HTML colorcodes in timestamps. e.g. /SCCN timestamp
+            #33CCFF$h:$m<br>
+            - fix: disabled /SCCN chatboxkeys because of 1.10<br>
+            - 1.10 compatible<br>
+            <br>
+            [1.3]<br>
+            - new: Added key bindings for /6 /7 /8<br>
+            - new: Added /SCCN hidechatbuttons Command to hide the chat
+            buttons<br>
+            - new: Forgotten chat Mod Support function. (FC has to be patched
+            see on SCCN website)<br>
+            - new: Binding for /wt  Whisper target<br>
+            - fix: Own nickname should get highlighted in Word defense and
+            local defense channel<br>
+            - fix: Own Nick shouldn't get  highlighted in CTRA or DMSync
+            Messages<br>
+            - fix: Removed /who update event. It didn't work like expected and
+            now a error caused by this was reported, reason to kick this
+            out.<br>
+            - fix: [invite] on click function didn't work propably since SCCN
+            1.2<br>
+            - fix: chat keybindings now open complete empty editbox in past the
+            binded key was printed sometimes<br>
+            <br>
+            [1.2]<br>
+            - new: Added Officers chat to keybinding options<br>
+            - new: Added a support function for implementation in Forgotten
+            Lords Chat Mod<br>
+            - fix: Bug reported by grimman and RavenDk. Added space behind
+            From:  and to:<br>
+            - fix: Bug reported by xhile hopefully fixed. Editbox always got a
+            reset even if topeditbox is off<br>
+            <br>
+            [1.1b]<br>
+            - fix: Bug in /raid say keybinding<br>
+            - fix: Bug in hidechannames displyed empty brackets [] in raid /
+            party / guild<br>
+            <br>
+            [1.1]<br>
+            - new: Keybindings in the wow config dialog for /say /raid /party
+            /yell<br>
+            - fix: checking not only if assistant for [invite] also if
+            IsRaidLeader set<br>
+            - fix: $h $m $s $t in timestamps are now alyways 2 digits. 01
+            instead of 1<br>
+            - fix: Selfhighlight only highlight player said messages no system
+            messages<br>
+            - fix: stripped to much. raid party guild were removed from each
+            string not only the channame<br>
+            - upd: changed /tt to /wt (Whisper Target) because of conflict with
+            other mods<br>
+            <br>
+            [1.0b]<br>
+            - fix: hide channame was broken for Guild / Raid / Party<br>
+            - fix: German client line 737 error on /SCCN status<br>
+            <br>
+            [1.0]<br>
+            - new: if you hold &lt;STRG&gt; while mousewheel scrolling in the
+            chatframe you going to top or to bottom<br>
+            - new: command "/SCCN selfhighlightmsg" will toggle OnScreen
+            display of highlighted messages. DEFAULT: on<br>
+            - new: since this version the Timestamp string is customizeable.
+            Please enter "/SCCN timestamp ?" for help.<br>
+            - upd: some changes on the "hindechanname" routines. Chinese
+            clients always shows a ugly ] should be fixed<br>
+            - upd: accordng to the hidechanname update the SCCN_STRIPCHAN
+            should now work correct<br>
+            - upd: invite's will not be clickable in chatmessages written by
+            your self<br>
+            - udp: if you in a party and not party leader invite's also not
+            clickable<br>
+            - upd: converted map icons to .blp format saves minimal
+            ressources<br>
+            - fix: {invite] highlight problem in chinese client. Maybe fixed i
+            have to play around because I don't have acces to a chines client
+            ^^<br>
+            - fix: /SCCN editboxkeys wansn't able to turn off so once turned on
+            it stayed on no matter if toggled off or on<br>
+            - fix: (old line 204 error) reported by Bray shouldn't happen
+            anymore. (please test)<br>
+            <br>
+            [0.9]<br>
+            - new: Chinese localization (zhTW) added by Chris<br>
+            - new: If selfhighlight is enabled you will get the messages
+            including your name directly printed on screen<br>
+            - new: increase the Editbox scrollback (history) buffer from 32 to
+            256 lines<br>
+            - new: localized custom invite word. Search for SCCN_CUSTOM_INV in
+            localization.lua to sepcify you own invite words<br>
+            - new: /SCCN editboxkeys Use Chat Editbox keys without pressing
+            &lt;ALT&gt; &amp; increase History Buffer.<br>
+            - new: /SCCN killdb This will kill your sccn Database. (100% empty
+            afterwards)<br>
+            - new: /tt Tell Target Command. Use "/tt text" to whisper "text" to
+            your current target.<br>
+            - fix: all help lines are showed<br>
+            - fix: Your own nickname won't be highlighted if spoken by you<br>
+            <br>
+            [0.8]<br>
+            - Update: The hyperlinker now should support email adresses
+            xyz@abc.de<br>
+            - Update: Sasmira updated the Translation for all french users out
+            there. Greetings to my country neighbors and big thanks to
+            Sasmira!<br>
+            - Fix: Hide own channel (set in localization.lua) should now work
+            as intended<br>
+            - Fix: highlighting of own Nickname didn't work sometimes. New
+            regex works better<br>
+            - Fix: another change in the colored raid map pins code to
+            workaround those evil bugs on some clients. I'm keep praying ;)<br>
+            <br>
+            <br>
+            [0.7]<br>
+            - New: /SCCN clickinvite . Make the words "invite" and "inv"
+            clickable in the chat. If you click on such a invite the user
+            automaticaly get's an invite request. Quite usefull in BG's ;p all
+            this "invite plz!!!"<br>
+            - New: Hide own custom channels. Simple open the localization.lua
+            in a texteditor and SCCN_STRIPCHAN[4] SCCN_STRIPCHAN[5] and so
+            on.<br>
+            - New: Confab compatibility. If confab (an other addon) is detected
+            SCCN editbox features are disabled due to compatibility
+            reasons.<br>
+            <br>
+            [0.6b]<br>
+            - QuickFix for nil error in 311 on startup.<br>
+            <br>
+            [0.6]<br>
+            - Fix: NIL Error in line 126<br>
+            - Fix: NIL Error in line 269<br>
+            - Fix: Map pin color error on some clients. (still experimenting,
+            strange behavior sometimes)<br>
+            - New: Url Highlighting advanced to URL's with ports like TeamSpeak
+            (sub.domain.og:12345)<br>
+            - New: Url Highl. adv. to IP Adresses with ports
+            (123.456.789.123:12345)<br>
+            - New: /SCCN selfhighlight If a other person mention your char's
+            name in a chat your name will be highlighted<br>
+            <br>
+            [0.5]<br>
+            - New: "/SCCN hyperlink" if toggled on URL's in the chatwindow are
+            clickable and ready for copy &amp; paste<br>
+            - Fix: Hidechanname now completely hides channel names. Also
+            [Guild] [Raid] [Party]<br>
+            - Small fixes<br>
+            <br>
+            [0.4]<br>
+            - Fix: Button placement was moved<br>
+            - New: /SCCN colormap Colors the map pin's of raid users in their
+            class color<br>
+            <br>
+            [0.3]<br>
+            - French localization added. Thanks to Sasmira<br>
+            - Function added to hide channel names<br>
+            - Function added to Scroll chatframe with mousewheel<br>
+            - Function to relocate the Editbox to the top of the chatwindow<br>
+            - Function to add a 24h timestamp<br>
+            - Commandline option /SCCN added. Type without parameters for
+            help.<br>
+            - /SCCN hidechanname = Will supress the Channelname (default:
+            off)<br>
+            - /SCCN colornicks = Toggle Nick coloring on and off (default:
+            on)<br>
+            - /SCCN purge = Start the normal purge process done every start<br>
+            - /SCCN timestamp = add a timestamp<br>
+            - /SCCN topeditbox = relocate the editbox to the top of the
+            chatframe<br>
+            <br>
+            [0.2]<br>
+            - general optimization<br>
+            - if char isn't known default color should be used<br>
+            - Added display of currently used memory and purged entrys<br>
+            - Changed Storage. 0.1 stores the class name "DRUID" 0.2 only
+            stores a kind of placeholer (less memory)<br>
+            - Changed Purgetime to 4 Weeks<br>
+            - Added WHO_LIST_UPDATE event. But this isn't working as intended
+            ;(<br>
+            Have to figure out how to catch single /Whois commands.<br>
+            <br>
+            [0.1]<br>
+            initial release 
+          </td>
+        </tr>
+      </tbody>
+    </table><span style="font-family: monospace;"><br>
+    <br></span><br style="font-family: monospace;">
+    <span style="font-family: Helvetica,Arial,sans-serif;"><br></span>
+  </body>
+</html>

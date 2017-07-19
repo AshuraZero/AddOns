@@ -1,0 +1,10 @@
+## Interface: 11200
+## Title: TOTAlert v1.03
+## Title-zhCN: |cFFFFFFFF[战斗]|r 仇恨警报器
+## Notes: Show player's target's target and give some alerts.cmd/tot
+## Notes-zhCN: 仇恨警报器,显示目标的目标并提示仇恨失控。查询命令/tot。
+## Author: 独孤傲雪
+## Version: 1.03
+## SavedVariables: TOTAlertMode, TOTAlertWarning, TOTAlertMove, TOTAlertMoveAlertEnable, TOTAlertHPEnable
+## SavedVariablesPerCharacter: TOTAlert_Config
+TOTAlert.xml

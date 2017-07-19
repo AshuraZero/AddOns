@@ -1,0 +1,160 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+..\FrameXML\UI.xsd">
+
+<Script file="CT_RABossModsTimer.lua"/>
+
+<FontString name="CT_RABossVisualTimerInfoTemplate" inherits="GameFontNormalSmall" hidden="true" virtual="true"/>
+<FontString name="CT_RABossVisualTimerDurationTemplate" inherits="GameFontHighlightSmall" hidden="true" virtual="true"/>
+
+<StatusBar name="CT_RABossVisualTimerBarTemplate" drawLayer="BACKGROUND" hidden="true" virtual="true">
+	<Size>
+		<AbsDimension x="119" y="13"/>
+	</Size>
+	<Layers>
+		<Layer level="BORDER">
+			<Texture file="Interface\PaperDollInfoFrame\UI-Character-Skills-BarBorderHighlight">
+				<Size>
+					<AbsDimension x="64" y="32"/>
+				</Size>
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset>
+							<AbsDimension x="-5" y="9"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<TexCoords left="0" right="0.25" top="0" bottom="1.0"/>
+			</Texture>
+			<Texture file="Interface\PaperDollInfoFrame\UI-Character-Skills-BarBorderHighlight">
+				<Size>
+					<AbsDimension x="64" y="32"/>
+				</Size>
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset>
+							<AbsDimension x="59" y="9"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<TexCoords left="0.75" right="1.0" top="0" bottom="1.0"/>
+			</Texture>
+		</Layer>
+	</Layers>
+	<BarTexture file="Interface\PaperDollInfoFrame\UI-Character-Skills-Bar"/>
+	<BarColor r="1.0" g="1.0" b="1.0"/>
+</StatusBar>
+
+<Frame name="CT_RABossVisualTimerFrame" parent="UIParent" frameStrata="BACKGROUND" toplevel="true" hidden="true" enableMouse="true" movable="true">
+	<Size>
+		<AbsDimension x="120" y="33"/>
+	</Size>
+	<Anchors>
+		<Anchor point="CENTER"/>
+	</Anchors>
+	<Frames>
+		<Frame setAllPoints="true">
+			<Layers>
+				<Layer level="OVERLAY">
+					<FontString name="$parentText1" inherits="CT_RABossVisualTimerInfoTemplate"/>
+					<FontString name="$parentText2" inherits="CT_RABossVisualTimerInfoTemplate"/>
+					<FontString name="$parentText3" inherits="CT_RABossVisualTimerInfoTemplate"/>
+					<FontString name="$parentText4" inherits="CT_RABossVisualTimerInfoTemplate"/>
+					<FontString name="$parentText5" inherits="CT_RABossVisualTimerInfoTemplate"/>
+					<FontString name="$parentText6" inherits="CT_RABossVisualTimerInfoTemplate"/>
+					<FontString name="$parentText7" inherits="CT_RABossVisualTimerInfoTemplate"/>
+					<FontString name="$parentText8" inherits="CT_RABossVisualTimerInfoTemplate"/>
+					<FontString name="$parentText9" inherits="CT_RABossVisualTimerInfoTemplate"/>
+					<FontString name="$parentText10" inherits="CT_RABossVisualTimerInfoTemplate"/>
+					<FontString name="$parentStatus1" inherits="CT_RABossVisualTimerDurationTemplate"/>
+					<FontString name="$parentStatus2" inherits="CT_RABossVisualTimerDurationTemplate"/>
+					<FontString name="$parentStatus3" inherits="CT_RABossVisualTimerDurationTemplate"/>
+					<FontString name="$parentStatus4" inherits="CT_RABossVisualTimerDurationTemplate"/>
+					<FontString name="$parentStatus5" inherits="CT_RABossVisualTimerDurationTemplate"/>
+					<FontString name="$parentStatus6" inherits="CT_RABossVisualTimerDurationTemplate"/>
+					<FontString name="$parentStatus7" inherits="CT_RABossVisualTimerDurationTemplate"/>
+					<FontString name="$parentStatus8" inherits="CT_RABossVisualTimerDurationTemplate"/>
+					<FontString name="$parentStatus9" inherits="CT_RABossVisualTimerDurationTemplate"/>
+					<FontString name="$parentStatus10" inherits="CT_RABossVisualTimerDurationTemplate"/>
+					<FontString name="$parentHeader" inherits="GameFontHighlightSmall" text="CT_RABOSS_VTIMER_TITLE">
+						<Anchors>
+							<Anchor point="CENTER" relativePoint="TOP" relativeTo="$parent">
+								<Offset>
+									<AbsDimension x="0" y="8"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+					</FontString>
+				</Layer>
+			</Layers>
+		</Frame>
+		<Frame name="$parent_DropDown" inherits="UIDropDownMenuTemplate" id="1" hidden="true">
+			<Size>
+				<AbsDimension x="10" y="10"/>
+			</Size>
+			<Anchors>
+				<Anchor point="TOP">
+					<Offset>
+						<AbsDimension x="70" y="10"/>
+					</Offset>
+				</Anchor>
+			</Anchors>
+		</Frame>
+		<StatusBar name="$parentBar1" inherits="CT_RABossVisualTimerBarTemplate"/>
+		<StatusBar name="$parentBar2" inherits="CT_RABossVisualTimerBarTemplate"/>
+		<StatusBar name="$parentBar3" inherits="CT_RABossVisualTimerBarTemplate"/>
+		<StatusBar name="$parentBar4" inherits="CT_RABossVisualTimerBarTemplate"/>
+		<StatusBar name="$parentBar5" inherits="CT_RABossVisualTimerBarTemplate"/>
+		<StatusBar name="$parentBar6" inherits="CT_RABossVisualTimerBarTemplate"/>
+		<StatusBar name="$parentBar7" inherits="CT_RABossVisualTimerBarTemplate"/>
+		<StatusBar name="$parentBar8" inherits="CT_RABossVisualTimerBarTemplate"/>
+		<StatusBar name="$parentBar9" inherits="CT_RABossVisualTimerBarTemplate"/>
+		<StatusBar name="$parentBar10" inherits="CT_RABossVisualTimerBarTemplate"/>
+	</Frames>
+	<Scripts>
+		<OnLoad>
+			this:RegisterForDrag("LeftButton");
+			this:SetMovable(1);
+
+			CT_RABoss_VisualTimer.onLoad();
+		</OnLoad>
+		<OnEvent>
+			CT_RABoss_VisualTimer.onEvent();
+		</OnEvent>
+		<OnUpdate>
+			CT_RABoss_VisualTimer.onUpdate();
+		</OnUpdate>
+		<OnDragStart>
+			if ( not CT_RABoss_Options["VTimerLocked"] ) then
+				this:StartMoving();
+				this.isMoving = true;
+			end
+		</OnDragStart>
+		<OnDragStop>
+			this:StopMovingOrSizing();
+			this.isMoving = false;
+		</OnDragStop>
+		<OnMouseDown>
+				if ( arg1 == "RightButton" ) then
+					ToggleDropDownMenu(1, nil, getglobal(this:GetName() .. "_DropDown"), this:GetName(), 47, 15);
+				end
+			</OnMouseDown>
+		<OnHide>
+			this:StopMovingOrSizing();
+		</OnHide>
+	</Scripts>
+</Frame>
+
+<Frame parent="UIParent" frameStrata="BACKGROUND" toplevel="true" hidden="false" enableMouse="false" movable="false">
+<Size>
+		<AbsDimension x="1" y="11"/>
+	</Size>
+	<Anchors>
+		<Anchor point="TOPLEFT"/>
+	</Anchors>
+	<Scripts>
+		<OnUpdate>
+			CT_RABoss_VisualTimer.onUpdatePeriodic();
+		</OnUpdate>
+	</Scripts>
+</Frame>
+</Ui>

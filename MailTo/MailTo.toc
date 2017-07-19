@@ -1,0 +1,15 @@
+﻿## Interface: 11200
+## Title: MailTo
+## Title-zhCN: |cFFFFFFFF[扩展]|r MailTo
+## Author: Vincent
+## Notes: Mail management and tracking.
+## OptionalDeps: 
+## Dependencies: 
+## SavedVariables: MailTo_List, MailTo_Log, MailTo_Sendee, MailTo_Inbox, MailTo_Mail, MailTo_Option
+## SavedVariablesPerCharacter: MailTo_ReceivedLog
+localization.lua
+localization.de.lua
+localization.fr.lua
+localization.zh.lua
+MailTo.xml
+MailTo.lua

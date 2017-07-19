@@ -1,0 +1,7 @@
+## Interface: 11200
+## Title: PlayerLinkEnhance
+## Title-zhCN: |cFFFFFFFF[扩展]|r PlayerLinkEnhance
+## Version: 1.6
+## Author: hdll
+## Notes: 增强社交界面和聊天窗口的玩家链接功能。
+PlayerLinkEnhance.xml

@@ -1,0 +1,8 @@
+## Interface: 11200
+## Title: Bagnon
+## Title-zhCN: |cFFFFFFFF[扩展]|r 背包整合
+## Notes: Displays the player's inventory in a single frame.
+## Author: Tuller
+## Dependencies: Bagnon_Core
+## LoadOnDemand: 1
+Bagnon.xml

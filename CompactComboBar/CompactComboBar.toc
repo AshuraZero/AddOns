@@ -1,0 +1,8 @@
+## Interface: 11200
+## Title: CompactComboBar
+## Title-zhCN: |cFFFFFF00[盗贼]|r 连击点/能量监视
+## Notes: Adds a window displaying combo points, a target health bar, a target mana bar, an energy bar and a health bar.
+## SavedVariables: CompactComboBar_Config
+## OptionalDeps: MobHealth
+## RequiredDeps:
+CompactComboBar.xml

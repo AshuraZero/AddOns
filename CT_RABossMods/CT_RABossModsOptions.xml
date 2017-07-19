@@ -1,0 +1,414 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+..\FrameXML\UI.xsd">
+	<Script file="CT_RABossModsOptions.lua"/>
+	<Frame name="CT_RABossOptionsFrame" toplevel="true" frameStrata="DIALOG" movable="true" enableMouse="true" hidden="true" parent="UIParent" enableKeyboard="true">
+		<Size>
+			<AbsDimension x="400" y="490"/>
+		</Size>
+		<Anchors>
+			<Anchor point="CENTER"/>
+		</Anchors>
+		<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\DialogFrame\UI-DialogBox-Border" tile="true">
+			<BackgroundInsets>
+				<AbsInset left="11" right="12" top="12" bottom="11"/>
+			</BackgroundInsets>
+			<TileSize>
+				<AbsValue val="32"/>
+			</TileSize>
+			<EdgeSize>
+				<AbsValue val="32"/>
+			</EdgeSize>
+		</Backdrop>
+		<Layers>
+			<Layer level="ARTWORK">
+				<!-- Frame Header -->
+				<Texture name="$parentHeader" file="Interface\DialogFrame\UI-DialogBox-Header">
+					<Size>
+						<AbsDimension x="400" y="64"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOP">
+							<Offset>
+								<AbsDimension x="0" y="12"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</Texture>
+				<FontString inherits="GameFontNormal" text="CT_RABOSS_OPTIONS_TITLE">
+					<Anchors>
+						<Anchor point="TOP" relativeTo="$parentHeader">
+							<Offset>
+								<AbsDimension x="0" y="-13"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+
+				<!-- General Options Header -->
+				<Texture name="$parentSubHeaderGeneral" file="Interface\PaperDollInfoFrame\UI-Character-Skills-BarBorderHighlight">
+					<Size>
+						<AbsDimension x="300" y="37"/>
+					</Size>
+					<Anchors>
+						<Anchor point="CENTER" relativePoint="TOP" relativeTo="$parent">
+							<Offset>
+								<AbsDimension x="0" y="-50" />
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</Texture>
+				<FontString inherits="GameFontNormal" text="CT_RABOSS_OPTIONS_HEADER_GENERAL">
+					<Anchors>
+						<Anchor point="CENTER" relativeTo="$parentSubHeaderGeneral">
+							<Offset>
+								<AbsDimension x="0" y="2"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+
+				<!-- Sync Options Header -->
+				<Texture name="$parentSubHeaderSync" file="Interface\PaperDollInfoFrame\UI-Character-Skills-BarBorderHighlight">
+					<Size>
+						<AbsDimension x="300" y="37"/>
+					</Size>
+					<Anchors>
+						<Anchor point="CENTER" relativePoint="TOP" relativeTo="$parent">
+							<Offset>
+								<AbsDimension x="0" y="-150" />
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</Texture>
+				<FontString inherits="GameFontNormal" text="CT_RABOSS_OPTIONS_HEADER_SYNC">
+					<Anchors>
+						<Anchor point="CENTER" relativeTo="$parentSubHeaderSync">
+							<Offset>
+								<AbsDimension x="0" y="2"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+
+				<!-- Visual Timer Options Header -->
+				<Texture name="$parentSubHeaderVTimer" file="Interface\PaperDollInfoFrame\UI-Character-Skills-BarBorderHighlight">
+					<Size>
+						<AbsDimension x="300" y="37"/>
+					</Size>
+					<Anchors>
+						<Anchor point="CENTER" relativePoint="TOP" relativeTo="$parent">
+							<Offset>
+								<AbsDimension x="0" y="-290" />
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</Texture>
+				<FontString inherits="GameFontNormal" text="CT_RABOSS_OPTIONS_HEADER_VTIMER">
+					<Anchors>
+						<Anchor point="CENTER" relativeTo="$parentSubHeaderVTimer">
+							<Offset>
+								<AbsDimension x="0" y="2"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+			</Layer>
+		</Layers>
+
+		<Frames>
+			<!-- General Options -->
+			<CheckButton name="$parentShortRaidAnnounce" inherits="OptionsCheckButtonTemplate">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="$parentSubHeaderGeneral">
+						<Offset>
+							<AbsDimension x="-30" y="-30"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnLoad>
+						getglobal(this:GetName().."Text"):SetText(CT_RABOSS_OPTIONS_SHORTANNOUNCE);
+					</OnLoad>
+					<OnClick>
+						CT_RABossOptions_Toggle("ShortRaidAnnounce");
+					</OnClick>
+					<OnEnter>
+						CT_RABossOptions_ShowTooltip("ShortRaidAnnounce");
+					</OnEnter>
+					<OnLeave>
+						CT_RABossOptions_HideTooltip();
+					</OnLeave>
+				</Scripts>
+			</CheckButton>
+			<CheckButton name="$parentNoChatSpam" inherits="OptionsCheckButtonTemplate">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="$parentShortRaidAnnounce">
+						<Offset>
+							<AbsDimension x="0" y="-30"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnLoad>
+						getglobal(this:GetName().."Text"):SetText(CT_RABOSS_OPTIONS_NOCHATSPAM);
+					</OnLoad>
+					<OnClick>
+						CT_RABossOptions_Toggle("NoChatSpam");
+					</OnClick>
+					<OnEnter>
+						CT_RABossOptions_ShowTooltip("NoChatSpam");
+					</OnEnter>
+					<OnLeave>
+						CT_RABossOptions_HideTooltip();
+					</OnLeave>
+				</Scripts>
+			</CheckButton>
+
+			<!-- Sync (Counter) Options -->
+			<CheckButton name="$parentCounterShow" inherits="OptionsCheckButtonTemplate">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="$parentSubHeaderSync">
+						<Offset>
+							<AbsDimension x="-30" y="-30"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnLoad>
+						getglobal(this:GetName().."Text"):SetText(CT_RABOSS_OPTIONS_COUNTERSHOW);
+					</OnLoad>
+					<OnClick>
+						CT_RABossOptions_Toggle("CounterShow");
+					</OnClick>
+					<OnEnter>
+						CT_RABossOptions_ShowTooltip("CounterShow");
+					</OnEnter>
+					<OnLeave>
+						CT_RABossOptions_HideTooltip();
+					</OnLeave>
+				</Scripts>
+			</CheckButton>
+			<Button name="$parentCounterPosReset" inherits="GameMenuButtonTemplate" text="CT_RABOSS_OPTIONS_COUNTER_POSRESET">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="$parentCounterShow">
+						<Offset>
+							<AbsDimension x="0" y="-35"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Layers>
+					<Layer level="TOPLEFT">
+						<FontString inherits="GameFontNormalSmall" text="CT_RABOSS_OPTIONS_COUNTERPOSRESET">
+							<Anchors>
+								<Anchor point="TOPLEFT">
+									<Offset>
+										<AbsDimension x="110" y="-5"/>
+									</Offset>
+								</Anchor>
+							</Anchors>
+						</FontString>
+					</Layer>
+				</Layers>
+				<Scripts>
+					<OnLoad>
+						this:SetWidth(100);
+					</OnLoad>
+					<OnClick>
+						CT_RABossOptions_Toggle("CounterPosReset");
+					</OnClick>
+					<OnEnter>
+						CT_RABossOptions_ShowTooltip("CounterPosReset");
+					</OnEnter>
+					<OnLeave>
+						CT_RABossOptions_HideTooltip();
+					</OnLeave>
+				</Scripts>
+			</Button>
+			<Slider name="$parentCounterScale" inherits="OptionsSliderTemplate">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="$parentCounterPosReset">
+						<Offset>
+							<AbsDimension x="0" y="-30"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Layers>
+					<Layer level="TOPLEFT">
+						<FontString name="$parentInfo" inherits="GameFontNormalSmall" text="CT_RABOSS_OPTIONS_COUNTERSCALE">
+							<Anchors>
+								<Anchor point="TOPLEFT">
+									<Offset>
+										<AbsDimension x="160" y="-5"/>
+									</Offset>
+								</Anchor>
+							</Anchors>
+						</FontString>
+					</Layer>
+				</Layers>
+				<Scripts>
+					<OnLoad>
+						this:SetWidth(150);
+						this:SetMinMaxValues(0.5, 1.5);
+					</OnLoad>
+					<OnValueChanged>
+						CT_RABossOptions_ValueChange("CounterScale");
+					</OnValueChanged>
+					<OnEnter>
+						CT_RABossOptions_ShowTooltip("CounterScale");
+					</OnEnter>
+					<OnLeave>
+						CT_RABossOptions_HideTooltip();
+					</OnLeave>
+				</Scripts>
+			</Slider>
+
+			<!-- Visual Timer Options -->
+			<CheckButton name="$parentVTimerShow" inherits="OptionsCheckButtonTemplate">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="$parentSubHeaderVTimer">
+						<Offset>
+							<AbsDimension x="-30" y="-30"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnLoad>
+						getglobal(this:GetName().."Text"):SetText(CT_RABOSS_OPTIONS_VTIMERSHOW);
+					</OnLoad>
+					<OnClick>
+						CT_RABossOptions_Toggle("VTimerShow");
+					</OnClick>
+					<OnEnter>
+						CT_RABossOptions_ShowTooltip("VTimerShow");
+					</OnEnter>
+					<OnLeave>
+						CT_RABossOptions_HideTooltip();
+					</OnLeave>
+				</Scripts>
+			</CheckButton>
+			<Button name="$parentVTimerPosReset" inherits="GameMenuButtonTemplate" text="CT_RABOSS_OPTIONS_VTIMER_POSRESET">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="$parentVTimerShow">
+						<Offset>
+							<AbsDimension x="0" y="-35"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Layers>
+					<Layer level="TOPLEFT">
+						<FontString inherits="GameFontNormalSmall" text="CT_RABOSS_OPTIONS_VTIMERPOSRESET">
+							<Anchors>
+								<Anchor point="TOPLEFT">
+									<Offset>
+										<AbsDimension x="110" y="-5"/>
+									</Offset>
+								</Anchor>
+							</Anchors>
+						</FontString>
+					</Layer>
+				</Layers>
+				<Scripts>
+					<OnLoad>
+						this:SetWidth(100);
+					</OnLoad>
+					<OnClick>
+						CT_RABossOptions_Toggle("VTimerPosReset");
+					</OnClick>
+					<OnEnter>
+						CT_RABossOptions_ShowTooltip("VTimerPosReset");
+					</OnEnter>
+					<OnLeave>
+						CT_RABossOptions_HideTooltip();
+					</OnLeave>
+				</Scripts>
+			</Button>
+			<CheckButton name="$parentVTimerSync" inherits="OptionsCheckButtonTemplate">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="$parentSubHeaderVTimer">
+						<Offset>
+							<AbsDimension x="-30" y="-90"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnLoad>
+						getglobal(this:GetName().."Text"):SetText(CT_RABOSS_OPTIONS_VTIMERSYNC);
+					</OnLoad>
+					<OnClick>
+						CT_RABossOptions_Toggle("VTimerSync");
+					</OnClick>
+					<OnEnter>
+						CT_RABossOptions_ShowTooltip("VTimerSync");
+					</OnEnter>
+					<OnLeave>
+						CT_RABossOptions_HideTooltip();
+					</OnLeave>
+				</Scripts>
+			</CheckButton>
+			<Slider name="$parentVTimerScale" inherits="OptionsSliderTemplate">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="$parentVTimerSync">
+						<Offset>
+							<AbsDimension x="0" y="-30"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Layers>
+					<Layer level="TOPLEFT">
+						<FontString name="$parentInfo" inherits="GameFontNormalSmall" text="CT_RABOSS_OPTIONS_VTIMERSCALE">
+							<Anchors>
+								<Anchor point="TOPLEFT">
+									<Offset>
+										<AbsDimension x="160" y="-5"/>
+									</Offset>
+								</Anchor>
+							</Anchors>
+						</FontString>
+					</Layer>
+				</Layers>
+				<Scripts>
+					<OnLoad>
+						this:SetWidth(150);
+						this:SetMinMaxValues(0.5, 1.5);
+					</OnLoad>
+					<OnValueChanged>
+						CT_RABossOptions_ValueChange("VTimerScale");
+					</OnValueChanged>
+					<OnEnter>
+						CT_RABossOptions_ShowTooltip("VTimerScale");
+					</OnEnter>
+					<OnLeave>
+						CT_RABossOptions_HideTooltip();
+					</OnLeave>
+				</Scripts>
+			</Slider>
+			
+			<!-- Done & Close button -->
+			<Button name="$parentDone" inherits="OptionsButtonTemplate" text="CT_RABOSS_OPTIONS_DONE">
+				<Anchors>
+					<Anchor point="BOTTOM">
+						<Offset>
+							<AbsDimension x="0" y="20"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						CT_RABossOptions_Toggle();
+					</OnClick>
+				</Scripts>
+			</Button>
+		</Frames>
+		<Scripts>
+			<OnLoad>
+				CT_RABossOptions_OnLoad();
+			</OnLoad>
+			<OnEvent>
+				CT_RABossOptions_OnEvent();
+			</OnEvent>
+			<OnShow>
+				CT_RABossOptions_OnShow();
+			</OnShow>
+		</Scripts>
+	</Frame>
+</Ui>

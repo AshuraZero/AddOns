@@ -1,0 +1,9 @@
+## Interface: 11200
+## Title: QuickCompare
+## Title-zhCN: |cFFFFFFFF[扩展]|r QuickCompare 装备比较
+## Notes: Compare equipped inventory items against items in any other frames, including but not limited to quest and log, bags and bank, chat hyperlinks, and even other mods.|n Modify by Zero Fire
+## Notes-zhCN: 小巧的装备比较插件|n炽火修改版
+## First created: Jul 2006
+## OptionalDeps: AtlasLoot
+localization.lua
+QuickCompare.lua

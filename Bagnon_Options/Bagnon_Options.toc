@@ -1,0 +1,9 @@
+## Interface: 11200
+## Title: Bagnon_Options
+## Title-zhCN: |cFFFFFFFF[扩展]|r 背包整合选项
+## Notes: A configuration menu for Bagnon
+## Author: Tuller
+## Dependencies: Bagnon_Core
+## LoadOnDemand: 1
+localization.lua
+Menu.xml

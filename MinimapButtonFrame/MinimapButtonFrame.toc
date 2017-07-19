@@ -1,0 +1,26 @@
+## Interface: 11200
+## Title: Minimap Button Frame
+## Title-zhCN: |cFFFFFFFF[扩展]|r MBF
+## Notes: Collects the minimap buttons and puts them into a moveable frame.
+## Notes-zhCN: 收集minimap按钮和使他们成为一个可移动的框架。
+## Notes-zhTW: 收集minimap按鈕和使他們成為一個可移動的框架。
+## Author: Bachlott, laytya
+## Version: 1.10e
+## SavedVariablesPerCharacter: MBF_Vars, MBF_Ignore, MBF_Include, MBF_FrameLocation
+## OptionalDeps: Ace2, Titan
+## X-Category: Interface Enhancements
+
+localization\localization-en.lua
+localization\localization-deDE.lua
+localization\localization-ruRU.lua
+localization\localization-frFR.lua
+localization\localization-esES.lua
+localization\localization-koKR.lua
+localization\localization-zhCN.lua
+localization\localization-zhTW.lua
+
+MinimapButtonFrame.lua
+MinimapButtonFrame.xml
+
+MBFTitan.lua
+MBFTitan.xml

@@ -1,0 +1,8 @@
+## Interface: 11200
+## Title: SimpleMinimap Options
+## Title-zhCN: |cFFFFFFFF[地图]|r 迷你小地图选项
+## Notes: SimpleMinimap的配置窗口。在UI本身上配置！
+## Author: arJUna
+## Version: V18
+## LoadOnDemand: 1
+simpleMinimap_Options.xml

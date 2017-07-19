@@ -1,0 +1,8 @@
+## Interface: 11200
+## Title: StealthOverlay
+## Title-zhCN: |cFFFFFF00[盗贼]|r 潜行特效
+## Notes: Adds fullscreen background texture while in stealth
+## Author: moh
+## Version: 1.1
+## DefaultState: Disabled
+StealthOverlay.xml

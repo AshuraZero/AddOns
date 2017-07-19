@@ -1,0 +1,20 @@
+## Interface: 11200
+## Title: AtlasQuest
+## Title-zhCN: |cFFFFFFFF[地图]|r 副本任务查询
+## Notes: Shows the Quests for the instance.
+## Notes-zhCN: 显示副本的任务
+## Author: Asurn
+## Version: 3.17.49
+## X-eMail: asurn@web.de
+## X-Website: www.curse-gaming.com or ui.worldofwar.net (see notes)
+## X-Category: MYADDONS_CATEGORY_MAP
+## X-Date: 16/10/2006
+## X-Help: AtlasQuestHelp
+## RequiredDeps:
+## OptionalDeps: Atlasloot, Atlas, AlphaMap, myAddOns
+## LoadOnDemand: 0
+## SavedVariablesPerCharacter:
+## SavedVariables: AtlasQuest_Options,
+## Dependencies:
+AtlasQuest_InsideFrame.xml
+AtlasQuest.xml

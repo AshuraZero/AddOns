@@ -1,0 +1,18 @@
+## Interface: 11200
+## Title: StopTheLagness
+## Title-zhCN: |cFFFFFFFF[扩展]|r StopTheLagness
+## Notes: Attempts to reduce memory usage and lag by optimizing certain parts of the UI.
+## Author: Turan
+## X-Category: Interface Enhancements
+## Dependencies: 
+## OptionalDeps: Ace2
+## SavedVariables: StopLagDB
+
+lib\AceLibrary\AceLibrary.lua
+lib\AceOO\AceOO-2.0.lua
+lib\AceConsole\AceConsole-2.0.lua
+lib\AceAddon\AceAddon-2.0.lua
+lib\AceHook\AceHook-2.0.lua
+lib\AceDB\AceDB-2.0.lua
+
+StopTheLagness.lua

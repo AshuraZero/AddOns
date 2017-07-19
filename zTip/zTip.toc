@@ -1,0 +1,10 @@
+## Interface: 11200
+## Title: zTip
+## Title-zhCN: |cFFFFFFFF[界面]|r 炽火鼠标提示
+## Notes: Enhance Unit Tooltip, and customize tip position
+## Notes-zhCN: 人物信息提示增强及跟随鼠标
+## Version: 1.18.1
+## Author: Zero Fire
+## Author-zhCN: 炽火 Zero ℃
+## OptionalDeps: !!Warmup
+zTip.lua

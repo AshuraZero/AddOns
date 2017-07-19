@@ -1,0 +1,8 @@
+## Interface: 11200
+## Title: AH Search Timer
+## Title-zhCN: |cFFFFFFFF[扩展]|r 拍卖行搜索时间
+## Author: EinBaum https://github.com/EinBaum
+## Version: 1.1
+## Notes: The auction house search button will show the time until the next refresh is possible.
+AuctionSearchTimer.xml
+AuctionSearchTimer.lua

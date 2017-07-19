@@ -1,0 +1,10 @@
+## Interface: 11200
+## Title: OmniCC
+## Title-zhCN: |cFFFFFFFF[扩展]|r 技能冷却
+## Notes: CooldownCount for Everything
+## Author: Tuller
+## Version: 6.8.30
+## Dependencies:
+## SavedVariables: OmniCC
+cooldown.lua
+main.lua

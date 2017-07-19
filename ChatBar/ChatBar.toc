@@ -1,0 +1,14 @@
+## Interface: 11200
+## Title: ChatBar
+## Title-zhCN: |cFFFFFFFF[扩展]|r 聊天条
+## Notes: Button Bar for openning chat messages of each type.
+## Notes-zhCN: 提供按钮来快速使用频道等功能。
+## Author: AnduinLothar
+## OptionalDeps: VisibilityOptions, Sky
+## SavedVariablesPerCharacter: ChatBar_VerticalDisplay, ChatBar_AlternateOrientation, ChatBar_HideSpecialChannels, ChatBar_TextOnButtonDisplay, ChatBar_ButtonFlashing, ChatBar_BarBorder, ChatBar_ButtonText, ChatBar_StoredStickies, ChatBar_HiddenButtons, ChatBar_TextChannelNumbers
+localization.cn.lua
+localization.en.lua
+localization.de.lua
+localization.fr.lua
+ChatBar.lua
+ChatBar.xml

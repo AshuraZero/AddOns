@@ -1,0 +1,7 @@
+## Interface: 11200
+## Title: BlindFlashCount
+## Title-zhCN: |cFFFFFF00[盗贼]|r 致盲粉/闪光粉统计
+## Notes: Shows Blind and Flash powder count in the ability icon itself.
+## DefaultState: Disabled
+## SavedVariables: BFC_Type, BFC_Max, BFC_UseColor
+BlindFlashCount.xml
