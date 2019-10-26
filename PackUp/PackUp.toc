@@ -1,9 +1,0 @@
-## Interface: 11200
-## Title: PackUp
-## Title-zhCN: |cFFFFFFFF[扩展]|r 背包整理
-## Notes: Pack Up Items of Invertory & Bank
-## Author: Cosin
-## Version: 0.7.0 Alpha
-## Dependencies:
-## OptionalDeps: !!Warmup
-PackUp.xml

@@ -1,7 +1,0 @@
-## Interface: 11200
-## Title : ProfessionLevel
-## Title-zhCN: |cFFFFFFFF[扩展]|r ProfessionLevel
-## Notes: Shows the minimum gathering level of profession resource nodes on mouseover.
-## Author: Dae
-## Version: 1.0
-ProfessionLevel.xml

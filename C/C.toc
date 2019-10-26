@@ -1,6 +1,0 @@
-## Interface: 11200
-## Title: C
-## Title-zhCN: H |cFF808080[Lib]|r C
-## Notes: Common functions and an invisible tooltip.
-## Author: canidae
-C.xml

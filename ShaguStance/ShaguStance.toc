@@ -1,7 +1,0 @@
-## Interface: 11200
-## Title: |cff33ffccShagu|cffffffffStance
-## Title-zhCN: |cff33ffccShagu|cffffffff根据技能切姿态形态
-## Author: Eric (Shagu) Mauser, 2016
-## Notes: automatically switches to the required stance of your attacks.
-## Version: 1.0
-ShaguStance.lua

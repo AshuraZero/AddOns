@@ -1,7 +1,0 @@
-﻿## Interface: 11200
-## Title: MozzFullWorldMap
-## Title-zhCN: |cFFFFFFFF[地图]|r MozzFullWorldMap
-## Notes: Adds a checkbox to world map which shows unexplored areas of the map at 30% opacity.
-## UIType: 地图相关
-## SavedVariables: MozzFullWorldMap
-MozzFullWorldMap.xml

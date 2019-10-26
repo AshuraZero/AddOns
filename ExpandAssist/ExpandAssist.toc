@@ -1,7 +1,0 @@
-## Interface: 11200
-## Title: ExpandAssist
-## Title-zhCN: |cFFFFFFFF[团队]|r 分队助手
-## Notes: Simple addon to expand the functions that an assist can do in a raid.
-## Author: Shino <Synced> - Kronos
-
-ExpandAssist.lua

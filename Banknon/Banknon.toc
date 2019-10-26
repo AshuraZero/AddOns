@@ -1,8 +1,0 @@
-## Interface: 11200
-## Title: Banknon
-## Title-zhCN: |cFFFFFFFF[扩展]|r 背包银行整合
-## Notes: Display's the player's bank in a single frame.
-## Author: Tuller
-## Dependencies: Bagnon_Core
-## LoadOnDemand: 1
-Banknon.xml

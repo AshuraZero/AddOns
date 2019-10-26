@@ -1,8 +1,0 @@
-## Interface: 11200
-## Title: SimpleMinimap
-## Title-zhCN: |cFFFFFFFF[地图]|r 迷你小地图
-## Notes: 增强型小地图。在UI本身配置！
-## Author: arJUna
-## Version: V18
-## SavedVariables: smmConf
-simpleMinimap.xml
