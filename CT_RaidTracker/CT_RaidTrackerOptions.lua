@@ -1,4 +1,4 @@
-﻿function CT_RaidTracker_OptionsFrame_OnShow()
+﻿function CT_RaidTracker_OptionsFrame_OnShow() -- Reviewed
     CT_RaidTrackerOptionsFrameMinQualitySlider:SetValue(CT_RaidTracker_Options["MinQuality"]);
     CT_RaidTrackerOptionsFrameAskCostSlider:SetValue(CT_RaidTracker_Options["AskCost"]);
     CT_RaidTrackerOptionsFrameGetDKPValueSlider:SetValue(CT_RaidTracker_Options["GetDkpValue"]);
@@ -13,37 +13,37 @@
     CT_RaidTrackerOptionsFrameTimeZoneSlider:SetValue(CT_RaidTracker_Options["Timezone"]);
 end
 
-function CT_RaidTracker_OptionsFrame_Save()
+function CT_RaidTracker_OptionsFrame_Save() -- Reviewed
     CT_RaidTracker_Options["MinQuality"] = CT_RaidTrackerOptionsFrameMinQualitySlider:GetValue();
     CT_RaidTracker_Options["AskCost"] = CT_RaidTrackerOptionsFrameAskCostSlider:GetValue();
     CT_RaidTracker_Options["GetDkpValue"] = CT_RaidTrackerOptionsFrameGetDKPValueSlider:GetValue();
-    if(CT_RaidTrackerOptionsFrameAutoCreateRaidCB:GetChecked() == 1) then
-        CT_RaidTracker_Options["AutoRaidCreation"] = 1;
+    if(CT_RaidTrackerOptionsFrameAutoCreateRaidCB:GetChecked() == true) then
+        CT_RaidTracker_Options["AutoRaidCreation"] = true;
     else
-        CT_RaidTracker_Options["AutoRaidCreation"] = 0;
+        CT_RaidTracker_Options["AutoRaidCreation"] = false;
     end
     CT_RaidTracker_Options["GroupItems"] = CT_RaidTrackerOptionsFrameGroupItemsSlider:GetValue();
-    if(CT_RaidTrackerOptionsFrameAutoZoneCB:GetChecked() == 1) then
-        CT_RaidTracker_Options["AutoZone"] = 1;
+    if(CT_RaidTrackerOptionsFrameAutoZoneCB:GetChecked() == true) then
+        CT_RaidTracker_Options["AutoZone"] = true;
     else
-        CT_RaidTracker_Options["AutoZone"] = 0;
+        CT_RaidTracker_Options["AutoZone"] = false;
     end
-    if(CT_RaidTrackerOptionsFrameSaveExtendedPlayerInfoCB:GetChecked() == 1) then
-        CT_RaidTracker_Options["SaveExtendedPlayerInfo"] = 1;
+    if(CT_RaidTrackerOptionsFrameSaveExtendedPlayerInfoCB:GetChecked() == true) then
+        CT_RaidTracker_Options["SaveExtendedPlayerInfo"] = true;
     else
-        CT_RaidTracker_Options["SaveExtendedPlayerInfo"] = 0;
+        CT_RaidTracker_Options["SaveExtendedPlayerInfo"] = false;
     end
-    if(CT_RaidTrackerOptionsFrameSaveTooltipsCB:GetChecked() == 1) then
-        CT_RaidTracker_Options["SaveTooltips"] = 1;
+    if(CT_RaidTrackerOptionsFrameSaveTooltipsCB:GetChecked() == true) then
+        CT_RaidTracker_Options["SaveTooltips"] = true;
     else
-        CT_RaidTracker_Options["SaveTooltips"] = 0;
+        CT_RaidTracker_Options["SaveTooltips"] = false;
     end
     CT_RaidTracker_Options["AutoBoss"] = CT_RaidTrackerOptionsFrameAutoBossSlider:GetValue();
     CT_RaidTracker_Options["LogAttendees"] = CT_RaidTrackerOptionsFrameLogAttendeesSlider:GetValue();
-    if(CT_RaidTrackerOptionsFrameTimeSyncCB:GetChecked() == 1) then
-        CT_RaidTracker_Options["TimeSync"] = 1;
+    if(CT_RaidTrackerOptionsFrameTimeSyncCB:GetChecked() == true) then
+        CT_RaidTracker_Options["TimeSync"] = true;
     else
-        CT_RaidTracker_Options["TimeSync"] = 0;
+        CT_RaidTracker_Options["TimeSync"] = false;
     end
     CT_RaidTracker_Options["Timezone"] = CT_RaidTrackerOptionsFrameTimeZoneSlider:GetValue();
     CT_RaidTracker_GetGameTimeOffset();

@@ -1,4 +1,36 @@
-﻿  CT_RaidTracker_Zones = {
+﻿--localization for CN Classic
+
+	CT_ITEMREG = "(.+)%";
+	CT_ITEMREG_MULTI = "(.+)%x(%d+)";
+
+	CT_RaidTracker_lang_LeftGroup = "([^%s]+)离开了团队";
+	CT_RaidTracker_lang_JoinedGroup = "([^%s]+)加入了团队";
+	CT_RaidTracker_lang_ReceivesLoot1 = "([^%s]+)获得了物品"..CT_ITEMREG.."。";   
+	CT_RaidTracker_lang_ReceivesLoot2 = "你获得了物品："..CT_ITEMREG.."。";   
+	CT_RaidTracker_lang_ReceivesLoot3 = "([^%s]+)获得了物品："..CT_ITEMREG_MULTI.."。";    
+	CT_RaidTracker_lang_ReceivesLoot4 = "你获得了物品："..CT_ITEMREG_MULTI.."。";    
+	CT_RaidTracker_lang_ReceivesLootYou = "你";
+	CT_RaidTracker_lang_UnknownEntity = "未知目标";
+
+	CT_RaidTracker_lang_BossKills_Majordomo_Yell = "不……不可能！等一下……我投降！我投降！";		--Classic MC #9
+	CT_RaidTracker_lang_BossKills_Majordomo_BossName = "管理者埃克索图斯";							--Classic MC #9
+	CT_RaidTracker_lang_BossKills_Ignore_Razorgore_Yell = "我自由了！ 那个东西再也不能折磨我了！";	--Classic MC #10
+
+	PlayerGroupsIndexes = {"战士","牧师","法师","潜行者","圣骑士","德鲁伊","术士","萨满祭司","猎人"};
+
+	CT_RaidTracker_lang_Class_Colors = {
+		["猎人"] = { r = 0.67, g = 0.83, b = 0.45 },
+		["术士"] = { r = 0.58, g = 0.51, b = 0.79 },
+		["牧师"] = { r = 1.0, g = 1.0, b = 1.0 },
+		["圣骑士"] = { r = 0.96, g = 0.55, b = 0.73 },
+		["法师"] = { r = 0.41, g = 0.8, b = 0.94 },
+		["潜行者"] = { r = 1.0, g = 0.96, b = 0.41 },
+		["德鲁伊"] = { r = 1.0, g = 0.49, b = 0.04 },
+		["萨满祭司"] = { r = 0.96, g = 0.55, b = 0.73 },
+		["战士"] = { r = 0.78, g = 0.61, b = 0.43 }
+	}
+
+	CT_RaidTracker_Zones = {
 		"熔火之心",
 		"黑翼之巢",
 		"祖尔格拉布",
@@ -7,6 +39,8 @@
 		"安其拉废墟",
 		"纳克萨玛斯"
 	};
+
+	CT_RaidTracker_CustomZoneTriggers = {};
 
 	CT_RaidTracker_Bosses = {
 		["熔火之心"] = {
@@ -89,9 +123,9 @@
 		"克尔苏加德",
 	},
 		["奥妮克希亚"] = 1,
-		["卡扎克"] = 1,
-		["艾索雷葛斯"] = 1,
-		["翡翠龙王"] = {
+		["野外首领"] = {
+			"卡扎克",
+			"艾索雷葛斯",
 			"莱索恩",
 			"泰拉尔",
 			"艾莫莉丝",
@@ -100,24 +134,15 @@
 		["小怪掉落"] = 1,
 	};
 
-	CT_RaidTracker_lang_LeftGroup = "([^%s]+)离开了团队";
-	CT_RaidTracker_lang_JoinedGroup = "([^%s]+)加入了团队";
-  CT_RaidTracker_lang_ReceivesLoot1 = "([^%s]+)获得了物品：(|c%x+|Hitem:%d+:%d+:%d+:%d+|h%[.-%]|h|r)。";
-  CT_RaidTracker_lang_ReceivesLoot2 = "你获得了物品：(|c%x+|Hitem:%d+:%d+:%d+:%d+|h%[.-%]|h|r)。";   
-  CT_RaidTracker_lang_ReceivesLoot3 = "([^%s]+)获得了物品：(|c%x+|Hitem:%d+:%d+:%d+:%d+|h%[.-%]|h|r)x(%d+)。"; 
-  CT_RaidTracker_lang_ReceivesLoot4 = "你得到了物品：(|c%x+|Hitem:%d+:%d+:%d+:%d+|h%[.-%]|h|r)x(%d+)。";  
-  CT_RaidTracker_lang_ReceivesLootYou = "你";
-  CT_RaidTracker_lang_UnknownEntity = "未知目标";
-
-CT_RaidTracker_ZoneTriggers = {
-	["熔火之心"] = "熔火之心",
-	["黑翼之巢"] = "黑翼之巢",
-	["祖尔格拉布"] = "祖尔格拉布",
-	["奥妮克希亚的巢穴"] = "奥妮克希亚的巢穴",
-	["安其拉"] = "安其拉神殿",
-	["安其拉废墟"] = "安其拉废墟",
-	["纳克萨玛斯"] = "纳克萨玛斯",
-};
+	CT_RaidTracker_ZoneTriggers = {
+		["熔火之心"] = "熔火之心",
+		["黑翼之巢"] = "黑翼之巢",
+		["祖尔格拉布"] = "祖尔格拉布",
+		["奥妮克希亚的巢穴"] = "奥妮克希亚的巢穴",
+		["安其拉"] = "安其拉神殿",
+		["安其拉废墟"] = "安其拉废墟",
+		["纳克萨玛斯"] = "纳克萨玛斯",
+	};
 
 CT_RaidTracker_BossUnitTriggers = {
 	["鲁西弗隆"] = "鲁西弗隆",
@@ -289,19 +314,4 @@ CT_RaidTracker_BossUnitTriggers = {
 	["DEFAULTBOSS"] = "小怪掉落",
 };
 
-	CT_RaidTracker_lang_BossKills_Majordomo_Yell = "不……不可能！等一下……我投降！我投降！";
-	CT_RaidTracker_lang_BossKills_Majordomo_BossName = "管理者埃克索图斯";
-  CT_RaidTracker_lang_BossKills_Ignore_Razorgore_Yell = "我自由了！ 那个东西再也不能折磨我了！";
-  
-  PlayerGroupsIndexes = {"战士","牧师","法师","盗贼","圣骑士","德鲁伊","术士","萨满祭司","猎人"};
-  CT_RaidTracker_lang_Class_Colors = {
-              ["猎人"] = { r = 0.67, g = 0.83, b = 0.45 },
-              ["术士"] = { r = 0.58, g = 0.51, b = 0.79 },
-              ["牧师"] = { r = 1.0, g = 1.0, b = 1.0 },
-              ["圣骑士"] = { r = 0.96, g = 0.55, b = 0.73 },
-              ["法师"] = { r = 0.41, g = 0.8, b = 0.94 },
-              ["盗贼"] = { r = 1.0, g = 0.96, b = 0.41 },
-              ["德鲁伊"] = { r = 1.0, g = 0.49, b = 0.04 },
-              ["萨满祭司"] = { r = 0.96, g = 0.55, b = 0.73 },
-              ["战士"] = { r = 0.78, g = 0.61, b = 0.43 }
-	}
+--end

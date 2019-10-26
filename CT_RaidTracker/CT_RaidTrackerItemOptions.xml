@@ -1,12 +1,12 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
-C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
+..\FrameXML\UI.xsd">
 	<Script file="CT_RaidTrackerItemOptions.lua"/>
 	
 	<Button name="CT_RaidTracker_ItemOptions_EntryTemplate" virtual="true">
 		<Size>
 			<AbsDimension x="150" y="14" />
 		</Size>
-		<NormalText name="$parentNormalText" inherits="GameFontNormalSmall" justifyH="LEFT" nonspacewrap="true">
+		<ButtonText name="$parentNormalText" inherits="GameFontNormalSmall" justifyH="LEFT" nonspacewrap="true">
 			<Size>
 				<AbsDimension x="150" y="10"/>
 			</Size>
@@ -17,7 +17,7 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 					</Offset>
 				</Anchor>
 			</Anchors> 
-		</NormalText>
+		</ButtonText>
 		<Layers>
 			<Layer level="BACKGROUND">
 				<Texture file="Interface\QuestFrame\UI-QuestLogTitleHighlight" alphaMode="ADD" name="$parentMouseOver" hidden="true"/>
@@ -25,10 +25,11 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 		</Layers>
 		<Scripts>
 			<OnEnter>
-				getglobal(this:GetName() .. "MouseOver"):Show();
-				GameTooltip:SetOwner(this, "ANCHOR_RIGHT");
-				if(GetItemInfo("item:"..this.itemid..":0:0:0")) then
-					GameTooltip:SetHyperlink("item:"..this.itemid..":0:0:0");
+				getglobal(self:GetName() .. "MouseOver"):Show();
+				GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
+				if(GetItemInfo(self.itemid)) then
+					_, link = GetItemInfo(self.itemid);
+					GameTooltip:SetHyperlink(link);
 					GameTooltip:Show();
 				else
 					GameTooltip:SetText("这件物品没有在你的缓存中,你可以尝试右键点击此物品以获得此物品的信息,<可能掉线>!)", 1.0, 1.0, 1.0, 1.0, 1);
@@ -37,34 +38,34 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 			</OnEnter>
 			<OnLeave>
 				GameTooltip:Hide();
-				if(CT_RaidTracker_ItemOptions_selected ~= this.id) then
-					getglobal(this:GetName() .. "MouseOver"):Hide();
+				if(CT_RaidTracker_ItemOptions_selected ~= self.id) then
+					getglobal(self:GetName() .. "MouseOver"):Hide();
 				end
 			</OnLeave>
 			<OnLoad>
-				this:RegisterForClicks("LeftButtonUp", "RightButtonUp");
-				getglobal(this:GetName() .. "MouseOver"):SetAlpha(0.4);
-				getglobal(this:GetName() .. "MouseOver"):SetVertexColor(1, 1, 0);
+				self:RegisterForClicks("LeftButtonUp", "RightButtonUp");
+				getglobal(self:GetName() .. "MouseOver"):SetAlpha(0.4);
+				getglobal(self:GetName() .. "MouseOver"):SetVertexColor(1, 1, 0);
 			</OnLoad>
 			<OnShow>
-				if(CT_RaidTracker_ItemOptions_selected == this.id) then
-					getglobal(this:GetName() .. "MouseOver"):Show();
+				if(CT_RaidTracker_ItemOptions_selected == self.id) then
+					getglobal(self:GetName() .. "MouseOver"):Show();
 				end
 			</OnShow>
 			<OnClick>
 				if(arg1 == "RightButton") then
-					GameTooltip:SetOwner(this, "ANCHOR_RIGHT");
-					GameTooltip:SetHyperlink("item:"..this.itemid..":0:0:0");
+					GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
+					GameTooltip:SetHyperlink("item:"..self.itemid..":0:0:0");
 					GameTooltip:Show();
 					CT_RaidTracker_ItemOptions_ScrollBar_Update();
 				end
-				CT_RaidTracker_ItemOptions_SetFrame(this.id)
-				CT_RaidTracker_ItemOptions_selected = this.id;
+				CT_RaidTracker_ItemOptions_SetFrame(self.id)
+				CT_RaidTracker_ItemOptions_selected = self.id;
 				for i=1, 22 do
 					getglobal("CT_RaidTracker_ItemOptions_Entry"..i.."MouseOver"):Hide();
 				end
-				getglobal(this:GetName() .. "MouseOver"):Show();
-				CT_RaidTracker_Debug(this:GetName());
+				getglobal(self:GetName() .. "MouseOver"):Show();
+				CT_RaidTracker_Debug(self:GetName());
 			</OnClick>
 		</Scripts>
 	</Button>
@@ -155,7 +156,7 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 						</Size>
 		        <Scripts>
 		          <OnVerticalScroll>
-		            FauxScrollFrame_OnVerticalScroll(14, CT_RaidTracker_ItemOptions_ScrollBar_Update);
+		            FauxScrollFrame_OnVerticalScroll(self, arg1, 14, CT_RaidTracker_ItemOptions_ScrollBar_Update);
 		          </OnVerticalScroll>
 		          <OnShow>
 		            CT_RaidTracker_ItemOptions_ScrollBar_Update();
@@ -503,19 +504,19 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 						</Anchors>
 						<Scripts>
 							<OnShow>
-								if(not CT_RaidTracker_ItemOptions[this:GetParent().id]["status"]) then
-									this:SetChecked(1);
+								if(CT_RaidTracker_ItemOptions[self:GetParent().id]["status"] == nil) then
+									self:SetChecked(true);
 								else
-									this:SetChecked(0);
+									self:SetChecked(false);
 								end
 							</OnShow>
 							<OnClick>
-								if (this:GetChecked()) then
-									CT_RaidTracker_ItemOptions_EditFrame_TrackAlways:SetChecked(0);
-									CT_RaidTracker_ItemOptions_EditFrame_TrackNever:SetChecked(0);
-									this:SetChecked(1);
+								if (self:GetChecked()) then
+									CT_RaidTracker_ItemOptions_EditFrame_TrackAlways:SetChecked(false);
+									CT_RaidTracker_ItemOptions_EditFrame_TrackNever:SetChecked(false);
+									self:SetChecked(true);
 								else
-									this:SetChecked(0);
+									self:SetChecked(false);
 								end
 							</OnClick>
 						</Scripts>
@@ -543,19 +544,19 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 						</Anchors>
 						<Scripts>
 							<OnShow>
-								if(CT_RaidTracker_ItemOptions[this:GetParent().id]["status"] and CT_RaidTracker_ItemOptions[this:GetParent().id]["status"] == 1) then
-									this:SetChecked(1);
+								if(CT_RaidTracker_ItemOptions[self:GetParent().id]["status"] == 1) then
+									self:SetChecked(true);
 								else
-									this:SetChecked(0);
+									self:SetChecked(false);
 								end
 							</OnShow>
 							<OnClick>
-								if (this:GetChecked()) then
-									CT_RaidTracker_ItemOptions_EditFrame_TrackDefault:SetChecked(0);
-									CT_RaidTracker_ItemOptions_EditFrame_TrackNever:SetChecked(0);
-									this:SetChecked(1);
+								if (self:GetChecked()) then
+									CT_RaidTracker_ItemOptions_EditFrame_TrackDefault:SetChecked(false);
+									CT_RaidTracker_ItemOptions_EditFrame_TrackNever:SetChecked(false);
+									self:SetChecked(true);
 								else
-									this:SetChecked(0);
+									self:SetChecked(false);
 								end
 							</OnClick>
 						</Scripts>
@@ -583,19 +584,19 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 						</Anchors>
 						<Scripts>
 							<OnShow>
-								if(CT_RaidTracker_ItemOptions[this:GetParent().id]["status"] and CT_RaidTracker_ItemOptions[this:GetParent().id]["status"] == 0) then
-									this:SetChecked(1);
+								if(CT_RaidTracker_ItemOptions[self:GetParent().id]["status"] == 0) then
+									self:SetChecked(true);
 								else
-									this:SetChecked(0);
+									self:SetChecked(false);
 								end
 							</OnShow>
 							<OnClick>
-								if (this:GetChecked()) then
-									CT_RaidTracker_ItemOptions_EditFrame_TrackDefault:SetChecked(0);
-									CT_RaidTracker_ItemOptions_EditFrame_TrackAlways:SetChecked(0);
-									this:SetChecked(1);
+								if (self:GetChecked()) then
+									CT_RaidTracker_ItemOptions_EditFrame_TrackDefault:SetChecked(false);
+									CT_RaidTracker_ItemOptions_EditFrame_TrackAlways:SetChecked(false);
+									self:SetChecked(true);
 								else
-									this:SetChecked(0);
+									self:SetChecked(false);
 								end
 							</OnClick>
 						</Scripts>
@@ -624,19 +625,19 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 						</Anchors>
 						<Scripts>
 							<OnShow>
-								if(not CT_RaidTracker_ItemOptions[this:GetParent().id]["group"]) then
-									this:SetChecked(1);
+								if(CT_RaidTracker_ItemOptions[self:GetParent().id]["group"] == nil) then
+									self:SetChecked(true);
 								else
-									this:SetChecked(0);
+									self:SetChecked(false);
 								end
 							</OnShow>
 							<OnClick>
-								if (this:GetChecked()) then
-									CT_RaidTracker_ItemOptions_EditFrame_GroupAlways:SetChecked(0);
-									CT_RaidTracker_ItemOptions_EditFrame_GroupNever:SetChecked(0);
-									this:SetChecked(1);
+								if (self:GetChecked()) then
+									CT_RaidTracker_ItemOptions_EditFrame_GroupAlways:SetChecked(false);
+									CT_RaidTracker_ItemOptions_EditFrame_GroupNever:SetChecked(false);
+									self:SetChecked(true);
 								else
-									this:SetChecked(0);
+									self:SetChecked(false);
 								end
 							</OnClick>
 						</Scripts>
@@ -664,19 +665,19 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 						</Anchors>
 						<Scripts>
 							<OnShow>
-								if(CT_RaidTracker_ItemOptions[this:GetParent().id]["group"] and CT_RaidTracker_ItemOptions[this:GetParent().id]["group"] == 1) then
-									this:SetChecked(1);
+								if(CT_RaidTracker_ItemOptions[self:GetParent().id]["group"] == 1) then
+									self:SetChecked(true);
 								else
-									this:SetChecked(0);
+									self:SetChecked(false);
 								end
 							</OnShow>
 							<OnClick>
-								if (this:GetChecked()) then
-									CT_RaidTracker_ItemOptions_EditFrame_GroupDefault:SetChecked(0);
-									CT_RaidTracker_ItemOptions_EditFrame_GroupNever:SetChecked(0);
-									this:SetChecked(1);
+								if (self:GetChecked()) then
+									CT_RaidTracker_ItemOptions_EditFrame_GroupDefault:SetChecked(false);
+									CT_RaidTracker_ItemOptions_EditFrame_GroupNever:SetChecked(false);
+									self:SetChecked(true);
 								else
-									this:SetChecked(0);
+									self:SetChecked(false);
 								end
 							</OnClick>
 						</Scripts>
@@ -704,19 +705,19 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 						</Anchors>
 						<Scripts>
 							<OnShow>
-								if(CT_RaidTracker_ItemOptions[this:GetParent().id]["group"] and CT_RaidTracker_ItemOptions[this:GetParent().id]["group"] == 0) then
-									this:SetChecked(1);
+								if(CT_RaidTracker_ItemOptions[self:GetParent().id]["group"] == 0) then
+									self:SetChecked(true);
 								else
-									this:SetChecked(0);
+									self:SetChecked(false);
 								end
 							</OnShow>
 							<OnClick>
-								if (this:GetChecked()) then
-									CT_RaidTracker_ItemOptions_EditFrame_GroupDefault:SetChecked(0);
-									CT_RaidTracker_ItemOptions_EditFrame_GroupAlways:SetChecked(0);
-									this:SetChecked(1);
+								if (self:GetChecked()) then
+									CT_RaidTracker_ItemOptions_EditFrame_GroupDefault:SetChecked(false);
+									CT_RaidTracker_ItemOptions_EditFrame_GroupAlways:SetChecked(false);
+									self:SetChecked(true);
 								else
-									this:SetChecked(0);
+									self:SetChecked(false);
 								end
 							</OnClick>
 						</Scripts>
@@ -745,19 +746,19 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 						</Anchors>
 						<Scripts>
 							<OnShow>
-								if(not CT_RaidTracker_ItemOptions[this:GetParent().id]["costsgrabbing"]) then
-									this:SetChecked(1);
+								if(CT_RaidTracker_ItemOptions[self:GetParent().id]["costsgrabbing"] == nil) then
+									self:SetChecked(true);
 								else
-									this:SetChecked(0);
+									self:SetChecked(false);
 								end
 							</OnShow>
 							<OnClick>
-								if (this:GetChecked()) then
-									CT_RaidTracker_ItemOptions_EditFrame_CostsGrabbingAlways:SetChecked(0);
-									CT_RaidTracker_ItemOptions_EditFrame_CostsGrabbingNever:SetChecked(0);
-									this:SetChecked(1);
+								if (self:GetChecked()) then
+									CT_RaidTracker_ItemOptions_EditFrame_CostsGrabbingAlways:SetChecked(false);
+									CT_RaidTracker_ItemOptions_EditFrame_CostsGrabbingNever:SetChecked(false);
+									self:SetChecked(true);
 								else
-									this:SetChecked(0);
+									self:SetChecked(false);
 								end
 							</OnClick>
 						</Scripts>
@@ -785,19 +786,19 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 						</Anchors>
 						<Scripts>
 							<OnShow>
-								if(CT_RaidTracker_ItemOptions[this:GetParent().id]["costsgrabbing"] and CT_RaidTracker_ItemOptions[this:GetParent().id]["costsgrabbing"] == 1) then
-									this:SetChecked(1);
+								if(CT_RaidTracker_ItemOptions[self:GetParent().id]["costsgrabbing"] == 1) then
+									self:SetChecked(true);
 								else
-									this:SetChecked(0);
+									self:SetChecked(false);
 								end
 							</OnShow>
 							<OnClick>
-								if (this:GetChecked()) then
-									CT_RaidTracker_ItemOptions_EditFrame_CostsGrabbingDefault:SetChecked(0);
-									CT_RaidTracker_ItemOptions_EditFrame_CostsGrabbingNever:SetChecked(0);
-									this:SetChecked(1);
+								if (self:GetChecked()) then
+									CT_RaidTracker_ItemOptions_EditFrame_CostsGrabbingDefault:SetChecked(false);
+									CT_RaidTracker_ItemOptions_EditFrame_CostsGrabbingNever:SetChecked(false);
+									self:SetChecked(true);
 								else
-									this:SetChecked(0);
+									self:SetChecked(false);
 								end
 							</OnClick>
 						</Scripts>
@@ -825,19 +826,19 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 						</Anchors>
 						<Scripts>
 							<OnShow>
-								if(CT_RaidTracker_ItemOptions[this:GetParent().id]["costsgrabbing"] and CT_RaidTracker_ItemOptions[this:GetParent().id]["costsgrabbing"] == 0) then
-									this:SetChecked(1);
+								if(CT_RaidTracker_ItemOptions[self:GetParent().id]["costsgrabbing"] == 0) then
+									self:SetChecked(true);
 								else
-									this:SetChecked(0);
+									self:SetChecked(false);
 								end
 							</OnShow>
 							<OnClick>
-								if (this:GetChecked()) then
-									CT_RaidTracker_ItemOptions_EditFrame_CostsGrabbingDefault:SetChecked(0);
-									CT_RaidTracker_ItemOptions_EditFrame_CostsGrabbingAlways:SetChecked(0);
-									this:SetChecked(1);
+								if (self:GetChecked()) then
+									CT_RaidTracker_ItemOptions_EditFrame_CostsGrabbingDefault:SetChecked(false);
+									CT_RaidTracker_ItemOptions_EditFrame_CostsGrabbingAlways:SetChecked(false);
+									self:SetChecked(true);
 								else
-									this:SetChecked(0);
+									self:SetChecked(false);
 								end
 							</OnClick>
 						</Scripts>
@@ -866,19 +867,19 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 						</Anchors>
 						<Scripts>
 							<OnShow>
-								if(not CT_RaidTracker_ItemOptions[this:GetParent().id]["askcosts"]) then
-									this:SetChecked(1);
+								if(CT_RaidTracker_ItemOptions[self:GetParent().id]["askcosts"] == nil) then
+									self:SetChecked(true);
 								else
-									this:SetChecked(0);
+									self:SetChecked(false);
 								end
 							</OnShow>
 							<OnClick>
-								if (this:GetChecked()) then
-									CT_RaidTracker_ItemOptions_EditFrame_AskCostsAlways:SetChecked(0);
-									CT_RaidTracker_ItemOptions_EditFrame_AskCostsNever:SetChecked(0);
-									this:SetChecked(1);
+								if (self:GetChecked()) then
+									CT_RaidTracker_ItemOptions_EditFrame_AskCostsAlways:SetChecked(false);
+									CT_RaidTracker_ItemOptions_EditFrame_AskCostsNever:SetChecked(false);
+									self:SetChecked(true);
 								else
-									this:SetChecked(0);
+									self:SetChecked(false);
 								end
 							</OnClick>
 						</Scripts>
@@ -906,19 +907,19 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 						</Anchors>
 						<Scripts>
 							<OnShow>
-								if(CT_RaidTracker_ItemOptions[this:GetParent().id]["askcosts"] and CT_RaidTracker_ItemOptions[this:GetParent().id]["askcosts"] == 1) then
-									this:SetChecked(1);
+								if(CT_RaidTracker_ItemOptions[self:GetParent().id]["askcosts"] == 1) then
+									self:SetChecked(true);
 								else
-									this:SetChecked(0);
+									self:SetChecked(false);
 								end
 							</OnShow>
 							<OnClick>
-								if (this:GetChecked()) then
-									CT_RaidTracker_ItemOptions_EditFrame_AskCostsDefault:SetChecked(0);
-									CT_RaidTracker_ItemOptions_EditFrame_AskCostsNever:SetChecked(0);
-									this:SetChecked(1);
+								if (self:GetChecked()) then
+									CT_RaidTracker_ItemOptions_EditFrame_AskCostsDefault:SetChecked(false);
+									CT_RaidTracker_ItemOptions_EditFrame_AskCostsNever:SetChecked(false);
+									self:SetChecked(true);
 								else
-									this:SetChecked(0);
+									self:SetChecked(false);
 								end
 							</OnClick>
 						</Scripts>
@@ -946,19 +947,19 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 						</Anchors>
 						<Scripts>
 							<OnShow>
-								if(CT_RaidTracker_ItemOptions[this:GetParent().id]["askcosts"] and CT_RaidTracker_ItemOptions[this:GetParent().id]["askcosts"] == 0) then
-									this:SetChecked(1);
+								if(CT_RaidTracker_ItemOptions[self:GetParent().id]["askcosts"] == 0) then
+									self:SetChecked(true);
 								else
-									this:SetChecked(0);
+									self:SetChecked(false);
 								end
 							</OnShow>
 							<OnClick>
-								if (this:GetChecked()) then
-									CT_RaidTracker_ItemOptions_EditFrame_AskCostsDefault:SetChecked(0);
-									CT_RaidTracker_ItemOptions_EditFrame_AskCostsAlways:SetChecked(0);
-									this:SetChecked(1);
+								if (self:GetChecked()) then
+									CT_RaidTracker_ItemOptions_EditFrame_AskCostsDefault:SetChecked(false);
+									CT_RaidTracker_ItemOptions_EditFrame_AskCostsAlways:SetChecked(false);
+									self:SetChecked(true);
 								else
-									this:SetChecked(0);
+									self:SetChecked(false);
 								end
 							</OnClick>
 						</Scripts>
@@ -986,7 +987,7 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 						</Anchors>
 						<Scripts>
 							<OnClick>
-								CT_RaidTracker_ItemOptions_Save();
+								CT_RaidTracker_ItemOptions_Save(self);
 							</OnClick>
 						</Scripts>
 					</Button>
@@ -1004,7 +1005,7 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 						</Anchors>
 						<Scripts>
 							<OnClick>
-								CT_RaidTracker_ItemOptions_Delete(this:GetParent().id);
+								CT_RaidTracker_ItemOptions_Delete(self:GetParent().id);
 							</OnClick>
 						</Scripts>
 					</Button>
@@ -1034,12 +1035,12 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 		  </OnShow>
 		  <OnMouseDown>
  				if ( arg1 == "LeftButton" ) then
- 					this:StartMoving();
+ 					self:StartMoving();
  				end
  			</OnMouseDown>
  			<OnMouseUp>
  				if ( arg1 == "LeftButton" ) then
- 					this:StopMovingOrSizing();
+ 					self:StopMovingOrSizing();
  				end
  			</OnMouseUp>
 		 </Scripts>

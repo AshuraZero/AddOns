@@ -1,59 +1,59 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
-C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
+..\FrameXML\UI.xsd">
     <Script file="CT_RaidTrackerOptions.lua"/>
     <Frame name="CT_RaidTrackerOptionsFrame" toplevel="true" enableMouse="true" movable="true" parent="UIParent" hidden="true">
-		<Size>
-			<AbsDimension x="450" y="345"/>
-		</Size>
-		<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\DialogFrame\UI-DialogBox-Border" tile="true">
-			<BackgroundInsets>
-				<AbsInset left="11" right="12" top="12" bottom="11" />	
-				<Size>
-					<AbsDimension x="128" y="17" />
-				</Size>
-			</BackgroundInsets>
-			<TileSize>
-				<AbsValue val="32" />
-			</TileSize>
-			<EdgeSize>
-				<AbsValue val="32" />
-			</EdgeSize>
-		</Backdrop>
-		<Anchors>
- 			<Anchor point="TOPLEFT">
- 				<Offset>
- 					<AbsDimension x="200" y="-104"/>
- 				</Offset>
- 			</Anchor>
- 		</Anchors>
-		<Layers>
-			<Layer level="ARTWORK">
-				<Texture name="$parentTitle" file="Interface\DialogFrame\UI-DialogBox-Header">
-					<Size>
-						<AbsDimension x="400" y="64" />
-					</Size>
-					<Anchors>
-						<Anchor point="TOP">
-							<Offset>
-								<AbsDimension x="0" y="12" />
-							</Offset>
-						</Anchor>
-					</Anchors>
-				</Texture>
-				
-				<!-- Frame header label -->
-				<FontString inherits="GameFontNormalSmall" text="CT_RaidTracker物品选项">
-					<Anchors>
-						<Anchor point="TOP">
-							<Offset>
-								<AbsDimension x="0" y="-3" />
-							</Offset>
-						</Anchor>
-					</Anchors>
-				</FontString>
-			</Layer>
-		</Layers>
-		<Frames>
+        <Size>
+            <AbsDimension x="450" y="345"/>
+        </Size>
+        <Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\DialogFrame\UI-DialogBox-Border" tile="true">
+            <BackgroundInsets>
+                <AbsInset left="11" right="12" top="12" bottom="11" />  
+                <Size>
+                    <AbsDimension x="128" y="17" />
+                </Size>
+            </BackgroundInsets>
+            <TileSize>
+                <AbsValue val="32" />
+            </TileSize>
+            <EdgeSize>
+                <AbsValue val="32" />
+            </EdgeSize>
+        </Backdrop>
+        <Anchors>
+            <Anchor point="TOPLEFT">
+                <Offset>
+                    <AbsDimension x="200" y="-104"/>
+                </Offset>
+            </Anchor>
+        </Anchors>
+        <Layers>
+            <Layer level="ARTWORK">
+                <Texture name="$parentTitle" file="Interface\DialogFrame\UI-DialogBox-Header">
+                    <Size>
+                        <AbsDimension x="400" y="64" />
+                    </Size>
+                    <Anchors>
+                        <Anchor point="TOP">
+                            <Offset>
+                                <AbsDimension x="0" y="12" />
+                            </Offset>
+                        </Anchor>
+                    </Anchors>
+                </Texture>
+                
+                <!-- Frame header label -->
+                <FontString inherits="GameFontNormalSmall" text="CT_RaidTracker物品选项">
+                    <Anchors>
+                        <Anchor point="TOP">
+                            <Offset>
+                                <AbsDimension x="0" y="-3" />
+                            </Offset>
+                        </Anchor>
+                    </Anchors>
+                </FontString>
+            </Layer>
+        </Layers>
+        <Frames>
             <Slider name="$parentMinQualitySlider" enableMouse="true" minValue="0" maxValue="7" defaultValue="0" valueStep="1" orientation="HORIZONTAL">
                 <Size>
                     <AbsDimension x="128" y="20"/>
@@ -121,8 +121,11 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
                         "|c00ff8000传说",
                         "|c00e6cc80神器",
                         };
-                        getglobal(this:GetName() .. "Value"):SetText(colors[this:GetValue()+1]);
+                        getglobal(self:GetName() .. "Value"):SetText(colors[self:GetValue()+1]);
                     </OnUpdate>
+                    <OnValueChanged>
+                        self:SetValue(floor(self:GetValue()));
+                    </OnValueChanged>
                 </Scripts>
             </Slider>
             <Slider name="$parentAskCostSlider" enableMouse="true" minValue="0" maxValue="7" defaultValue="0" valueStep="1" orientation="HORIZONTAL">
@@ -189,8 +192,11 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
                         "|c00ff8000传说",
                         "|c00e6cc80神器",
                         };
-                        getglobal(this:GetName() .. "Value"):SetText(colors[this:GetValue()+1]);
+                        getglobal(self:GetName() .. "Value"):SetText(colors[self:GetValue()+1]);
                     </OnUpdate>
+                    <OnValueChanged>
+                        self:SetValue(floor(self:GetValue()));
+                    </OnValueChanged>
                 </Scripts>
             </Slider>
             <Slider name="$parentGetDKPValueSlider" enableMouse="true" minValue="0" maxValue="7" defaultValue="0" valueStep="1" orientation="HORIZONTAL">
@@ -257,8 +263,11 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
                         "|c00ff8000传说",
                         "|c00e6cc80神器",
                         };
-                        getglobal(this:GetName() .. "Value"):SetText(colors[this:GetValue()+1]);
+                        getglobal(self:GetName() .. "Value"):SetText(colors[self:GetValue()+1]);
                     </OnUpdate>
+                    <OnValueChanged>
+                        self:SetValue(floor(self:GetValue()));
+                    </OnValueChanged>
                 </Scripts>
             </Slider>
             <CheckButton name="$parentAutoCreateRaidCB" inherits="OptionsCheckButtonTemplate" checked="false">
@@ -350,8 +359,11 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
                         "|c00ff8000传说",
                         "|c00e6cc80神器",
                         };
-                        getglobal(this:GetName() .. "Value"):SetText(colors[this:GetValue()+1]);
+                        getglobal(self:GetName() .. "Value"):SetText(colors[self:GetValue()+1]);
                     </OnUpdate>
+                    <OnValueChanged>
+                        self:SetValue(floor(self:GetValue()));
+                    </OnValueChanged>
                 </Scripts>
             </Slider>
             <CheckButton name="$parentAutoZoneCB" inherits="OptionsCheckButtonTemplate" checked="false">
@@ -404,7 +416,7 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
                     </Layer>
                 </Layers>
             </CheckButton>
-           	<CheckButton name="$parentSaveTooltipsCB" inherits="OptionsCheckButtonTemplate" checked="false">
+            <CheckButton name="$parentSaveTooltipsCB" inherits="OptionsCheckButtonTemplate" checked="false">
                 <Size>
                     <AbsDimension x="20" y="20"/>
                 </Size>
@@ -488,8 +500,11 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
                         "|c00ffffff鼠标悬停",
                         "|c00ffffffBoss击杀",
                         };
-                        getglobal(this:GetName() .. "Value"):SetText(colors[this:GetValue()+1]);
+                        getglobal(self:GetName() .. "Value"):SetText(colors[self:GetValue()+1]);
                     </OnUpdate>
+                    <OnValueChanged>
+                        self:SetValue(floor(self:GetValue()));
+                    </OnValueChanged>
                 </Scripts>
             </Slider>
             <Slider name="$parentLogAttendeesSlider" enableMouse="true" minValue="0" maxValue="2" defaultValue="0" valueStep="1" orientation="HORIZONTAL">
@@ -551,8 +566,11 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
                         "|c00ffffffBoss击杀",
                         "|c00ffffff物品拾取",
                         };
-                        getglobal(this:GetName() .. "Value"):SetText(text[this:GetValue()+1]);
+                        getglobal(self:GetName() .. "Value"):SetText(text[self:GetValue()+1]);
                     </OnUpdate>
+                    <OnValueChanged>
+                        self:SetValue(floor(self:GetValue()));
+                    </OnValueChanged>
                 </Scripts>
             </Slider>
             <CheckButton name="$parentTimeSyncCB" inherits="OptionsCheckButtonTemplate" checked="false">
@@ -634,73 +652,76 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
                 </Layers>
                 <Scripts>
                     <OnUpdate>
-                        getglobal(this:GetName() .. "Value"):SetText(this:GetValue());
+                        getglobal(self:GetName() .. "Value"):SetText(self:GetValue());
                     </OnUpdate>
+                    <OnValueChanged>
+                        self:SetValue(floor(self:GetValue()));
+                    </OnValueChanged>
                 </Scripts>
             </Slider>
             <Button name="$parentCloseButton" inherits="UIPanelCloseButton">
-				<Anchors>
-					<Anchor point="TOPRIGHT" relativeTo="$parent" relativePoint="TOPRIGHT">
-						<Offset>
-							<AbsDimension x="-6" y="-6"/>
-						</Offset>
-					</Anchor>
-				</Anchors>
-			</Button>
-			<Button name="$parentCancelButton" inherits="UIPanelButtonTemplate" text="取消">
-				<Size>
-					<AbsDimension x="77" y="21"/>
-				</Size>
-				<Anchors>
-					<Anchor point="BOTTOMRIGHT" relativeTo="$parent" relativePoint="BOTTOMRIGHT">
-						<Offset>
-							<AbsDimension x="-12" y="12"/>
-						</Offset>
-					</Anchor>
-				</Anchors>
-				<Scripts>
-					<OnClick>
-						this:GetParent():Hide();
-					</OnClick>
-				</Scripts>
-			</Button>
-			<Button name="$parentSaveButton" inherits="UIPanelButtonTemplate" text="保存">
-				<Size>
-					<AbsDimension x="77" y="21"/>
-				</Size>
-				<Anchors>
-					<Anchor point="RIGHT" relativeTo="$parentCancelButton" relativePoint="LEFT">
-						<Offset>
-							<AbsDimension x="0" y="0"/>
-						</Offset>
-					</Anchor>
-				</Anchors>
-				<Scripts>
-					<OnClick>
-					    this:GetParent():Hide();
-					    CT_RaidTracker_OptionsFrame_Save();
-					</OnClick>
-				</Scripts>
-			</Button>
-		</Frames>
-		<Scripts>
-			<OnShow>
-			    CT_RaidTracker_OptionsFrame_OnShow();
-			</OnShow>
-			<OnLoad>
-			</OnLoad>
-			<OnEvent>
-			</OnEvent>
-			<OnMouseDown>
- 				if ( arg1 == "LeftButton" ) then
- 					this:StartMoving();
- 				end
- 			</OnMouseDown>
- 			<OnMouseUp>
- 				if ( arg1 == "LeftButton" ) then
- 					this:StopMovingOrSizing();
- 				end
- 			</OnMouseUp>
-		</Scripts>
-	</Frame>
+                <Anchors>
+                    <Anchor point="TOPRIGHT" relativeTo="$parent" relativePoint="TOPRIGHT">
+                        <Offset>
+                            <AbsDimension x="-6" y="-6"/>
+                        </Offset>
+                    </Anchor>
+                </Anchors>
+            </Button>
+            <Button name="$parentCancelButton" inherits="UIPanelButtonTemplate" text="取消">
+                <Size>
+                    <AbsDimension x="77" y="21"/>
+                </Size>
+                <Anchors>
+                    <Anchor point="BOTTOMRIGHT" relativeTo="$parent" relativePoint="BOTTOMRIGHT">
+                        <Offset>
+                            <AbsDimension x="-12" y="12"/>
+                        </Offset>
+                    </Anchor>
+                </Anchors>
+                <Scripts>
+                    <OnClick>
+                        self:GetParent():Hide();
+                    </OnClick>
+                </Scripts>
+            </Button>
+            <Button name="$parentSaveButton" inherits="UIPanelButtonTemplate" text="保存">
+                <Size>
+                    <AbsDimension x="77" y="21"/>
+                </Size>
+                <Anchors>
+                    <Anchor point="RIGHT" relativeTo="$parentCancelButton" relativePoint="LEFT">
+                        <Offset>
+                            <AbsDimension x="0" y="0"/>
+                        </Offset>
+                    </Anchor>
+                </Anchors>
+                <Scripts>
+                    <OnClick>
+                        self:GetParent():Hide();
+                        CT_RaidTracker_OptionsFrame_Save();
+                    </OnClick>
+                </Scripts>
+            </Button>
+        </Frames>
+        <Scripts>
+            <OnShow>
+                CT_RaidTracker_OptionsFrame_OnShow();
+            </OnShow>
+            <OnLoad>
+            </OnLoad>
+            <OnEvent>
+            </OnEvent>
+            <OnMouseDown>
+                if ( arg1 == "LeftButton" ) then
+                    self:StartMoving();
+                end
+            </OnMouseDown>
+            <OnMouseUp>
+                if ( arg1 == "LeftButton" ) then
+                    self:StopMovingOrSizing();
+                end
+            </OnMouseUp>
+        </Scripts>
+    </Frame>
 </Ui>

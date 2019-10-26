@@ -1,6 +1,6 @@
 ﻿CT_RaidTracker_ItemOptions_selected = nil;
 
-function CT_RaidTracker_ItemOptions_ScrollBar_Update()
+function CT_RaidTracker_ItemOptions_ScrollBar_Update() -- Reviewed
 	table.sort(CT_RaidTracker_ItemOptions, function(a1, a2) return a1["id"] < a2["id"]; end);
   local line;
   local lineplusoffset;
@@ -11,18 +11,17 @@ function CT_RaidTracker_ItemOptions_ScrollBar_Update()
   	local thisline = getglobal("CT_RaidTracker_ItemOptions_Entry"..line);
     lineplusoffset = line + FauxScrollFrame_GetOffset(CT_RaidTracker_ItemOptions_ScrollBar);
     if lineplusoffset <= maxlines then
-    	local nameGIF, linkGIF, qualityGIF, minLevelGIF, classGIF, subclassGIF, maxStackGIF, invtypeGIV, iconGIF = GetItemInfo("item:"..CT_RaidTracker_ItemOptions[lineplusoffset]["id"]..":0:0:0");
+    	local nameGIF, linkGIF, qualityGIF, minLevelGIF, classGIF, subclassGIF, maxStackGIF, invtypeGIV, iconGIF = GetItemInfo(CT_RaidTracker_ItemOptions[lineplusoffset]["id"]);
     	if(nameGIF) then
     		CT_RaidTracker_ItemOptions[lineplusoffset]["name"] = nameGIF;
     		CT_RaidTracker_ItemOptions[lineplusoffset]["quality"] = qualityGIF;
     	end
     	if(CT_RaidTracker_ItemOptions[lineplusoffset]["name"]) then
     		local _, _, _, color = GetItemQualityColor(CT_RaidTracker_ItemOptions[lineplusoffset]["quality"]);
-    		text = color..CT_RaidTracker_ItemOptions[lineplusoffset]["name"];
+    		text = "|c" .. color .. "" .. CT_RaidTracker_ItemOptions[lineplusoffset]["name"] .. "|r";
     	else
-    		text = "Unknown (ID: "..CT_RaidTracker_ItemOptions[lineplusoffset]["id"]..")";
+    		text = "未知 (ID: "..CT_RaidTracker_ItemOptions[lineplusoffset]["id"]..")";
     	end
-			
     	thisline.id = lineplusoffset;
     	thisline.itemid = CT_RaidTracker_ItemOptions[lineplusoffset]["id"];
 			thisline:SetText(text);
@@ -39,21 +38,21 @@ function CT_RaidTracker_ItemOptions_ScrollBar_Update()
   end
 end
 
-function CT_RaidTracker_ItemOptions_SetFrame(id)
+function CT_RaidTracker_ItemOptions_SetFrame(id) -- Reviewed
 	CT_RaidTracker_ItemOptions_EditFrame.id = id;
 	CT_RaidTracker_ItemOptions_EditFrame:Hide();
 	local itemname;
 	if(CT_RaidTracker_ItemOptions[id]["name"]) then
 		local _, _, _, color = GetItemQualityColor(CT_RaidTracker_ItemOptions[id]["quality"]);
-    itemname = color..CT_RaidTracker_ItemOptions[id]["name"];
+    itemname = "|c" .. color .. "" .. CT_RaidTracker_ItemOptions[id]["name"] .. "|r";
 	else
-		itemname = "Unknown (ID: "..CT_RaidTracker_ItemOptions[id]["id"]..")";
+		itemname = "未知 (ID: "..CT_RaidTracker_ItemOptions[id]["id"]..")";
 	end
 	CT_RaidTracker_ItemOptions_EditFrame_Item:SetText(itemname);
 	CT_RaidTracker_ItemOptions_EditFrame:Show();
 end
 
-function CT_RaidTracker_ItemOptions_Delete(id)
+function CT_RaidTracker_ItemOptions_Delete(id) -- Reviewed
 	table.remove(CT_RaidTracker_ItemOptions, id);
 	if(CT_RaidTracker_ItemOptions_selected) then
 		if(CT_RaidTracker_ItemOptions_selected == id) then
@@ -66,8 +65,8 @@ function CT_RaidTracker_ItemOptions_Delete(id)
 	CT_RaidTracker_ItemOptions_ScrollBar_Update();
 end
 
-function CT_RaidTracker_ItemOptions_Save()
-	local id = this:GetParent().id;
+function CT_RaidTracker_ItemOptions_Save(self) -- Reviewed
+	local id = self:GetParent().id;
 	if(CT_RaidTracker_ItemOptions_EditFrame_TrackAlways:GetChecked()) then
 		CT_RaidTracker_ItemOptions[id]["status"] = 1;
 	elseif(CT_RaidTracker_ItemOptions_EditFrame_TrackNever:GetChecked()) then

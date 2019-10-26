@@ -1,7 +1,8 @@
-## Interface: 11200
+## Interface: 11302
 ## Title:|cff8000FF[DKP] 活动统计
 
-## Version: 1.25.12.X 
+## Version: 11302.20191018
+## X-Version: Upgrade for Classic by AshuraZero
 ## DefaultState: Disabled
 ## Notes: Counts raid loot and attendance
 ## Notes-zhCN:记录团队活动参与人员及物品等信息
@@ -10,3 +11,4 @@
 CT_RaidTrackerOptions.xml
 CT_RaidTrackerItemOptions.xml
 CT_RaidTracker.xml
+localization.lua
