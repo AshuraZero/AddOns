@@ -1,781 +1,781 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/ 
 ..\FrameXML\UI.xsd">
-	<Script file="localization.lua"/>
-	<Script file="CT_RaidTracker.lua"/>
-	<Button name="CT_RaidTrackerTabTemplate" virtual="true">
-		<Layers>
-			<Layer level="BACKGROUND">
-				<Texture name="$parentLeft" file="Interface\FriendsFrame\WhoFrame-ColumnTabs">
-					<Size>
-						<AbsDimension x="5" y="24"/>
-					</Size>
-					<Anchors>
-						<Anchor point="TOPLEFT"/>
-					</Anchors>
-					<TexCoords left="0" right="0.078125" top="0" bottom="0.75"/>
-				</Texture>
-				<Texture name="$parentRight" file="Interface\FriendsFrame\WhoFrame-ColumnTabs">
-					<Size>
-						<AbsDimension x="4" y="24"/>
-					</Size>
-					<Anchors>
-						<Anchor point="TOPRIGHT"/>
-					</Anchors>
-					<TexCoords left="0.90625" right="0.96875" top="0" bottom="0.75"/>
-				</Texture>
-			</Layer>
-		</Layers>
-		<ButtonText inherits="GameFontHighlightSmall">
-			<Anchors>
-				<Anchor point="LEFT">
-					<Offset>
-						<AbsDimension x="8" y="0"/>
-					</Offset>
-				</Anchor>
-			</Anchors>
-		</ButtonText>
-	</Button>
-	<Frame name="CT_RaidTrackerPlayerLineTemplate" hidden="true" virtual="true">
-		<Size>
-			<AbsDimension x="300" y="18"/>
-		</Size>
-		<Layers>
-			<Layer level="ARTWORK">
-				<FontString name="$parentNumber" justifyH="LEFT" inherits="QuestFont">
-					<Size>
-						<AbsDimension x="30" y="16"/>
-					</Size>
-					<Anchors>
-						<Anchor point="TOPLEFT">
-							<Offset>
-								<AbsDimension x="2" y="0"/>
-							</Offset>
-						</Anchor>
-					</Anchors>
-				</FontString>
-				<FontString name="$parentName" justifyH="LEFT" inherits="QuestFont">
-					<Size>
-						<AbsDimension x="95" y="16"/>
-					</Size>
-					<Anchors>
-						<Anchor point="TOPLEFT">
-							<Offset>
-								<AbsDimension x="28" y="0"/>
-							</Offset>
-						</Anchor>
-					</Anchors>
-				</FontString>
-				<FontString name="$parentJoin" justifyH="LEFT" inherits="QuestFont">
-					<Size>
-						<AbsDimension x="150" y="16"/>
-					</Size>
-					<Anchors>
-						<Anchor point="TOPLEFT">
-							<Offset>
-								<AbsDimension x="111" y="0"/>
-							</Offset>
-						</Anchor>
-					</Anchors>
-				</FontString>
-				<FontString name="$parentLeave" justifyH="LEFT" inherits="QuestFont">
-					<Size>
-						<AbsDimension x="150" y="16"/>
-					</Size>
-					<Anchors>
-						<Anchor point="TOPLEFT">
-							<Offset>
-								<AbsDimension x="191" y="0"/>
-							</Offset>
-						</Anchor>
-					</Anchors>
-				</FontString>
-			</Layer>
-			<Layer level="OVERLAY">
-				<FontString name="$parentDeleteText" justifyH="RIGHT" text="[X]" inherits="QuestFont">
-					<Anchors>
-						<Anchor point="RIGHT">
-							<Offset>
-								<AbsDimension x="-2" y="0"/>
-							</Offset>
-						</Anchor>
-					</Anchors>
-				</FontString>
-			</Layer>
-			<Layer level="BACKGROUND">
-				<Texture file="Interface\Tooltips\UI-Tooltip-Background" name="$parentMouseOver" hidden="true"/>
-			</Layer>
-		</Layers>
-		<Frames>
-			<Button name="$parentHitArea">
-				<Anchors>
-					<Anchor point="TOPLEFT"/>
-				</Anchors>
-				<Size>
-					<AbsDimension x="316" y="18"/>
-				</Size>
-				<Scripts>
-					<OnEnter>
-						getglobal(self:GetParent():GetName() .. "MouseOver"):Show();
-					</OnEnter>
-					<OnLeave>
-						getglobal(self:GetParent():GetName() .. "MouseOver"):Hide();
-					</OnLeave>
-					<OnClick>
-						CT_RaidTracker_ShowInfo(getglobal(self:GetParent():GetName() .. "Name"):GetText());
-					</OnClick>
-				</Scripts>
-			</Button>
-			<Button name="$parentDeleteButton" frameStrata="HIGH" hidden="false">
-				<Size>
-					<AbsDimension x="18" y="16"/>
-				</Size>
-				<Anchors>
-					<Anchor point="RIGHT">
-						<Offset>
-							<AbsDimension x="-2" y="0"/>
-						</Offset>
-					</Anchor>
-				</Anchors>
-				<Scripts>
-					<OnClick>
-						CT_RaidTrackerAcceptDeleteFrame.id = self:GetParent().raidid;
-						CT_RaidTrackerAcceptDeleteFrame.typeid = self:GetParent().playername;
-						CT_RaidTrackerAcceptDeleteFrame.type = "player";
-						CT_RaidTrackerAcceptDeleteFrame.header = "删除玩家";
-						CT_RaidTrackerAcceptDeleteFrame:Show();
-					</OnClick>
-					<OnEnter>
-						getglobal(self:GetParent():GetName() .. "DeleteText"):SetTextColor(0.8, 0.5, 0);
-						GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
-						GameTooltip:ClearLines();
-						GameTooltip:AddLine("点击删除", 1, 0.7, 0);
-						GameTooltip:Show();
-						getglobal(self:GetParent():GetName() .. "MouseOver"):Show();
-					</OnEnter>
-					<OnLeave>
-						getglobal(self:GetParent():GetName() .. "MouseOver"):Hide();
-						getglobal(self:GetParent():GetName() .. "DeleteText"):SetTextColor(1, 0.75, 0);
-						GameTooltip:Hide();
-					</OnLeave>
-				</Scripts>
-			</Button>
-			<Button name="$parentNoteButton" frameStrata="HIGH" hidden="true">
-				<Size>
-					<AbsDimension x="16" y="16"/>
-				</Size>
-				<Anchors>
-					<Anchor point="RIGHT">
-						<Offset>
-							<AbsDimension x="-22" y="0"/>
-						</Offset>
-					</Anchor>
-				</Anchors>
-				<Scripts>
-					<OnClick>
+    <Script file="localization.lua"/>
+    <Script file="CT_RaidTracker.lua"/>
+    <Button name="CT_RaidTrackerTabTemplate" virtual="true">
+        <Layers>
+            <Layer level="BACKGROUND">
+                <Texture name="$parentLeft" file="Interface\FriendsFrame\WhoFrame-ColumnTabs">
+                    <Size>
+                        <AbsDimension x="5" y="24"/>
+                    </Size>
+                    <Anchors>
+                        <Anchor point="TOPLEFT"/>
+                    </Anchors>
+                    <TexCoords left="0" right="0.078125" top="0" bottom="0.75"/>
+                </Texture>
+                <Texture name="$parentRight" file="Interface\FriendsFrame\WhoFrame-ColumnTabs">
+                    <Size>
+                        <AbsDimension x="4" y="24"/>
+                    </Size>
+                    <Anchors>
+                        <Anchor point="TOPRIGHT"/>
+                    </Anchors>
+                    <TexCoords left="0.90625" right="0.96875" top="0" bottom="0.75"/>
+                </Texture>
+            </Layer>
+        </Layers>
+        <ButtonText inherits="GameFontHighlightSmall">
+            <Anchors>
+                <Anchor point="LEFT">
+                    <Offset>
+                        <AbsDimension x="8" y="0"/>
+                    </Offset>
+                </Anchor>
+            </Anchors>
+        </ButtonText>
+    </Button>
+    <Frame name="CT_RaidTrackerPlayerLineTemplate" hidden="true" virtual="true">
+        <Size>
+            <AbsDimension x="300" y="18"/>
+        </Size>
+        <Layers>
+            <Layer level="ARTWORK">
+                <FontString name="$parentNumber" justifyH="LEFT" inherits="QuestFont">
+                    <Size>
+                        <AbsDimension x="30" y="16"/>
+                    </Size>
+                    <Anchors>
+                        <Anchor point="TOPLEFT">
+                            <Offset>
+                                <AbsDimension x="2" y="0"/>
+                            </Offset>
+                        </Anchor>
+                    </Anchors>
+                </FontString>
+                <FontString name="$parentName" justifyH="LEFT" inherits="QuestFont">
+                    <Size>
+                        <AbsDimension x="95" y="16"/>
+                    </Size>
+                    <Anchors>
+                        <Anchor point="TOPLEFT">
+                            <Offset>
+                                <AbsDimension x="28" y="0"/>
+                            </Offset>
+                        </Anchor>
+                    </Anchors>
+                </FontString>
+                <FontString name="$parentJoin" justifyH="LEFT" inherits="QuestFont">
+                    <Size>
+                        <AbsDimension x="150" y="16"/>
+                    </Size>
+                    <Anchors>
+                        <Anchor point="TOPLEFT">
+                            <Offset>
+                                <AbsDimension x="111" y="0"/>
+                            </Offset>
+                        </Anchor>
+                    </Anchors>
+                </FontString>
+                <FontString name="$parentLeave" justifyH="LEFT" inherits="QuestFont">
+                    <Size>
+                        <AbsDimension x="150" y="16"/>
+                    </Size>
+                    <Anchors>
+                        <Anchor point="TOPLEFT">
+                            <Offset>
+                                <AbsDimension x="191" y="0"/>
+                            </Offset>
+                        </Anchor>
+                    </Anchors>
+                </FontString>
+            </Layer>
+            <Layer level="OVERLAY">
+                <FontString name="$parentDeleteText" justifyH="RIGHT" text="[X]" inherits="QuestFont">
+                    <Anchors>
+                        <Anchor point="RIGHT">
+                            <Offset>
+                                <AbsDimension x="-2" y="0"/>
+                            </Offset>
+                        </Anchor>
+                    </Anchors>
+                </FontString>
+            </Layer>
+            <Layer level="BACKGROUND">
+                <Texture file="Interface\Tooltips\UI-Tooltip-Background" name="$parentMouseOver" hidden="true"/>
+            </Layer>
+        </Layers>
+        <Frames>
+            <Button name="$parentHitArea">
+                <Anchors>
+                    <Anchor point="TOPLEFT"/>
+                </Anchors>
+                <Size>
+                    <AbsDimension x="316" y="18"/>
+                </Size>
+                <Scripts>
+                    <OnEnter>
+                        getglobal(self:GetParent():GetName() .. "MouseOver"):Show();
+                    </OnEnter>
+                    <OnLeave>
+                        getglobal(self:GetParent():GetName() .. "MouseOver"):Hide();
+                    </OnLeave>
+                    <OnClick>
+                        CT_RaidTracker_ShowInfo(getglobal(self:GetParent():GetName() .. "Name"):GetText());
+                    </OnClick>
+                </Scripts>
+            </Button>
+            <Button name="$parentDeleteButton" frameStrata="HIGH" hidden="false">
+                <Size>
+                    <AbsDimension x="18" y="16"/>
+                </Size>
+                <Anchors>
+                    <Anchor point="RIGHT">
+                        <Offset>
+                            <AbsDimension x="-2" y="0"/>
+                        </Offset>
+                    </Anchor>
+                </Anchors>
+                <Scripts>
+                    <OnClick>
+                        CT_RaidTrackerAcceptDeleteFrame.id = self:GetParent().raidid;
+                        CT_RaidTrackerAcceptDeleteFrame.typeid = self:GetParent().playername;
+                        CT_RaidTrackerAcceptDeleteFrame.type = "player";
+                        CT_RaidTrackerAcceptDeleteFrame.header = "删除玩家";
+                        CT_RaidTrackerAcceptDeleteFrame:Show();
+                    </OnClick>
+                    <OnEnter>
+                        getglobal(self:GetParent():GetName() .. "DeleteText"):SetTextColor(0.8, 0.5, 0);
+                        GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
+                        GameTooltip:ClearLines();
+                        GameTooltip:AddLine("点击删除", 1, 0.7, 0);
+                        GameTooltip:Show();
+                        getglobal(self:GetParent():GetName() .. "MouseOver"):Show();
+                    </OnEnter>
+                    <OnLeave>
+                        getglobal(self:GetParent():GetName() .. "MouseOver"):Hide();
+                        getglobal(self:GetParent():GetName() .. "DeleteText"):SetTextColor(1, 0.75, 0);
+                        GameTooltip:Hide();
+                    </OnLeave>
+                </Scripts>
+            </Button>
+            <Button name="$parentNoteButton" frameStrata="HIGH" hidden="true">
+                <Size>
+                    <AbsDimension x="16" y="16"/>
+                </Size>
+                <Anchors>
+                    <Anchor point="RIGHT">
+                        <Offset>
+                            <AbsDimension x="-22" y="0"/>
+                        </Offset>
+                    </Anchor>
+                </Anchors>
+                <Scripts>
+                    <OnClick>
                         CT_RaidTracker_EditPlayerNote(self:GetParent().raidid, getglobal(self:GetParent():GetName() .. "Name"):GetText());
                     </OnClick>
-					<OnEnter>
-						GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
-						GameTooltip:ClearLines();
-						GameTooltip:AddLine("点击编辑备注", 1, 0.7, 0);
-						if(CT_RaidTracker_RaidLog[self:GetParent().raidid]["PlayerInfos"][self:GetParent().playername] and CT_RaidTracker_RaidLog[self:GetParent().raidid]["PlayerInfos"][self:GetParent().playername]["note"]) then
-							GameTooltip:AddLine(CT_RaidTracker_RaidLog[self:GetParent().raidid]["PlayerInfos"][self:GetParent().playername]["note"], 0.6, 0.6, 0.6);
-						end
-						GameTooltip:Show();
-						getglobal(self:GetParent():GetName() .. "MouseOver"):Show();
-					</OnEnter>
-					<OnLeave>
-						getglobal(self:GetParent():GetName() .. "MouseOver"):Hide();
-						GameTooltip:Hide();
-					</OnLeave>
-					<OnLoad>
-						self.note = "";
-					</OnLoad>
-				</Scripts>
-				<NormalTexture name="$parentNormalTexture" file="Interface\Buttons\UI-GuildButton-PublicNote-Up"/>
-				<DisabledTexture file="Interface\Buttons\UI-GuildButton-PublicNote-Disabled"/>
-				<HighlightTexture file="Interface\Buttons\UI-GuildButton-PublicNote-Up" alphaMode="ADD"/>
-			</Button>
-		</Frames>
-		<Scripts>
-			<OnLoad>
-				getglobal(self:GetName() .. "MouseOver"):SetAlpha(0.25);
-				getglobal(self:GetName() .. "MouseOver"):SetVertexColor(1, 1, 0);
-			</OnLoad>
-		</Scripts>
-	</Frame>
-	<Frame name="CT_RaidTrackerPlayerRaidTemplate" hidden="true" virtual="true">
-		<Size>
-			<AbsDimension x="300" y="18"/>
-		</Size>
-		<Layers>
-			<Layer level="ARTWORK">
-				<FontString name="$parentNumber" justifyH="LEFT" inherits="QuestFont">
-					<Size>
-						<AbsDimension x="30" y="16"/>
-					</Size>
-					<Anchors>
-						<Anchor point="TOPLEFT">
-							<Offset>
-								<AbsDimension x="2" y="0"/>
-							</Offset>
-						</Anchor>
-					</Anchors>
-				</FontString>
-				<FontString name="$parentName" justifyH="LEFT" inherits="QuestFont">
-					<Size>
-						<AbsDimension x="130" y="16"/>
-					</Size>
-					<Anchors>
-						<Anchor point="TOPLEFT">
-							<Offset>
-								<AbsDimension x="25" y="0"/>
-							</Offset>
-						</Anchor>
-					</Anchors>
-				</FontString>
-				<FontString name="$parentNote" justifyH="LEFT" inherits="QuestFont">
-					<Size>
-						<AbsDimension x="158" y="16"/>
-					</Size>
-					<Anchors>
-						<Anchor point="TOPLEFT">
-							<Offset>
-								<AbsDimension x="158" y="0"/>
-							</Offset>
-						</Anchor>
-					</Anchors>
-				</FontString>
-			</Layer>
-			<Layer level="OVERLAY">
-				<FontString name="$parentDeleteText" justifyH="RIGHT" text="[X]" inherits="QuestFont">
-					<Anchors>
-						<Anchor point="RIGHT">
-							<Offset>
-								<AbsDimension x="-20" y="0"/>
-							</Offset>
-						</Anchor>
-					</Anchors>
-				</FontString>
-			</Layer>
-			<Layer level="BACKGROUND">
-				<Texture file="Interface\Tooltips\UI-Tooltip-Background" name="$parentMouseOver" hidden="true"/>
-				<Texture file="Interface\Tooltips\UI-Tooltip-Background" name="$parentMouseOverLeft" hidden="true">
-					<Size>
-						<AbsDimension x="158" y="18"/>
-					</Size>
-					<Anchors>
-						<Anchor point="TOPLEFT"/>
-					</Anchors>
-				</Texture>
-				<Texture file="Interface\Tooltips\UI-Tooltip-Background" name="$parentMouseOverRight" hidden="true">
-					<Size>
-						<AbsDimension x="142" y="18"/>
-					</Size>
-					<Anchors>
-						<Anchor point="TOPRIGHT"/>
-					</Anchors>
-				</Texture>
-			</Layer>
-		</Layers>
-		<Frames>
-			<Button name="$parentHitArea">
-				<Anchors>
-					<Anchor point="TOPLEFT"/>
-				</Anchors>
-				<Size>
-					<AbsDimension x="300" y="18"/>
-				</Size>
-				<Scripts>
-					<OnEnter>
-						getglobal(self:GetParent():GetName() .. "MouseOver"):Show();
-					</OnEnter>
-					<OnLeave>
-						getglobal(self:GetParent():GetName() .. "MouseOver"):Hide();
-					</OnLeave>
-					<OnClick>
-						CT_RaidTracker_SelectRaid(self:GetParent().raidid);
-						CT_RaidTracker_Update();
-						CT_RaidTracker_UpdateView();
-					</OnClick>
-				</Scripts>
-			</Button>
-			<Button name="$parentHitAreaLeft" hidden="true">
-				<Anchors>
-					<Anchor point="TOPLEFT"/>
-				</Anchors>
-				<Size>
-					<AbsDimension x="158" y="18"/>
-				</Size>
-				<Scripts>
-					<OnEnter>
-						getglobal(self:GetParent():GetName() .. "MouseOverLeft"):Show();
-					</OnEnter>
-					<OnLeave>
-						getglobal(self:GetParent():GetName() .. "MouseOverLeft"):Hide();
-					</OnLeave>
-					<OnClick>
-						CT_RaidTracker_SelectRaid(self:GetParent().raidid);
-					</OnClick>
-				</Scripts>
-			</Button>
-			<Button name="$parentHitAreaRight" hidden="true">
-				<Anchors>
-					<Anchor point="TOPRIGHT"/>
-				</Anchors>
-				<Size>
-					<AbsDimension x="142" y="18"/>
-				</Size>
-				<Scripts>
-					<OnEnter>
-						getglobal(self:GetParent():GetName() .. "MouseOverRight"):Show();
-					</OnEnter>
-					<OnLeave>
-						getglobal(self:GetParent():GetName() .. "MouseOverRight"):Hide();
-					</OnLeave>
-					<OnClick>
-						CT_RaidTracker_ShowInfo(getglobal(self:GetParent():GetName() .. "Note"):GetText());
-					</OnClick>
-				</Scripts>
-			</Button>
-			<Button name="$parentDeleteButton" frameStrata="HIGH" hidden="true">
-				<Size>
-					<AbsDimension x="18" y="16"/>
-				</Size>
-				<Anchors>
-					<Anchor point="RIGHT">
-						<Offset>
-							<AbsDimension x="-20" y="0"/>
-						</Offset>
-					</Anchor>
-				</Anchors>
-				<Scripts>
-					<OnClick>
-						CT_RaidTrackerAcceptDeleteFrame.id = self:GetParent().raidid;
-						CT_RaidTrackerAcceptDeleteFrame.typeid = self:GetParent().playername
-						CT_RaidTrackerAcceptDeleteFrame.type = "player";
-						CT_RaidTrackerAcceptDeleteFrame.header = "删除玩家";
-						CT_RaidTrackerAcceptDeleteFrame:Show();
-					</OnClick>
-					<OnEnter>
-						getglobal(self:GetParent():GetName() .. "DeleteText"):SetTextColor(0.8, 0.5, 0);
-						GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
-						GameTooltip:ClearLines();
-						GameTooltip:AddLine("点击删除", 1, 0.7, 0);
-						GameTooltip:Show();
-						getglobal(self:GetParent():GetName() .. "MouseOver"):Show();
-					</OnEnter>
-					<OnLeave>
-						getglobal(self:GetParent():GetName() .. "MouseOver"):Hide();
-						getglobal(self:GetParent():GetName() .. "DeleteText"):SetTextColor(1, 0.75, 0);
-						GameTooltip:Hide();
-					</OnLeave>
-				</Scripts>
-			</Button>
-			<Button name="$parentNoteButton" frameStrata="HIGH" hidden="true">
-				<Size>
-					<AbsDimension x="16" y="16"/>
-				</Size>
-				<Anchors>
-					<Anchor point="RIGHT">
-						<Offset>
-							<AbsDimension x="-40" y="0"/>
-						</Offset>
-					</Anchor>
-				</Anchors>
-				<Scripts>
-					<OnClick>
-						CT_RaidTrackerEditNoteFrame.type = "the raid entry";
-						CT_RaidTrackerEditNoteFrame.text = self:GetParent().raidtitle;
-						CT_RaidTrackerEditNoteFrame.color = "ff00ff00";
-						CT_RaidTrackerEditNoteFrame.id = self:GetParent().raidid;
-						CT_RaidTrackerEditNoteFrame.playerid = self:GetParent().playername;
-						CT_RaidTrackerEditNoteFrame:Show();
-					</OnClick>
-					<OnEnter>
-						GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
-						GameTooltip:ClearLines();
-						GameTooltip:AddLine("点击编辑备注", 1, 0.7, 0);
-						if(CT_RaidTracker_RaidLog[self:GetParent().raidid]["PlayerInfos"][self:GetParent().playername] and CT_RaidTracker_RaidLog[self:GetParent().raidid]["PlayerInfos"][self:GetParent().playername]["note"]) then
-							GameTooltip:AddLine(CT_RaidTracker_RaidLog[self:GetParent().raidid]["PlayerInfos"][self:GetParent().playername]["note"], 0.6, 0.6, 0.6);
-						end
-						GameTooltip:Show();
-						getglobal(self:GetParent():GetName() .. "MouseOver"):Show();
-					</OnEnter>
-					<OnLeave>
-						getglobal(self:GetParent():GetName() .. "MouseOver"):Hide();
-						GameTooltip:Hide();
-					</OnLeave>
-					<OnLoad>
-						self.note = "";
-					</OnLoad>
-				</Scripts>
-				<NormalTexture name="$parentNormalTexture" file="Interface\Buttons\UI-GuildButton-PublicNote-Up"/>
-				<DisabledTexture file="Interface\Buttons\UI-GuildButton-PublicNote-Disabled"/>
-				<HighlightTexture file="Interface\Buttons\UI-GuildButton-PublicNote-Up" alphaMode="ADD"/>
-			</Button>
+                    <OnEnter>
+                        GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
+                        GameTooltip:ClearLines();
+                        GameTooltip:AddLine("点击编辑备注", 1, 0.7, 0);
+                        if(CT_RaidTracker_RaidLog[self:GetParent().raidid]["PlayerInfos"][self:GetParent().playername] and CT_RaidTracker_RaidLog[self:GetParent().raidid]["PlayerInfos"][self:GetParent().playername]["note"]) then
+                            GameTooltip:AddLine(CT_RaidTracker_RaidLog[self:GetParent().raidid]["PlayerInfos"][self:GetParent().playername]["note"], 0.6, 0.6, 0.6);
+                        end
+                        GameTooltip:Show();
+                        getglobal(self:GetParent():GetName() .. "MouseOver"):Show();
+                    </OnEnter>
+                    <OnLeave>
+                        getglobal(self:GetParent():GetName() .. "MouseOver"):Hide();
+                        GameTooltip:Hide();
+                    </OnLeave>
+                    <OnLoad>
+                        self.note = "";
+                    </OnLoad>
+                </Scripts>
+                <NormalTexture name="$parentNormalTexture" file="Interface\Buttons\UI-GuildButton-PublicNote-Up"/>
+                <DisabledTexture file="Interface\Buttons\UI-GuildButton-PublicNote-Disabled"/>
+                <HighlightTexture file="Interface\Buttons\UI-GuildButton-PublicNote-Up" alphaMode="ADD"/>
+            </Button>
+        </Frames>
+        <Scripts>
+            <OnLoad>
+                getglobal(self:GetName() .. "MouseOver"):SetAlpha(0.25);
+                getglobal(self:GetName() .. "MouseOver"):SetVertexColor(1, 1, 0);
+            </OnLoad>
+        </Scripts>
+    </Frame>
+    <Frame name="CT_RaidTrackerPlayerRaidTemplate" hidden="true" virtual="true">
+        <Size>
+            <AbsDimension x="300" y="18"/>
+        </Size>
+        <Layers>
+            <Layer level="ARTWORK">
+                <FontString name="$parentNumber" justifyH="LEFT" inherits="QuestFont">
+                    <Size>
+                        <AbsDimension x="30" y="16"/>
+                    </Size>
+                    <Anchors>
+                        <Anchor point="TOPLEFT">
+                            <Offset>
+                                <AbsDimension x="2" y="0"/>
+                            </Offset>
+                        </Anchor>
+                    </Anchors>
+                </FontString>
+                <FontString name="$parentName" justifyH="LEFT" inherits="QuestFont">
+                    <Size>
+                        <AbsDimension x="130" y="16"/>
+                    </Size>
+                    <Anchors>
+                        <Anchor point="TOPLEFT">
+                            <Offset>
+                                <AbsDimension x="25" y="0"/>
+                            </Offset>
+                        </Anchor>
+                    </Anchors>
+                </FontString>
+                <FontString name="$parentNote" justifyH="LEFT" inherits="QuestFont">
+                    <Size>
+                        <AbsDimension x="158" y="16"/>
+                    </Size>
+                    <Anchors>
+                        <Anchor point="TOPLEFT">
+                            <Offset>
+                                <AbsDimension x="158" y="0"/>
+                            </Offset>
+                        </Anchor>
+                    </Anchors>
+                </FontString>
+            </Layer>
+            <Layer level="OVERLAY">
+                <FontString name="$parentDeleteText" justifyH="RIGHT" text="[X]" inherits="QuestFont">
+                    <Anchors>
+                        <Anchor point="RIGHT">
+                            <Offset>
+                                <AbsDimension x="-20" y="0"/>
+                            </Offset>
+                        </Anchor>
+                    </Anchors>
+                </FontString>
+            </Layer>
+            <Layer level="BACKGROUND">
+                <Texture file="Interface\Tooltips\UI-Tooltip-Background" name="$parentMouseOver" hidden="true"/>
+                <Texture file="Interface\Tooltips\UI-Tooltip-Background" name="$parentMouseOverLeft" hidden="true">
+                    <Size>
+                        <AbsDimension x="158" y="18"/>
+                    </Size>
+                    <Anchors>
+                        <Anchor point="TOPLEFT"/>
+                    </Anchors>
+                </Texture>
+                <Texture file="Interface\Tooltips\UI-Tooltip-Background" name="$parentMouseOverRight" hidden="true">
+                    <Size>
+                        <AbsDimension x="142" y="18"/>
+                    </Size>
+                    <Anchors>
+                        <Anchor point="TOPRIGHT"/>
+                    </Anchors>
+                </Texture>
+            </Layer>
+        </Layers>
+        <Frames>
+            <Button name="$parentHitArea">
+                <Anchors>
+                    <Anchor point="TOPLEFT"/>
+                </Anchors>
+                <Size>
+                    <AbsDimension x="300" y="18"/>
+                </Size>
+                <Scripts>
+                    <OnEnter>
+                        getglobal(self:GetParent():GetName() .. "MouseOver"):Show();
+                    </OnEnter>
+                    <OnLeave>
+                        getglobal(self:GetParent():GetName() .. "MouseOver"):Hide();
+                    </OnLeave>
+                    <OnClick>
+                        CT_RaidTracker_SelectRaid(self:GetParent().raidid);
+                        CT_RaidTracker_Update();
+                        CT_RaidTracker_UpdateView();
+                    </OnClick>
+                </Scripts>
+            </Button>
+            <Button name="$parentHitAreaLeft" hidden="true">
+                <Anchors>
+                    <Anchor point="TOPLEFT"/>
+                </Anchors>
+                <Size>
+                    <AbsDimension x="158" y="18"/>
+                </Size>
+                <Scripts>
+                    <OnEnter>
+                        getglobal(self:GetParent():GetName() .. "MouseOverLeft"):Show();
+                    </OnEnter>
+                    <OnLeave>
+                        getglobal(self:GetParent():GetName() .. "MouseOverLeft"):Hide();
+                    </OnLeave>
+                    <OnClick>
+                        CT_RaidTracker_SelectRaid(self:GetParent().raidid);
+                    </OnClick>
+                </Scripts>
+            </Button>
+            <Button name="$parentHitAreaRight" hidden="true">
+                <Anchors>
+                    <Anchor point="TOPRIGHT"/>
+                </Anchors>
+                <Size>
+                    <AbsDimension x="142" y="18"/>
+                </Size>
+                <Scripts>
+                    <OnEnter>
+                        getglobal(self:GetParent():GetName() .. "MouseOverRight"):Show();
+                    </OnEnter>
+                    <OnLeave>
+                        getglobal(self:GetParent():GetName() .. "MouseOverRight"):Hide();
+                    </OnLeave>
+                    <OnClick>
+                        CT_RaidTracker_ShowInfo(getglobal(self:GetParent():GetName() .. "Note"):GetText());
+                    </OnClick>
+                </Scripts>
+            </Button>
+            <Button name="$parentDeleteButton" frameStrata="HIGH" hidden="true">
+                <Size>
+                    <AbsDimension x="18" y="16"/>
+                </Size>
+                <Anchors>
+                    <Anchor point="RIGHT">
+                        <Offset>
+                            <AbsDimension x="-20" y="0"/>
+                        </Offset>
+                    </Anchor>
+                </Anchors>
+                <Scripts>
+                    <OnClick>
+                        CT_RaidTrackerAcceptDeleteFrame.id = self:GetParent().raidid;
+                        CT_RaidTrackerAcceptDeleteFrame.typeid = self:GetParent().playername
+                        CT_RaidTrackerAcceptDeleteFrame.type = "player";
+                        CT_RaidTrackerAcceptDeleteFrame.header = "删除玩家";
+                        CT_RaidTrackerAcceptDeleteFrame:Show();
+                    </OnClick>
+                    <OnEnter>
+                        getglobal(self:GetParent():GetName() .. "DeleteText"):SetTextColor(0.8, 0.5, 0);
+                        GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
+                        GameTooltip:ClearLines();
+                        GameTooltip:AddLine("点击删除", 1, 0.7, 0);
+                        GameTooltip:Show();
+                        getglobal(self:GetParent():GetName() .. "MouseOver"):Show();
+                    </OnEnter>
+                    <OnLeave>
+                        getglobal(self:GetParent():GetName() .. "MouseOver"):Hide();
+                        getglobal(self:GetParent():GetName() .. "DeleteText"):SetTextColor(1, 0.75, 0);
+                        GameTooltip:Hide();
+                    </OnLeave>
+                </Scripts>
+            </Button>
+            <Button name="$parentNoteButton" frameStrata="HIGH" hidden="true">
+                <Size>
+                    <AbsDimension x="16" y="16"/>
+                </Size>
+                <Anchors>
+                    <Anchor point="RIGHT">
+                        <Offset>
+                            <AbsDimension x="-40" y="0"/>
+                        </Offset>
+                    </Anchor>
+                </Anchors>
+                <Scripts>
+                    <OnClick>
+                        CT_RaidTrackerEditNoteFrame.type = "the raid entry";
+                        CT_RaidTrackerEditNoteFrame.text = self:GetParent().raidtitle;
+                        CT_RaidTrackerEditNoteFrame.color = "ff00ff00";
+                        CT_RaidTrackerEditNoteFrame.id = self:GetParent().raidid;
+                        CT_RaidTrackerEditNoteFrame.playerid = self:GetParent().playername;
+                        CT_RaidTrackerEditNoteFrame:Show();
+                    </OnClick>
+                    <OnEnter>
+                        GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
+                        GameTooltip:ClearLines();
+                        GameTooltip:AddLine("点击编辑备注", 1, 0.7, 0);
+                        if(CT_RaidTracker_RaidLog[self:GetParent().raidid]["PlayerInfos"][self:GetParent().playername] and CT_RaidTracker_RaidLog[self:GetParent().raidid]["PlayerInfos"][self:GetParent().playername]["note"]) then
+                            GameTooltip:AddLine(CT_RaidTracker_RaidLog[self:GetParent().raidid]["PlayerInfos"][self:GetParent().playername]["note"], 0.6, 0.6, 0.6);
+                        end
+                        GameTooltip:Show();
+                        getglobal(self:GetParent():GetName() .. "MouseOver"):Show();
+                    </OnEnter>
+                    <OnLeave>
+                        getglobal(self:GetParent():GetName() .. "MouseOver"):Hide();
+                        GameTooltip:Hide();
+                    </OnLeave>
+                    <OnLoad>
+                        self.note = "";
+                    </OnLoad>
+                </Scripts>
+                <NormalTexture name="$parentNormalTexture" file="Interface\Buttons\UI-GuildButton-PublicNote-Up"/>
+                <DisabledTexture file="Interface\Buttons\UI-GuildButton-PublicNote-Disabled"/>
+                <HighlightTexture file="Interface\Buttons\UI-GuildButton-PublicNote-Up" alphaMode="ADD"/>
+            </Button>
 
-		</Frames>
-		<Scripts>
-			<OnLoad>
-				getglobal(self:GetName() .. "MouseOver"):SetAlpha(0.25);
-				getglobal(self:GetName() .. "MouseOver"):SetVertexColor(1, 1, 0);
-				getglobal(self:GetName() .. "MouseOverLeft"):SetAlpha(0.45);
-				getglobal(self:GetName() .. "MouseOverLeft"):SetVertexColor(1, 1, 0);
-				getglobal(self:GetName() .. "MouseOverRight"):SetAlpha(0.45);
-				getglobal(self:GetName() .. "MouseOverRight"):SetVertexColor(1, 1, 0);
-			</OnLoad>
-		</Scripts>
-	</Frame>
-	<Frame name="CT_RaidTrackerBossTemplate" hidden="true" virtual="true">
-		<Size>
-			<AbsDimension x="300" y="18"/>
-		</Size>
-		<Layers>
-			<Layer level="ARTWORK">
-				<FontString name="$parentBoss" justifyH="LEFT" inherits="QuestFont">
-					<Size>
-						<AbsDimension x="155" y="16"/>
-					</Size>
-					<Anchors>
-						<Anchor point="TOPLEFT">
-							<Offset>
-								<AbsDimension x="2" y="0"/>
-							</Offset>
-						</Anchor>
-					</Anchors>
-				</FontString>
-				<FontString name="$parentTime" justifyH="LEFT" inherits="QuestFont">
-					<Size>
-						<AbsDimension x="158" y="16"/>
-					</Size>
-					<Anchors>
-						<Anchor point="TOPLEFT">
-							<Offset>
-								<AbsDimension x="158" y="0"/>
-							</Offset>
-						</Anchor>
-					</Anchors>
-				</FontString>
-			</Layer>
-			<Layer level="BACKGROUND">
-				<Texture file="Interface\Tooltips\UI-Tooltip-Background" name="$parentMouseOver" hidden="true"/>
-			</Layer>
-		</Layers>
-		<Frames>
-			<Button name="$parentHitArea">
-				<Anchors>
-					<Anchor point="TOPLEFT"/>
-				</Anchors>
-				<Size>
-					<AbsDimension x="300" y="18"/>
-				</Size>
-				<Scripts>
-					<OnEnter>
-						getglobal(self:GetParent():GetName() .. "MouseOver"):Show();
-					</OnEnter>
-					<OnLeave>
-						getglobal(self:GetParent():GetName() .. "MouseOver"):Hide();
-					</OnLeave>
-				</Scripts>
-			</Button>
-		</Frames>
-		<Scripts>
-			<OnLoad>
-				getglobal(self:GetName() .. "MouseOver"):SetAlpha(0.25);
-				getglobal(self:GetName() .. "MouseOver"):SetVertexColor(1, 1, 0);
-			</OnLoad>
-		</Scripts>
-	</Frame>
-	<Button name="CT_RaidTrackerItemTemplate" virtual="true" hidden="true">
-		<Size>
-			<AbsDimension x="39" y="39"/>
-		</Size>
-		<Layers>
-			<Layer level="ARTWORK">
-				<Texture name="$parentIconTexture">
-					<Size>
-						<AbsDimension x="39" y="39"/>
-					</Size>
-					<Anchors>
-						<Anchor point="TOPLEFT">
-							<Offset>
-								<AbsDimension x="0" y="0"/>
-							</Offset>
-						</Anchor>
-					</Anchors>
-				</Texture>
-			</Layer>
-			<Layer level="OVERLAY">
-				<FontString name="$parentDescription" justifyH="LEFT" justifyV="TOP" inherits="QuestFont">
-					<Size>
-						<AbsDimension x="215" y="27"/>
-					</Size>
-					<Anchors>
-						<Anchor point="LEFT" relativePoint="RIGHT" relativeTo="$parentIconTexture">
-							<Offset>
-								<AbsDimension x="5" y="3"/>
-							</Offset>
-						</Anchor>
-					</Anchors>
-				</FontString>
-				<FontString name="$parentLooted" font="Fonts\FZXHLJW.TTF" justifyH="LEFT">
-					<Size>
-						<AbsDimension x="215" y="14"/>
-					</Size>
-					<FontHeight>
-						<AbsValue val="13"/>
-					</FontHeight>
-					<Color r="0" g="0" b="0"/>
-					<Anchors>
-						<Anchor point="LEFT" relativePoint="RIGHT" relativeTo="$parentIconTexture">
-							<Offset>
-								<AbsDimension x="5" y="-14"/>
-							</Offset>
-						</Anchor>
-					</Anchors>
-				</FontString>
-				<FontString name="$parentCount" inherits="NumberFontNormal" justifyH="RIGHT">
-					<Anchors>
-						<Anchor point="BOTTOMRIGHT">
-							<Offset>
-								<AbsDimension x="-2" y="2"/>
-							</Offset>
-						</Anchor>
-					</Anchors>
-				</FontString>
-				<FontString name="$parentDeleteText" justifyH="RIGHT" text="[X]" inherits="QuestFont">
-					<Anchors>
-						<Anchor point="LEFT" relativePoint="RIGHT">
-							<Offset>
-								<AbsDimension x="218" y="-7"/>
-							</Offset>
-						</Anchor>
-					</Anchors>
-				</FontString>
-			</Layer>
-			<Layer level="BACKGROUND">
+        </Frames>
+        <Scripts>
+            <OnLoad>
+                getglobal(self:GetName() .. "MouseOver"):SetAlpha(0.25);
+                getglobal(self:GetName() .. "MouseOver"):SetVertexColor(1, 1, 0);
+                getglobal(self:GetName() .. "MouseOverLeft"):SetAlpha(0.45);
+                getglobal(self:GetName() .. "MouseOverLeft"):SetVertexColor(1, 1, 0);
+                getglobal(self:GetName() .. "MouseOverRight"):SetAlpha(0.45);
+                getglobal(self:GetName() .. "MouseOverRight"):SetVertexColor(1, 1, 0);
+            </OnLoad>
+        </Scripts>
+    </Frame>
+    <Frame name="CT_RaidTrackerBossTemplate" hidden="true" virtual="true">
+        <Size>
+            <AbsDimension x="300" y="18"/>
+        </Size>
+        <Layers>
+            <Layer level="ARTWORK">
+                <FontString name="$parentBoss" justifyH="LEFT" inherits="QuestFont">
+                    <Size>
+                        <AbsDimension x="155" y="16"/>
+                    </Size>
+                    <Anchors>
+                        <Anchor point="TOPLEFT">
+                            <Offset>
+                                <AbsDimension x="2" y="0"/>
+                            </Offset>
+                        </Anchor>
+                    </Anchors>
+                </FontString>
+                <FontString name="$parentTime" justifyH="LEFT" inherits="QuestFont">
+                    <Size>
+                        <AbsDimension x="158" y="16"/>
+                    </Size>
+                    <Anchors>
+                        <Anchor point="TOPLEFT">
+                            <Offset>
+                                <AbsDimension x="158" y="0"/>
+                            </Offset>
+                        </Anchor>
+                    </Anchors>
+                </FontString>
+            </Layer>
+            <Layer level="BACKGROUND">
+                <Texture file="Interface\Tooltips\UI-Tooltip-Background" name="$parentMouseOver" hidden="true"/>
+            </Layer>
+        </Layers>
+        <Frames>
+            <Button name="$parentHitArea">
+                <Anchors>
+                    <Anchor point="TOPLEFT"/>
+                </Anchors>
+                <Size>
+                    <AbsDimension x="300" y="18"/>
+                </Size>
+                <Scripts>
+                    <OnEnter>
+                        getglobal(self:GetParent():GetName() .. "MouseOver"):Show();
+                    </OnEnter>
+                    <OnLeave>
+                        getglobal(self:GetParent():GetName() .. "MouseOver"):Hide();
+                    </OnLeave>
+                </Scripts>
+            </Button>
+        </Frames>
+        <Scripts>
+            <OnLoad>
+                getglobal(self:GetName() .. "MouseOver"):SetAlpha(0.25);
+                getglobal(self:GetName() .. "MouseOver"):SetVertexColor(1, 1, 0);
+            </OnLoad>
+        </Scripts>
+    </Frame>
+    <Button name="CT_RaidTrackerItemTemplate" virtual="true" hidden="true">
+        <Size>
+            <AbsDimension x="39" y="39"/>
+        </Size>
+        <Layers>
+            <Layer level="ARTWORK">
+                <Texture name="$parentIconTexture">
+                    <Size>
+                        <AbsDimension x="39" y="39"/>
+                    </Size>
+                    <Anchors>
+                        <Anchor point="TOPLEFT">
+                            <Offset>
+                                <AbsDimension x="0" y="0"/>
+                            </Offset>
+                        </Anchor>
+                    </Anchors>
+                </Texture>
+            </Layer>
+            <Layer level="OVERLAY">
+                <FontString name="$parentDescription" justifyH="LEFT" justifyV="TOP" inherits="QuestFont">
+                    <Size>
+                        <AbsDimension x="215" y="27"/>
+                    </Size>
+                    <Anchors>
+                        <Anchor point="LEFT" relativePoint="RIGHT" relativeTo="$parentIconTexture">
+                            <Offset>
+                                <AbsDimension x="5" y="3"/>
+                            </Offset>
+                        </Anchor>
+                    </Anchors>
+                </FontString>
+                <FontString name="$parentLooted" font="Fonts\FZXHLJW.TTF" justifyH="LEFT">
+                    <Size>
+                        <AbsDimension x="215" y="14"/>
+                    </Size>
+                    <FontHeight>
+                        <AbsValue val="13"/>
+                    </FontHeight>
+                    <Color r="0" g="0" b="0"/>
+                    <Anchors>
+                        <Anchor point="LEFT" relativePoint="RIGHT" relativeTo="$parentIconTexture">
+                            <Offset>
+                                <AbsDimension x="5" y="-14"/>
+                            </Offset>
+                        </Anchor>
+                    </Anchors>
+                </FontString>
+                <FontString name="$parentCount" inherits="NumberFontNormal" justifyH="RIGHT">
+                    <Anchors>
+                        <Anchor point="BOTTOMRIGHT">
+                            <Offset>
+                                <AbsDimension x="-2" y="2"/>
+                            </Offset>
+                        </Anchor>
+                    </Anchors>
+                </FontString>
+                <FontString name="$parentDeleteText" justifyH="RIGHT" text="[X]" inherits="QuestFont">
+                    <Anchors>
+                        <Anchor point="LEFT" relativePoint="RIGHT">
+                            <Offset>
+                                <AbsDimension x="218" y="-7"/>
+                            </Offset>
+                        </Anchor>
+                    </Anchors>
+                </FontString>
+            </Layer>
+            <Layer level="BACKGROUND">
 
-				<Texture file="Interface\Tooltips\UI-Tooltip-Background" name="$parentMouseOver" hidden="true">
-					<Size>
-						<AbsDimension x="215" y="40"/>
-					</Size>
-					<Anchors>
-						<Anchor point="TOPLEFT">
-							<Offset>
-								<AbsDimension x="42" y="0"/>
-							</Offset>
-						</Anchor>
-					</Anchors>
-				</Texture>
-			</Layer>
-		</Layers>
-		<Frames>
-			<Frame name="$parentRightClickMenu" inherits="UIDropDownMenuTemplate" id="1" hidden="true">
-				<Scripts>
-					<OnLoad>
-						UIDropDownMenu_Initialize(self, CT_RaidTracker_ItemsRightClickMenu_Initialize, "MENU");
-					</OnLoad>
-				</Scripts>
-			</Frame>
-			<Button name="$parentHitArea">
-				<Anchors>
-					<Anchor point="TOPLEFT">
-						<Offset>
-							<AbsDimension x="42" y="0"/>
-						</Offset>
-					</Anchor>
-				</Anchors>
-				<Size>
-					<AbsDimension x="215" y="40"/>
-				</Size>
-				<Scripts>
-					<OnLoad>
-						self:RegisterForClicks("LeftButtonUp", "RightButtonUp");
-					</OnLoad>
-					<OnEnter>
-						getglobal(self:GetParent():GetName() .. "MouseOver"):Show();
-					</OnEnter>
-					<OnLeave>
-						getglobal(self:GetParent():GetName() .. "MouseOver"):Hide();
-					</OnLeave>
-					<OnClick>
-						if(button == "LeftButton") then
-							if(IsControlKeyDown()) then
-								DressUpItemLink("item:"..CT_RaidTracker_RaidLog[self:GetParent().raidid]["Loot"][self:GetParent().itemid]["item"]["id"]);
-							else
-								CT_RaidTracker_SelectItem(self:GetParent().itemname);
-								CT_RaidTracker_Update();
-								CT_RaidTracker_UpdateView();
-							end
-						else
-							CT_RaidTracker_ItemsRightClickMenu_Toggle(self);
-							--CT_RaidTrackerEditLooterFrame.type = "looter";
-							--CT_RaidTrackerEditLooterFrame.text = CT_RaidTracker_RaidLog[self:GetParent().raidid]["Loot"][self:GetParent().itemid]["item"]["name"];
-							--CT_RaidTrackerEditLooterFrame.color = CT_RaidTracker_RaidLog[self:GetParent().raidid]["Loot"][self:GetParent().itemid]["item"]["c"];
-							--CT_RaidTrackerEditLooterFrame.id = self:GetParent().raidid;
-							--CT_RaidTrackerEditLooterFrame.itemid = self:GetParent().itemid;
-							--CT_RaidTrackerEditLooterFrame:Show();
-						end
-					</OnClick>
-				</Scripts>
-			</Button>
-			<Button name="$parentDelete">
-				<Size>
-					<AbsDimension x="18" y="16"/>
-				</Size>
-				<Anchors>
-					<Anchor point="LEFT" relativePoint="RIGHT">
-						<Offset>
-							<AbsDimension x="218" y="-7"/>
-						</Offset>
-					</Anchor>
-				</Anchors>
-				<Scripts>
-					<OnClick>
-						CT_RaidTrackerAcceptDeleteFrame.id = self:GetParent().raidid;
-						CT_RaidTrackerAcceptDeleteFrame.typeid = self:GetParent().itemid
-						CT_RaidTrackerAcceptDeleteFrame.type = "item";
-						CT_RaidTrackerAcceptDeleteFrame.header = "删除物品";
-						CT_RaidTrackerAcceptDeleteFrame:Show();
-					</OnClick>
-					<OnEnter>
-						getglobal(self:GetName() .. "Text"):SetTextColor(0.8, 0.5, 0);
-						GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
-						GameTooltip:ClearLines();
-						GameTooltip:AddLine("点击删除", 1, 0.7, 0);
-						GameTooltip:Show();
-					</OnEnter>
-					<OnLeave>
-						getglobal(self:GetName() .. "Text"):SetTextColor(1, 0.75, 0);
-						GameTooltip:Hide();
-					</OnLeave>
-				</Scripts>
-			</Button>
-			<Button name="$parentNote" hidden="false">
-				<Size>
-					<AbsDimension x="16" y="16"/>
-				</Size>
-				<Anchors>
-					<Anchor point="LEFT" relativePoint="RIGHT">
-						<Offset>
-							<AbsDimension x="221" y="8"/>
-						</Offset>
-					</Anchor>
-				</Anchors>
-				<Scripts>
-					<OnClick>
+                <Texture file="Interface\Tooltips\UI-Tooltip-Background" name="$parentMouseOver" hidden="true">
+                    <Size>
+                        <AbsDimension x="215" y="40"/>
+                    </Size>
+                    <Anchors>
+                        <Anchor point="TOPLEFT">
+                            <Offset>
+                                <AbsDimension x="42" y="0"/>
+                            </Offset>
+                        </Anchor>
+                    </Anchors>
+                </Texture>
+            </Layer>
+        </Layers>
+        <Frames>
+            <Frame name="$parentRightClickMenu" inherits="UIDropDownMenuTemplate" id="1" hidden="true">
+                <Scripts>
+                    <OnLoad>
+                        UIDropDownMenu_Initialize(self, CT_RaidTracker_ItemsRightClickMenu_Initialize, "MENU");
+                    </OnLoad>
+                </Scripts>
+            </Frame>
+            <Button name="$parentHitArea">
+                <Anchors>
+                    <Anchor point="TOPLEFT">
+                        <Offset>
+                            <AbsDimension x="42" y="0"/>
+                        </Offset>
+                    </Anchor>
+                </Anchors>
+                <Size>
+                    <AbsDimension x="215" y="40"/>
+                </Size>
+                <Scripts>
+                    <OnLoad>
+                        self:RegisterForClicks("LeftButtonUp", "RightButtonUp");
+                    </OnLoad>
+                    <OnEnter>
+                        getglobal(self:GetParent():GetName() .. "MouseOver"):Show();
+                    </OnEnter>
+                    <OnLeave>
+                        getglobal(self:GetParent():GetName() .. "MouseOver"):Hide();
+                    </OnLeave>
+                    <OnClick>
+                        if(button == "LeftButton") then
+                            if(IsControlKeyDown()) then
+                                DressUpItemLink("item:"..CT_RaidTracker_RaidLog[self:GetParent().raidid]["Loot"][self:GetParent().itemid]["item"]["id"]);
+                            else
+                                CT_RaidTracker_SelectItem(self:GetParent().itemname);
+                                CT_RaidTracker_Update();
+                                CT_RaidTracker_UpdateView();
+                            end
+                        else
+                            CT_RaidTracker_ItemsRightClickMenu_Toggle(self);
+                            --CT_RaidTrackerEditLooterFrame.type = "looter";
+                            --CT_RaidTrackerEditLooterFrame.text = CT_RaidTracker_RaidLog[self:GetParent().raidid]["Loot"][self:GetParent().itemid]["item"]["name"];
+                            --CT_RaidTrackerEditLooterFrame.color = CT_RaidTracker_RaidLog[self:GetParent().raidid]["Loot"][self:GetParent().itemid]["item"]["c"];
+                            --CT_RaidTrackerEditLooterFrame.id = self:GetParent().raidid;
+                            --CT_RaidTrackerEditLooterFrame.itemid = self:GetParent().itemid;
+                            --CT_RaidTrackerEditLooterFrame:Show();
+                        end
+                    </OnClick>
+                </Scripts>
+            </Button>
+            <Button name="$parentDelete">
+                <Size>
+                    <AbsDimension x="18" y="16"/>
+                </Size>
+                <Anchors>
+                    <Anchor point="LEFT" relativePoint="RIGHT">
+                        <Offset>
+                            <AbsDimension x="218" y="-7"/>
+                        </Offset>
+                    </Anchor>
+                </Anchors>
+                <Scripts>
+                    <OnClick>
+                        CT_RaidTrackerAcceptDeleteFrame.id = self:GetParent().raidid;
+                        CT_RaidTrackerAcceptDeleteFrame.typeid = self:GetParent().itemid
+                        CT_RaidTrackerAcceptDeleteFrame.type = "item";
+                        CT_RaidTrackerAcceptDeleteFrame.header = "删除物品";
+                        CT_RaidTrackerAcceptDeleteFrame:Show();
+                    </OnClick>
+                    <OnEnter>
+                        getglobal(self:GetName() .. "Text"):SetTextColor(0.8, 0.5, 0);
+                        GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
+                        GameTooltip:ClearLines();
+                        GameTooltip:AddLine("点击删除", 1, 0.7, 0);
+                        GameTooltip:Show();
+                    </OnEnter>
+                    <OnLeave>
+                        getglobal(self:GetName() .. "Text"):SetTextColor(1, 0.75, 0);
+                        GameTooltip:Hide();
+                    </OnLeave>
+                </Scripts>
+            </Button>
+            <Button name="$parentNote" hidden="false">
+                <Size>
+                    <AbsDimension x="16" y="16"/>
+                </Size>
+                <Anchors>
+                    <Anchor point="LEFT" relativePoint="RIGHT">
+                        <Offset>
+                            <AbsDimension x="221" y="8"/>
+                        </Offset>
+                    </Anchor>
+                </Anchors>
+                <Scripts>
+                    <OnClick>
                         CT_RaidTracker_EditItemNote(self:GetParent().raidid, self:GetParent().itemid);
                     </OnClick>
-					<OnEnter>
-						GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
-						GameTooltip:ClearLines();
-						GameTooltip:AddLine("点击编辑备注", 1, 0.7, 0);
-						if(CT_RaidTracker_RaidLog[self:GetParent().raidid]["Loot"][self:GetParent().itemid]["note"]) then
-							GameTooltip:AddLine(CT_RaidTracker_RaidLog[self:GetParent().raidid]["Loot"][self:GetParent().itemid]["note"], 0.6, 0.6, 0.6);
-						end
-						GameTooltip:Show();
-					</OnEnter>
-					<OnLeave>
-						GameTooltip:Hide();
-					</OnLeave>
-					<OnLoad>
-						self.note = "";
-					</OnLoad>
-				</Scripts>
-				<NormalTexture name="$parentNormalTexture" file="Interface\Buttons\UI-GuildButton-PublicNote-Up"/>
-				<DisabledTexture file="Interface\Buttons\UI-GuildButton-PublicNote-Disabled"/>
-				<HighlightTexture file="Interface\Buttons\UI-GuildButton-PublicNote-Up" alphaMode="ADD"/>
-			</Button>
-		</Frames>
-		<Scripts>
-			<OnEnter>
-				CT_RaidTrackerItem_SetHyperlink(self);
-			</OnEnter>
-			<OnLeave>
-				GameTooltip:Hide();
-			</OnLeave>
-			<OnClick>
-				if(button == "RightButton" and CT_RaidTracker_RaidLog[self.raidid]["Loot"][self.itemid]) then
-					GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
-					GameTooltip:SetHyperlink("item:"..CT_RaidTracker_RaidLog[self.raidid]["Loot"][self.itemid]["item"]["id"]);
-					GameTooltip:Hide();
-				end
-				CT_RaidTrackerItem_GetChatHyperlink(self);
-			</OnClick>
-			<OnLoad>
-				self:RegisterForClicks("LeftButtonUp", "RightButtonUp");
-				getglobal(self:GetName() .. "MouseOver"):SetAlpha(0.25);
-				getglobal(self:GetName() .. "MouseOver"):SetVertexColor(1, 1, 0);
-			</OnLoad>
-		</Scripts>
-	</Button>
-	<Button name="CT_RaidTrackerTitleButtonTemplate" virtual="true">
-		<Size>
-			<AbsDimension x="300" y="16"/>
-		</Size>
-		<ButtonText name="$parentButtonText" inherits="GameFontNormal" justifyH="LEFT" nonspacewrap="true">
-			<Size>
-				<AbsDimension x="300" y="10"/>
-			</Size>
-			<Anchors>
-				<Anchor point="LEFT">
-					<Offset>
-						<AbsDimension x="5" y="0"/>
-					</Offset>
-				</Anchor>
-			</Anchors> 
-		</ButtonText>
-		<HighlightText name="$parentHighlightText" inherits="GameFontHighlight" justifyH="LEFT" nonspacewrap="true">
-			<Size>
-				<AbsDimension x="300" y="10"/>
-			</Size>
-			<Anchors>
-				<Anchor point="LEFT">
-					<Offset>
-						<AbsDimension x="5" y="0"/>
-					</Offset>
-				</Anchor>
-			</Anchors>
-		</HighlightText>
-		<DisabledText name="$parentDisabledText" inherits="GameFontHighlight" justifyH="LEFT" nonspacewrap="true">
-			<Size>
-				<AbsDimension x="300" y="10"/>
-			</Size>
-			<Anchors>
-				<Anchor point="LEFT">
-					<Offset>
-						<AbsDimension x="5" y="0"/>
-					</Offset>
-				</Anchor>
-			</Anchors>
-		</DisabledText>
-		<Scripts>
-			<OnLoad>
-				self:RegisterForClicks("LeftButtonUp", "RightButtonUp");
-			</OnLoad>
-			<OnClick>
-				if(button == "LeftButton") then
-					CT_RaidTracker_SelectRaid(self:GetID());
-					CT_RaidTracker_LastPage = { };
-					CT_RaidTrackerFrameBackButton:Disable();
-				else
-					CT_RaidTracker_RaidsRightClickMenu_Toggle(self);
-					--CT_RaidTrackerGenerateDkpLink(FauxScrollFrame_GetOffset(CT_RaidTrackerListScrollFrame) + self:GetID());
-				end
-				
-			</OnClick>
-		</Scripts>
-		<Frames>
-			<Frame name="$parentRightClickMenu" inherits="UIDropDownMenuTemplate" id="1" hidden="true">
-				<Scripts>
-					<OnLoad>
-						UIDropDownMenu_Initialize(self, CT_RaidTracker_RaidsRightClickMenu_Initialize, "MENU");
-					</OnLoad>
-				</Scripts>
-			</Frame>
-		</Frames>
-	</Button>
+                    <OnEnter>
+                        GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
+                        GameTooltip:ClearLines();
+                        GameTooltip:AddLine("点击编辑备注", 1, 0.7, 0);
+                        if(CT_RaidTracker_RaidLog[self:GetParent().raidid]["Loot"][self:GetParent().itemid]["note"]) then
+                            GameTooltip:AddLine(CT_RaidTracker_RaidLog[self:GetParent().raidid]["Loot"][self:GetParent().itemid]["note"], 0.6, 0.6, 0.6);
+                        end
+                        GameTooltip:Show();
+                    </OnEnter>
+                    <OnLeave>
+                        GameTooltip:Hide();
+                    </OnLeave>
+                    <OnLoad>
+                        self.note = "";
+                    </OnLoad>
+                </Scripts>
+                <NormalTexture name="$parentNormalTexture" file="Interface\Buttons\UI-GuildButton-PublicNote-Up"/>
+                <DisabledTexture file="Interface\Buttons\UI-GuildButton-PublicNote-Disabled"/>
+                <HighlightTexture file="Interface\Buttons\UI-GuildButton-PublicNote-Up" alphaMode="ADD"/>
+            </Button>
+        </Frames>
+        <Scripts>
+            <OnEnter>
+                CT_RaidTrackerItem_SetHyperlink(self);
+            </OnEnter>
+            <OnLeave>
+                GameTooltip:Hide();
+            </OnLeave>
+            <OnClick>
+                if(button == "RightButton" and CT_RaidTracker_RaidLog[self.raidid]["Loot"][self.itemid]) then
+                    GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
+                    GameTooltip:SetHyperlink("item:"..CT_RaidTracker_RaidLog[self.raidid]["Loot"][self.itemid]["item"]["id"]);
+                    GameTooltip:Hide();
+                end
+                CT_RaidTrackerItem_GetChatHyperlink(self);
+            </OnClick>
+            <OnLoad>
+                self:RegisterForClicks("LeftButtonUp", "RightButtonUp");
+                getglobal(self:GetName() .. "MouseOver"):SetAlpha(0.25);
+                getglobal(self:GetName() .. "MouseOver"):SetVertexColor(1, 1, 0);
+            </OnLoad>
+        </Scripts>
+    </Button>
+    <Button name="CT_RaidTrackerTitleButtonTemplate" virtual="true">
+        <Size>
+            <AbsDimension x="300" y="16"/>
+        </Size>
+        <ButtonText name="$parentButtonText" inherits="GameFontNormal" justifyH="LEFT" nonspacewrap="true">
+            <Size>
+                <AbsDimension x="300" y="10"/>
+            </Size>
+            <Anchors>
+                <Anchor point="LEFT">
+                    <Offset>
+                        <AbsDimension x="5" y="0"/>
+                    </Offset>
+                </Anchor>
+            </Anchors> 
+        </ButtonText>
+        <HighlightText name="$parentHighlightText" inherits="GameFontHighlight" justifyH="LEFT" nonspacewrap="true">
+            <Size>
+                <AbsDimension x="300" y="10"/>
+            </Size>
+            <Anchors>
+                <Anchor point="LEFT">
+                    <Offset>
+                        <AbsDimension x="5" y="0"/>
+                    </Offset>
+                </Anchor>
+            </Anchors>
+        </HighlightText>
+        <DisabledText name="$parentDisabledText" inherits="GameFontHighlight" justifyH="LEFT" nonspacewrap="true">
+            <Size>
+                <AbsDimension x="300" y="10"/>
+            </Size>
+            <Anchors>
+                <Anchor point="LEFT">
+                    <Offset>
+                        <AbsDimension x="5" y="0"/>
+                    </Offset>
+                </Anchor>
+            </Anchors>
+        </DisabledText>
+        <Scripts>
+            <OnLoad>
+                self:RegisterForClicks("LeftButtonUp", "RightButtonUp");
+            </OnLoad>
+            <OnClick>
+                if(button == "LeftButton") then
+                    CT_RaidTracker_SelectRaid(self:GetID());
+                    CT_RaidTracker_LastPage = { };
+                    CT_RaidTrackerFrameBackButton:Disable();
+                else
+                    CT_RaidTracker_RaidsRightClickMenu_Toggle(self);
+                    --CT_RaidTrackerGenerateDkpLink(FauxScrollFrame_GetOffset(CT_RaidTrackerListScrollFrame) + self:GetID());
+                end
+                
+            </OnClick>
+        </Scripts>
+        <Frames>
+            <Frame name="$parentRightClickMenu" inherits="UIDropDownMenuTemplate" id="1" hidden="true">
+                <Scripts>
+                    <OnLoad>
+                        UIDropDownMenu_Initialize(self, CT_RaidTracker_RaidsRightClickMenu_Initialize, "MENU");
+                    </OnLoad>
+                </Scripts>
+            </Frame>
+        </Frames>
+    </Button>
     <Frame name="CT_RaidTrackerFrame" toplevel="true" enableMouse="true" movable="true" parent="UIParent" hidden="true">
         <Size>
             <AbsDimension x="384" y="512"/>
@@ -960,14 +960,14 @@
                 </Anchors>
                 <Scripts>
                     <OnClick>
-                    	if ( CT_RaidTrackerFrame.type == "bosskills" or not CT_RaidTrackerFrame.type ) then
-							CT_RaidTrackerFrame.type = "raids";
-							self:SetText("查看Raid");
-						else 
-							CT_RaidTrackerFrame.type = "bosskills";
-							self:SetText("查看击杀");
-						end
-						CT_RaidTracker_UpdateView();
+                        if ( CT_RaidTrackerFrame.type == "bosskills" or not CT_RaidTrackerFrame.type ) then
+                            CT_RaidTrackerFrame.type = "raids";
+                            self:SetText("查看Raid");
+                        else 
+                            CT_RaidTrackerFrame.type = "bosskills";
+                            self:SetText("查看击杀");
+                        end
+                        CT_RaidTracker_UpdateView();
                     </OnClick>
                 </Scripts>
             </Button>
@@ -1003,18 +1003,18 @@
                     <OnClick>
                         CT_RaidTracker_GetPage();
                         if ( CT_RaidTrackerFrame.type == "raids" or CT_RaidTrackerFrame.type == "bosskills" or not CT_RaidTrackerFrame.type ) then
-							CT_RaidTrackerFrame.type = "items";
-							self:SetText("查看玩家");
-						elseif ( CT_RaidTrackerFrame.type == "items" ) then
-							CT_RaidTrackerFrame.type = "raids";
-							self:SetText("查看物品");
-						elseif ( CT_RaidTrackerFrame.type == "player" ) then
-							CT_RaidTrackerFrame.type = "playeritems";
-							self:SetText("查看Raid");
-						elseif ( CT_RaidTrackerFrame.type == "playeritems" ) then
-							CT_RaidTrackerFrame.type = "player";
-							self:SetText("查看拾取");
-	                      end
+                            CT_RaidTrackerFrame.type = "items";
+                            self:SetText("查看玩家");
+                        elseif ( CT_RaidTrackerFrame.type == "items" ) then
+                            CT_RaidTrackerFrame.type = "raids";
+                            self:SetText("查看物品");
+                        elseif ( CT_RaidTrackerFrame.type == "player" ) then
+                            CT_RaidTrackerFrame.type = "playeritems";
+                            self:SetText("查看Raid");
+                        elseif ( CT_RaidTrackerFrame.type == "playeritems" ) then
+                            CT_RaidTrackerFrame.type = "player";
+                            self:SetText("查看拾取");
+                          end
                         CT_RaidTracker_UpdateView();
                     </OnClick>
                 </Scripts>
@@ -1191,7 +1191,7 @@
                         </Anchors>
                         <Layers>
                             <Layer level="BACKGROUND">
-								<FontString name="CT_RaidTrackerParticipantsText" justifyH="LEFT" text="参与者" inherits="QuestTitleFont">
+                                <FontString name="CT_RaidTrackerParticipantsText" justifyH="LEFT" text="参与者" inherits="QuestTitleFont">
                                     <Size>
                                         <AbsDimension x="285" y="0"/>
                                     </Size>
@@ -1317,7 +1317,7 @@
                                 <Scripts>
                                     <OnClick>
                                         CT_RaidTracker_SortOptions["backup"] = "true";
-										CT_RaidTracker_SortBy(1);
+                                        CT_RaidTracker_SortBy(1);
                                         PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
                                     </OnClick>
                                 </Scripts>
@@ -1427,7 +1427,7 @@
                             </Layer>
                         </Layers>
                         <Frames>
-							<Button name="CT_RaidTrackerPlayerRaidTab1" inherits="CT_RaidTrackerTabTemplate" text="Raid日期" id="1">
+                            <Button name="CT_RaidTrackerPlayerRaidTab1" inherits="CT_RaidTrackerTabTemplate" text="Raid日期" id="1">
                                 <Size>
                                     <AbsDimension x="163" y="24"/>
                                 </Size>
@@ -1911,7 +1911,7 @@
                         </Frames>
                         <Layers>
                             <Layer level="BACKGROUND">
-								<FontString name="CT_RaidTrackerItemsText" justifyH="LEFT" text="物品:" inherits="QuestTitleFont">
+                                <FontString name="CT_RaidTrackerItemsText" justifyH="LEFT" text="物品:" inherits="QuestTitleFont">
                                     <Size>
                                         <AbsDimension x="285" y="0"/>
                                     </Size>
@@ -2028,340 +2028,340 @@
                 </Size>
                 <Anchors>
                     <Anchor point="CENTER" relativePoint="CENTER">
-						<Offset>
-							<AbsDimension x="45" y="-15"/>
-						</Offset>
-					</Anchor>
-				</Anchors>
-				<Scripts>
-					<OnClick>
-						self:GetParent():Hide();
-					</OnClick>
-				</Scripts>
-			</Button>
-		</Frames>
-		<Scripts>
-			<OnShow>
-				if(self.type == "item") then
-					self.itemplayer = CT_RaidTracker_RaidLog[self.id]["Loot"][self.typeid]["player"]
-					self.itemitemid = CT_RaidTracker_RaidLog[self.id]["Loot"][self.typeid]["item"]["id"]
-					self.itemtime = CT_RaidTracker_RaidLog[self.id]["Loot"][self.typeid]["time"]
-				end
-				getglobal(self:GetName() .. "HeaderText"):SetText("你确定要删除这个 " .. self.type .. "?");
-				getglobal(self:GetName() .. "HeaderText"):SetText(self.header);
-				getglobal(self:GetName() .. "Info"):SetText("你确定要删除这个 " .. self.type .. "?");
-				PlaySound(SOUNDKIT.U_CHAT_SCROLL_BUTTON);
-			</OnShow>
-			<OnHide>
-				PlaySound(SOUNDKIT.U_CHAT_SCROLL_BUTTON);
-			</OnHide>
-		</Scripts>
-	</Frame>
-	<Frame name="CT_RaidTrackerEditNoteFrame" toplevel="true" frameStrata="DIALOG" movable="true" enableMouse="true" hidden="true" parent="UIParent">
-		<Size>
-			<AbsDimension x="350" y="130"/>
-		</Size>
-		<Anchors>
-			<Anchor point="CENTER"/>
-		</Anchors>
-		<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\DialogFrame\UI-DialogBox-Border" tile="true">
-			<BackgroundInsets>
-				<AbsInset left="11" right="12" top="12" bottom="11"/>
-			</BackgroundInsets>
-			<TileSize>
-				<AbsValue val="32"/>
-			</TileSize>
-			<EdgeSize>
-				<AbsValue val="32"/>
-			</EdgeSize>
-		</Backdrop>
-		<Layers>
-			<Layer level="ARTWORK">
-				<Texture name="$parentHeaderTexture" file="Interface\DialogFrame\UI-DialogBox-Header">
-					<Size>
-						<AbsDimension x="256" y="64"/>
-					</Size>
-					<Anchors>
-						<Anchor point="TOP">
-							<Offset>
-								<AbsDimension x="0" y="12"/>
-							</Offset>
-						</Anchor>
-					</Anchors>
-				</Texture>
-				<FontString name="$parentTitle" inherits="GameFontNormal" text="编辑备注">
-					<Anchors>
-						<Anchor point="TOP" relativeTo="$parentHeaderTexture">
-							<Offset>
-								<AbsDimension x="0" y="-14"/>
-							</Offset>
-						</Anchor>
-					</Anchors>
-				</FontString>
-				<FontString name="$parentEditing" inherits="GameFontNormal" text="">
-					<Anchors>
-						<Anchor point="CENTER">
-							<Offset>
-								<AbsDimension x="0" y="23"/>
-							</Offset>
-						</Anchor>
-					</Anchors>
-				</FontString>
-			</Layer>
-		</Layers>
-		<Frames>
-			<EditBox name="$parentNoteEB" historyLines="0" letters="250">
-				<Size>
-					<AbsDimension x="250" y="32"/>
-				</Size>
-				<Anchors>
-					<Anchor point="CENTER" relativePoint="CENTER"/>
-				</Anchors>
-				<Layers>
-					<Layer level="BACKGROUND">
-						<Texture name="$parentLeft" file="Interface\ChatFrame\UI-ChatInputBorder-Left">
-							<Size>
-								<AbsDimension x="65" y="32"/>
-							</Size>
-							<Anchors>
-								<Anchor point="LEFT">
-									<Offset>
-										<AbsDimension x="-10" y="0"/>
-									</Offset>
-								</Anchor>
-							</Anchors>
-							<TexCoords left="0" right="0.2539" top="0" bottom="1.0"/>
-						</Texture>
-						<Texture name="$parentRight" file="Interface\ChatFrame\UI-ChatInputBorder-Right">
-							<Size>
-								<AbsDimension x="25" y="32"/>
-							</Size>
-							<Anchors>
-								<Anchor point="RIGHT">
-									<Offset>
-										<AbsDimension x="10" y="0"/>
-									</Offset>
-								</Anchor>
-							</Anchors>
-							<TexCoords left="0.9" right="1.0" top="0" bottom="1.0"/>
-						</Texture>
-						<Texture file="Interface\ChatFrame\UI-ChatInputBorder-Left">
-							<Size>
-								<AbsDimension x="5" y="32"/>
-							</Size>
-							<Anchors>
-								<Anchor point="LEFT" relativeTo="$parentLeft" relativePoint="RIGHT">
-									<Offset>
-										<AbsDimension x="0" y="0"/>
-									</Offset>
-								</Anchor>
-								<Anchor point="RIGHT" relativeTo="$parentRight" relativePoint="LEFT">
-									<Offset>
-										<AbsDimension x="0" y="0"/>
-									</Offset>
-								</Anchor>
-							</Anchors>
-							<TexCoords left="0.29296875" right="1.0" top="0" bottom="1.0"/>
-						</Texture>
-					</Layer>
-				</Layers>
-				<Scripts>
-					<OnShow>
-						self:SetFocus();
-					</OnShow>
-					<OnEnterPressed>
-						CT_RaidTracker_SaveNote(self:GetParent().id);
-						self:GetParent():Hide();
-					</OnEnterPressed>
-					<OnEscapePressed>
-						self:SetText("");
-						self:GetParent():Hide();
-					</OnEscapePressed>
-				</Scripts>
-				<FontString inherits="ChatFontNormal"/>
-			</EditBox>
-			<Button name="$parentSetButton" hidden="false" inherits="GameMenuButtonTemplate" text="设置">
-				<Size>
-					<AbsDimension x="80" y="27"/>
-				</Size>
-				<Anchors>
-					<Anchor point="BOTTOM" relativePoint="BOTTOM">
-						<Offset>
-							<AbsDimension x="-45" y="12"/>
-						</Offset>
-					</Anchor>
-				</Anchors>
-				<Scripts>
-					<OnClick>
-						CT_RaidTracker_SaveNote();
-						self:GetParent():Hide();
-					</OnClick>
-				</Scripts>
-			</Button>
-			<Button name="$parentCancelButton" hidden="false" inherits="GameMenuButtonTemplate" text="取消">
-				<Size>
-					<AbsDimension x="80" y="27"/>
-				</Size>
-				<Anchors>
-					<Anchor point="BOTTOM" relativePoint="BOTTOM">
-						<Offset>
-							<AbsDimension x="45" y="12"/>
-						</Offset>
-					</Anchor>
-				</Anchors>
-				<Scripts>
-					<OnClick>
-						getglobal(self:GetParent():GetName() .. "NoteEB"):SetText("");
-						self:GetParent():Hide();
-					</OnClick>
-				</Scripts>
-			</Button>
-		</Frames>
-		<Scripts>
-			<OnShow>
-				CT_RaidTracker_EditNote_OnShow(self);
-			</OnShow>
-			<OnHide>
-				PlaySound(SOUNDKIT.U_CHAT_SCROLL_BUTTON);
-			</OnHide>
-		</Scripts>
-	</Frame>
-	<Frame name="URLFrame" toplevel="true" frameStrata="DIALOG" movable="true" enableMouse="true" hidden="true" parent="UIParent" enableKeyboard="true">
-		<Size>
-			<AbsDimension x="400" y="125"/>
-		</Size>
-		<Anchors>
-			<Anchor point="CENTER"/>
-		</Anchors>
-		<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\DialogFrame\UI-DialogBox-Border" tile="true">
-			<BackgroundInsets>
-				<AbsInset left="11" right="12" top="12" bottom="11"/>
-			</BackgroundInsets>
-			<TileSize>
-				<AbsValue val="32"/>
-			</TileSize>
-			<EdgeSize>
-				<AbsValue val="32"/>
-			</EdgeSize>
-		</Backdrop>
-		<Layers>
-			<Layer level="ARTWORK">
-				<Texture name="URLFrameHeader" file="Interface\DialogFrame\UI-DialogBox-Header">
-					<Size>
-						<AbsDimension x="256" y="64"/>
-					</Size>
-					<Anchors>
-						<Anchor point="TOP">
-							<Offset>
-								<AbsDimension x="0" y="12"/>
-							</Offset>
-						</Anchor>
-					</Anchors>
-				</Texture>
-				<FontString inherits="GameFontNormal" text="DKP 字符串">
-					<Anchors>
-						<Anchor point="TOP" relativeTo="URLFrameHeader">
-							<Offset>
-								<AbsDimension x="0" y="-14"/>
-							</Offset>
-						</Anchor>
-					</Anchors>
-				</FontString>
-			</Layer>
-		</Layers>
-		<Frames>
-			<EditBox name="URLFrameEditBox" historyLines="0" letters="99999999">
-				<Size>
-					<AbsDimension x="300" y="16"/>
-				</Size>
-				<Anchors>
-					<Anchor point="TOP">
-						<Offset>
-							<AbsDimension x="0" y="-50" />
-						</Offset>
-					</Anchor>
-				</Anchors>
-								<Layers>
-									<Layer level="BACKGROUND">
-										<Texture name="$parentLeft" file="Interface\ChatFrame\UI-ChatInputBorder-Left">
-											<Size>
-												<AbsDimension x="65" y="32"/>
-											</Size>
-											<Anchors>
-												<Anchor point="LEFT">
-													<Offset>
-														<AbsDimension x="-10" y="0"/>
-													</Offset>
-												</Anchor>
-											</Anchors>
-											<TexCoords left="0" right="0.2539" top="0" bottom="1.0"/>
-										</Texture>
-										<Texture name="$parentRight" file="Interface\ChatFrame\UI-ChatInputBorder-Right">
-											<Size>
-												<AbsDimension x="25" y="32"/>
-											</Size>
-											<Anchors>
-												<Anchor point="RIGHT">
-													<Offset>
-														<AbsDimension x="10" y="0"/>
-													</Offset>
-												</Anchor>
-											</Anchors>
-											<TexCoords left="0.9" right="1.0" top="0" bottom="1.0"/>
-										</Texture>
-										<Texture file="Interface\ChatFrame\UI-ChatInputBorder-Left">
-											<Size>
-												<AbsDimension x="5" y="32"/>
-											</Size>
-											<Anchors>
-												<Anchor point="LEFT" relativeTo="$parentLeft" relativePoint="RIGHT">
-													<Offset>
-														<AbsDimension x="0" y="0"/>
-													</Offset>
-												</Anchor>
-												<Anchor point="RIGHT" relativeTo="$parentRight" relativePoint="LEFT">
-													<Offset>
-														<AbsDimension x="0" y="0"/>
-													</Offset>
-												</Anchor>
-											</Anchors>
-											<TexCoords left="0.29296875" right="1.0" top="0" bottom="1.0"/>
-										</Texture>
-									</Layer>
-								</Layers>
-								<FontString inherits="ChatFontNormal"/>
-				<Scripts>
-					<OnEscapePressed>
-						URLFrame:Hide();
-					</OnEscapePressed>
-				</Scripts>
-			</EditBox>
-			<Button name="URLFrameDone" inherits="OptionsButtonTemplate" text="关闭">
-				<Anchors>
-					<Anchor point="BOTTOM">
-						<Offset>
-							<AbsDimension x="0" y="20"/>
-						</Offset>
-					</Anchor>
-				</Anchors>
-				<Scripts>
-					<OnClick>
-						URLFrame:Hide();
-					</OnClick>
-				</Scripts>
-			</Button>
-		</Frames>
-	</Frame>
-	<Frame name="CT_RaidTracker_UpdateFrame" hidden="false" parent="UIParent">
-		<Scripts>
-			<OnLoad>
-				self.time = 0;
-			</OnLoad>
-			<OnUpdate>
-				CT_RaidTrackerUpdateFrame_OnUpdate(self, elapsed);
-			</OnUpdate>
-		</Scripts>
-	</Frame>
+                        <Offset>
+                            <AbsDimension x="45" y="-15"/>
+                        </Offset>
+                    </Anchor>
+                </Anchors>
+                <Scripts>
+                    <OnClick>
+                        self:GetParent():Hide();
+                    </OnClick>
+                </Scripts>
+            </Button>
+        </Frames>
+        <Scripts>
+            <OnShow>
+                if(self.type == "item") then
+                    self.itemplayer = CT_RaidTracker_RaidLog[self.id]["Loot"][self.typeid]["player"]
+                    self.itemitemid = CT_RaidTracker_RaidLog[self.id]["Loot"][self.typeid]["item"]["id"]
+                    self.itemtime = CT_RaidTracker_RaidLog[self.id]["Loot"][self.typeid]["time"]
+                end
+                getglobal(self:GetName() .. "HeaderText"):SetText("你确定要删除这个 " .. self.type .. "?");
+                getglobal(self:GetName() .. "HeaderText"):SetText(self.header);
+                getglobal(self:GetName() .. "Info"):SetText("你确定要删除这个 " .. self.type .. "?");
+                PlaySound(SOUNDKIT.U_CHAT_SCROLL_BUTTON);
+            </OnShow>
+            <OnHide>
+                PlaySound(SOUNDKIT.U_CHAT_SCROLL_BUTTON);
+            </OnHide>
+        </Scripts>
+    </Frame>
+    <Frame name="CT_RaidTrackerEditNoteFrame" toplevel="true" frameStrata="DIALOG" movable="true" enableMouse="true" hidden="true" parent="UIParent">
+        <Size>
+            <AbsDimension x="350" y="130"/>
+        </Size>
+        <Anchors>
+            <Anchor point="CENTER"/>
+        </Anchors>
+        <Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\DialogFrame\UI-DialogBox-Border" tile="true">
+            <BackgroundInsets>
+                <AbsInset left="11" right="12" top="12" bottom="11"/>
+            </BackgroundInsets>
+            <TileSize>
+                <AbsValue val="32"/>
+            </TileSize>
+            <EdgeSize>
+                <AbsValue val="32"/>
+            </EdgeSize>
+        </Backdrop>
+        <Layers>
+            <Layer level="ARTWORK">
+                <Texture name="$parentHeaderTexture" file="Interface\DialogFrame\UI-DialogBox-Header">
+                    <Size>
+                        <AbsDimension x="256" y="64"/>
+                    </Size>
+                    <Anchors>
+                        <Anchor point="TOP">
+                            <Offset>
+                                <AbsDimension x="0" y="12"/>
+                            </Offset>
+                        </Anchor>
+                    </Anchors>
+                </Texture>
+                <FontString name="$parentTitle" inherits="GameFontNormal" text="编辑备注">
+                    <Anchors>
+                        <Anchor point="TOP" relativeTo="$parentHeaderTexture">
+                            <Offset>
+                                <AbsDimension x="0" y="-14"/>
+                            </Offset>
+                        </Anchor>
+                    </Anchors>
+                </FontString>
+                <FontString name="$parentEditing" inherits="GameFontNormal" text="">
+                    <Anchors>
+                        <Anchor point="CENTER">
+                            <Offset>
+                                <AbsDimension x="0" y="23"/>
+                            </Offset>
+                        </Anchor>
+                    </Anchors>
+                </FontString>
+            </Layer>
+        </Layers>
+        <Frames>
+            <EditBox name="$parentNoteEB" historyLines="0" letters="250">
+                <Size>
+                    <AbsDimension x="250" y="32"/>
+                </Size>
+                <Anchors>
+                    <Anchor point="CENTER" relativePoint="CENTER"/>
+                </Anchors>
+                <Layers>
+                    <Layer level="BACKGROUND">
+                        <Texture name="$parentLeft" file="Interface\ChatFrame\UI-ChatInputBorder-Left">
+                            <Size>
+                                <AbsDimension x="65" y="32"/>
+                            </Size>
+                            <Anchors>
+                                <Anchor point="LEFT">
+                                    <Offset>
+                                        <AbsDimension x="-10" y="0"/>
+                                    </Offset>
+                                </Anchor>
+                            </Anchors>
+                            <TexCoords left="0" right="0.2539" top="0" bottom="1.0"/>
+                        </Texture>
+                        <Texture name="$parentRight" file="Interface\ChatFrame\UI-ChatInputBorder-Right">
+                            <Size>
+                                <AbsDimension x="25" y="32"/>
+                            </Size>
+                            <Anchors>
+                                <Anchor point="RIGHT">
+                                    <Offset>
+                                        <AbsDimension x="10" y="0"/>
+                                    </Offset>
+                                </Anchor>
+                            </Anchors>
+                            <TexCoords left="0.9" right="1.0" top="0" bottom="1.0"/>
+                        </Texture>
+                        <Texture file="Interface\ChatFrame\UI-ChatInputBorder-Left">
+                            <Size>
+                                <AbsDimension x="5" y="32"/>
+                            </Size>
+                            <Anchors>
+                                <Anchor point="LEFT" relativeTo="$parentLeft" relativePoint="RIGHT">
+                                    <Offset>
+                                        <AbsDimension x="0" y="0"/>
+                                    </Offset>
+                                </Anchor>
+                                <Anchor point="RIGHT" relativeTo="$parentRight" relativePoint="LEFT">
+                                    <Offset>
+                                        <AbsDimension x="0" y="0"/>
+                                    </Offset>
+                                </Anchor>
+                            </Anchors>
+                            <TexCoords left="0.29296875" right="1.0" top="0" bottom="1.0"/>
+                        </Texture>
+                    </Layer>
+                </Layers>
+                <Scripts>
+                    <OnShow>
+                        self:SetFocus();
+                    </OnShow>
+                    <OnEnterPressed>
+                        CT_RaidTracker_SaveNote(self:GetParent().id);
+                        self:GetParent():Hide();
+                    </OnEnterPressed>
+                    <OnEscapePressed>
+                        self:SetText("");
+                        self:GetParent():Hide();
+                    </OnEscapePressed>
+                </Scripts>
+                <FontString inherits="ChatFontNormal"/>
+            </EditBox>
+            <Button name="$parentSetButton" hidden="false" inherits="GameMenuButtonTemplate" text="设置">
+                <Size>
+                    <AbsDimension x="80" y="27"/>
+                </Size>
+                <Anchors>
+                    <Anchor point="BOTTOM" relativePoint="BOTTOM">
+                        <Offset>
+                            <AbsDimension x="-45" y="12"/>
+                        </Offset>
+                    </Anchor>
+                </Anchors>
+                <Scripts>
+                    <OnClick>
+                        CT_RaidTracker_SaveNote();
+                        self:GetParent():Hide();
+                    </OnClick>
+                </Scripts>
+            </Button>
+            <Button name="$parentCancelButton" hidden="false" inherits="GameMenuButtonTemplate" text="取消">
+                <Size>
+                    <AbsDimension x="80" y="27"/>
+                </Size>
+                <Anchors>
+                    <Anchor point="BOTTOM" relativePoint="BOTTOM">
+                        <Offset>
+                            <AbsDimension x="45" y="12"/>
+                        </Offset>
+                    </Anchor>
+                </Anchors>
+                <Scripts>
+                    <OnClick>
+                        getglobal(self:GetParent():GetName() .. "NoteEB"):SetText("");
+                        self:GetParent():Hide();
+                    </OnClick>
+                </Scripts>
+            </Button>
+        </Frames>
+        <Scripts>
+            <OnShow>
+                CT_RaidTracker_EditNote_OnShow(self);
+            </OnShow>
+            <OnHide>
+                PlaySound(SOUNDKIT.U_CHAT_SCROLL_BUTTON);
+            </OnHide>
+        </Scripts>
+    </Frame>
+    <Frame name="URLFrame" toplevel="true" frameStrata="DIALOG" movable="true" enableMouse="true" hidden="true" parent="UIParent" enableKeyboard="true">
+        <Size>
+            <AbsDimension x="400" y="125"/>
+        </Size>
+        <Anchors>
+            <Anchor point="CENTER"/>
+        </Anchors>
+        <Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\DialogFrame\UI-DialogBox-Border" tile="true">
+            <BackgroundInsets>
+                <AbsInset left="11" right="12" top="12" bottom="11"/>
+            </BackgroundInsets>
+            <TileSize>
+                <AbsValue val="32"/>
+            </TileSize>
+            <EdgeSize>
+                <AbsValue val="32"/>
+            </EdgeSize>
+        </Backdrop>
+        <Layers>
+            <Layer level="ARTWORK">
+                <Texture name="URLFrameHeader" file="Interface\DialogFrame\UI-DialogBox-Header">
+                    <Size>
+                        <AbsDimension x="256" y="64"/>
+                    </Size>
+                    <Anchors>
+                        <Anchor point="TOP">
+                            <Offset>
+                                <AbsDimension x="0" y="12"/>
+                            </Offset>
+                        </Anchor>
+                    </Anchors>
+                </Texture>
+                <FontString inherits="GameFontNormal" text="DKP 字符串">
+                    <Anchors>
+                        <Anchor point="TOP" relativeTo="URLFrameHeader">
+                            <Offset>
+                                <AbsDimension x="0" y="-14"/>
+                            </Offset>
+                        </Anchor>
+                    </Anchors>
+                </FontString>
+            </Layer>
+        </Layers>
+        <Frames>
+            <EditBox name="URLFrameEditBox" historyLines="0" letters="99999999">
+                <Size>
+                    <AbsDimension x="300" y="16"/>
+                </Size>
+                <Anchors>
+                    <Anchor point="TOP">
+                        <Offset>
+                            <AbsDimension x="0" y="-50" />
+                        </Offset>
+                    </Anchor>
+                </Anchors>
+                                <Layers>
+                                    <Layer level="BACKGROUND">
+                                        <Texture name="$parentLeft" file="Interface\ChatFrame\UI-ChatInputBorder-Left">
+                                            <Size>
+                                                <AbsDimension x="65" y="32"/>
+                                            </Size>
+                                            <Anchors>
+                                                <Anchor point="LEFT">
+                                                    <Offset>
+                                                        <AbsDimension x="-10" y="0"/>
+                                                    </Offset>
+                                                </Anchor>
+                                            </Anchors>
+                                            <TexCoords left="0" right="0.2539" top="0" bottom="1.0"/>
+                                        </Texture>
+                                        <Texture name="$parentRight" file="Interface\ChatFrame\UI-ChatInputBorder-Right">
+                                            <Size>
+                                                <AbsDimension x="25" y="32"/>
+                                            </Size>
+                                            <Anchors>
+                                                <Anchor point="RIGHT">
+                                                    <Offset>
+                                                        <AbsDimension x="10" y="0"/>
+                                                    </Offset>
+                                                </Anchor>
+                                            </Anchors>
+                                            <TexCoords left="0.9" right="1.0" top="0" bottom="1.0"/>
+                                        </Texture>
+                                        <Texture file="Interface\ChatFrame\UI-ChatInputBorder-Left">
+                                            <Size>
+                                                <AbsDimension x="5" y="32"/>
+                                            </Size>
+                                            <Anchors>
+                                                <Anchor point="LEFT" relativeTo="$parentLeft" relativePoint="RIGHT">
+                                                    <Offset>
+                                                        <AbsDimension x="0" y="0"/>
+                                                    </Offset>
+                                                </Anchor>
+                                                <Anchor point="RIGHT" relativeTo="$parentRight" relativePoint="LEFT">
+                                                    <Offset>
+                                                        <AbsDimension x="0" y="0"/>
+                                                    </Offset>
+                                                </Anchor>
+                                            </Anchors>
+                                            <TexCoords left="0.29296875" right="1.0" top="0" bottom="1.0"/>
+                                        </Texture>
+                                    </Layer>
+                                </Layers>
+                                <FontString inherits="ChatFontNormal"/>
+                <Scripts>
+                    <OnEscapePressed>
+                        URLFrame:Hide();
+                    </OnEscapePressed>
+                </Scripts>
+            </EditBox>
+            <Button name="URLFrameDone" inherits="OptionsButtonTemplate" text="关闭">
+                <Anchors>
+                    <Anchor point="BOTTOM">
+                        <Offset>
+                            <AbsDimension x="0" y="20"/>
+                        </Offset>
+                    </Anchor>
+                </Anchors>
+                <Scripts>
+                    <OnClick>
+                        URLFrame:Hide();
+                    </OnClick>
+                </Scripts>
+            </Button>
+        </Frames>
+    </Frame>
+    <Frame name="CT_RaidTracker_UpdateFrame" hidden="false" parent="UIParent">
+        <Scripts>
+            <OnLoad>
+                self.time = 0;
+            </OnLoad>
+            <OnUpdate>
+                CT_RaidTrackerUpdateFrame_OnUpdate(self, elapsed);
+            </OnUpdate>
+        </Scripts>
+    </Frame>
     <Frame name="CT_RaidTrackerJoinLeaveFrame" toplevel="true" frameStrata="DIALOG" movable="true" enableMouse="true" hidden="true" parent="UIParent">
         <Size>
             <AbsDimension x="350" y="160"/>
@@ -2655,7 +2655,7 @@
                 </Scripts>
                 <FontString inherits="ChatFontNormal"/>
             </EditBox>
-			<Button name="$parentSetButton" hidden="false" inherits="GameMenuButtonTemplate" text="设置">
+            <Button name="$parentSetButton" hidden="false" inherits="GameMenuButtonTemplate" text="设置">
                 <Size>
                     <AbsDimension x="80" y="27"/>
                 </Size>
@@ -2697,11 +2697,11 @@
             </OnHide>
         </Scripts>
     </Frame>
-		<GameTooltip name="CT_RTTooltip" inherits="GameTooltipTemplate" parent="UIParent" hidden="true">
-			<Scripts>
-				<OnLoad>
-					--self:SetOwner(self, "ANCHOR_LEFT");
-				</OnLoad>
-			</Scripts>
-		</GameTooltip>
+        <GameTooltip name="CT_RTTooltip" inherits="GameTooltipTemplate" parent="UIParent" hidden="true">
+            <Scripts>
+                <OnLoad>
+                    --self:SetOwner(self, "ANCHOR_LEFT");
+                </OnLoad>
+            </Scripts>
+        </GameTooltip>
 </Ui>
