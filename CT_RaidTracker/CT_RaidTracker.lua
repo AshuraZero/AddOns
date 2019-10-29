@@ -56,7 +56,7 @@ CT_RaidTracker_Options = {
     ["WhisperLog"] = "tb",
 };
 
-CT_RaidTracker_QuickLooter = {"忽略", "银行"};
+CT_RaidTracker_QuickLooter = {"忽略"};
 
 CT_RaidTracker_AutoBossChangedTime = 0;
 CT_RaidTracker_TimeOffsetStatus = nil;
@@ -749,9 +749,12 @@ function CT_RaidTracker_UpdateView() --Reviewed
                     numHidden = numHidden + 1;
                 end
             end
-            for key, val in pairs(keystoremove) do
-                table.remove(loot, val);
+            
+            --filter the hidden
+            for i=getn(keystoremove), 1, -1 do --fix sort issue as list desc
+                table.remove(loot, keystoremove[i]);
             end
+
             getglobal("CT_RaidTrackerDetailScrollFrameItems").raidid = raidid;
             getglobal("CT_RaidTrackerDetailScrollFrameItems").loot = loot;
             CT_RaidTracker_DetailScrollFrameItems_Update();
@@ -1932,6 +1935,7 @@ function CT_RaidTracker_Print(msg, r, g, b) --Reviewed
 end
 
 function CT_RaidTracker_RarityDropDown_OnLoad(this) --Reviewed
+    CT_RaidTracker_Debug("CT_RaidTracker_RarityDropDown_OnLoad");
     UIDropDownMenu_Initialize(this, CT_RaidTracker_RarityDropDown_Initialize);
     --UIDropDownMenu_SetWidth(130);
     UIDropDownMenu_SetSelectedID(CT_RaidTrackerRarityDropDown, 1);
@@ -2267,20 +2271,28 @@ function CT_RaidTracker_GetPlayerIndexes(raidid) --Reviewed
     return PlayerIndexes;
 end
 
-function CT_RaidTracker_GetPlayerGroups(raidid) --Reviewed
+function CT_RaidTracker_GetPlayerGroups(raidid) --fixed class init
     local PlayerIndexes = CT_RaidTracker_GetPlayerIndexes(raidid);
-    local PlayerGroups = { };
-    local PlayerGroup;
+    local ClassGroups = { };
+    local PlayerClass;
 
-    for k, v in pairs(PlayerIndexes) do
-        --PlayerGroup = CT_RaidTracker_PlayerGroupIndex(CT_RaidTracker_RaidLog[raidid]["PlayerInfos"][v]["class"]);
-        PlayerGroup = CT_RaidTracker_RaidLog[raidid]["PlayerInfos"][v]["class"];
-        if(not PlayerGroups[PlayerGroup]) then
-            PlayerGroups[PlayerGroup] = { };
+    if (PlayerIndexes) then
+        for k, v in pairs(PlayerIndexes) do
+            PlayerClass = CT_RaidTracker_RaidLog[raidid]["PlayerInfos"][v]["class"];
+            if(PlayerClass) then
+                ClassGroups[PlayerClass] = { };
+            end
         end
-        tinsert(PlayerGroups[PlayerGroup], v);
+
+        for k, v in pairs(PlayerIndexes) do
+            PlayerClass = CT_RaidTracker_RaidLog[raidid]["PlayerInfos"][v]["class"];
+            if(PlayerClass) then
+                tinsert(ClassGroups[PlayerClass], v);
+            end
+        end
     end
-    return PlayerGroups;
+
+    return ClassGroups;
 end
 
 function CT_RaidTracker_PlayerGroupIndex(letter) --Reviewed
@@ -3436,7 +3448,24 @@ function CT_RaidTracker_BossKill(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8,
 --        end
 end
 
-function GetFixedUpUnitName(name) --Reviewed
+function GetFixedUpUnitName(name) --modify to remove realmName
+    if name == nil then
+        return name;
+    end
+
+    local realmName = GetRealmName(name);
+    if (realmName == nil) then
+        realmName = "";
+    end
+    
+    local fixedName = GetNameWithRealmName(name);
+    if string.match(fixedName, "-") then
+        fixedName = string.gsub(fixedName, "-"..realmName,"");
+    end
+    return fixedName;
+end
+
+function GetNameWithRealmName(name) --Reviewed
     if name == nil then
         return name
     else
