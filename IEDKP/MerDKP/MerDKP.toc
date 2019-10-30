@@ -1,0 +1,10 @@
+## Interface: 11302
+## Title: MerDKP
+## Title-zhCN: |cff8000FF[IEDKP] MerDKP
+## Version: 1.13.2.20191030
+## Author: Mermaid, AshuraZero
+## Notes: 游戏内DKP查询
+## SavedVariables: MerDKPDB
+dkp_list.lua
+MerDKP.lua
+MerDKP.xml
