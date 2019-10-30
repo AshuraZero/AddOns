@@ -1,7 +1,6 @@
 ﻿CT_RaidTracker_ItemOptions_selected = nil;
 
 function CT_RaidTracker_ItemOptions_ScrollBar_Update() -- Reviewed
-    CT_RaidTracker_Debug("CT_RaidTracker_ItemOptions_ScrollBar_Update", "1");
     table.sort(CT_RaidTracker_ItemOptions, function(a1, a2) return a1["id"] < a2["id"]; end);
   local line;
   local lineplusoffset;

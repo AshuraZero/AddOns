@@ -91,7 +91,7 @@
                 </FontString>
             </Layer>
             <Layer level="OVERLAY">
-                <FontString name="$parentDeleteText" justifyH="RIGHT" text="[X]" inherits="QuestFont">
+                <FontString name="$parentDeleteText" inherits="QuestFont" justifyH="RIGHT" text="[X]" >
                     <Anchors>
                         <Anchor point="RIGHT">
                             <Offset>
@@ -248,7 +248,7 @@
                 </FontString>
             </Layer>
             <Layer level="OVERLAY">
-                <FontString name="$parentDeleteText" justifyH="RIGHT" text="[X]" inherits="QuestFont">
+                <FontString name="$parentDeleteText" inherits="QuestFont" justifyH="RIGHT" text="[X]" >
                     <Anchors>
                         <Anchor point="RIGHT">
                             <Offset>
@@ -507,7 +507,7 @@
                 </Texture>
             </Layer>
             <Layer level="OVERLAY">
-                <FontString name="$parentDescription" justifyH="LEFT" justifyV="TOP" inherits="QuestFont">
+                <FontString name="$parentDescription" inherits="QuestFont" justifyH="LEFT" justifyV="TOP">
                     <Size>
                         <AbsDimension x="215" y="27"/>
                     </Size>
@@ -544,7 +544,7 @@
                         </Anchor>
                     </Anchors>
                 </FontString>
-                <FontString name="$parentDeleteText" justifyH="RIGHT" text="[X]" inherits="QuestFont">
+                <FontString name="$parentDeleteText" inherits="QuestFont" justifyH="RIGHT" text="[X]" >
                     <Anchors>
                         <Anchor point="LEFT" relativePoint="RIGHT">
                             <Offset>
@@ -1191,7 +1191,7 @@
                         </Anchors>
                         <Layers>
                             <Layer level="BACKGROUND">
-                                <FontString name="CT_RaidTrackerParticipantsText" justifyH="LEFT" text="参与者" inherits="QuestTitleFont">
+                                <FontString name="CT_RaidTrackerParticipantsText" inherits="QuestTitleFont" justifyH="LEFT" text="参与者">
                                     <Size>
                                         <AbsDimension x="285" y="0"/>
                                     </Size>
@@ -1206,7 +1206,7 @@
                             </Layer>
                         </Layers>
                         <Frames>
-                            <Button name="CT_RaidTrackerTab1" inherits="CT_RaidTrackerTabTemplate" text="玩家名称" id="1">
+                            <Button name="CT_RaidTrackerTab1" inherits="CT_RaidTrackerTabTemplate" text="玩家名" id="1">
                                 <Size>
                                     <AbsDimension x="75" y="24"/>
                                 </Size>
@@ -1412,7 +1412,7 @@
                         </Anchors>
                         <Layers>
                             <Layer level="BACKGROUND">
-                                <FontString name="CT_RaidTrackerPlayerText" justifyH="LEFT" text="" inherits="QuestTitleFont">
+                                <FontString name="CT_RaidTrackerPlayerText" inherits="QuestTitleFont" justifyH="LEFT" text="">
                                     <Size>
                                         <AbsDimension x="285" y="0"/>
                                     </Size>
@@ -2017,7 +2017,7 @@
                 </Anchors>
                 <Scripts>
                     <OnClick>
-                        CT_RaidTracker_Delete(self, self:GetParent().id, self:GetParent().type, self:GetParent().typeid, self);
+                        CT_RaidTracker_Delete(self, self:GetParent().id, self:GetParent().type, self:GetParent().typeid);
                         self:GetParent():Hide();
                     </OnClick>
                 </Scripts>
