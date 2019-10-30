@@ -1,13 +1,10 @@
---By Mermaid 2007-11-16
 IEPrefix = "#IEDKP#";
-
-
 
 MerDKP = {}
 
 local M = MerDKP
-M.author = "Mermaid"
-M.version = "3.0.2"
+M.author = "AshuraZero"
+M.version = "1.13.2"
 
 if Mer_DKP_Table then
         MerDKP_Table = {}
@@ -18,29 +15,29 @@ if Mer_DKP_Table then
         end
 end
 
-local function DropDownMember(id, name, dkp)
+local function DropDownMember(self, id, name, dkp)
 	local id = MerDKP.tmp.id
 	if not id or not MerDKP.db[id] then return end
-	if this.value == "WHISPER" then
+	if self.value == "WHISPER" then
 		SendChatMessage(IEPrefix.."<"..MerDKP.db[id].title.."> "..name.."："..dkp.." DKP", "WHISPER", nil, name)
 	else
-		SendChatMessage("<"..MerDKP.db[id].title.."> "..name.."："..dkp.." DKP", this.value)
+		SendChatMessage("<"..MerDKP.db[id].title.."> "..name.."："..dkp.." DKP", self.value)
 	end
 end
 
-local function DropDownMinDKP()
-	local id = this:GetID()
+local function DropDownMinDKP(self)
+	local id = self:GetID()
 	UIDropDownMenu_SetSelectedID(MerDKPFrameListDropDownMinDKP, id)
-	MerDKP.tmp.DkpMin = this.value
+	MerDKP.tmp.DkpMin = self.value
 	MerDKP:InitDKP()
 end
-function DropDownChannel()
-	local id = this:GetID()
+function DropDownChannel(self)
+	local id = self:GetID()
 	UIDropDownMenu_SetSelectedID(MerDKPFrameListDropDownChannel, id)
-	MerDKP.tmp.channel = this.value
-	if (this.value == "RAID" and GetNumRaidMembers() < 1)
-		or ((this.value == "GUILD" or this.value == "OFFICER") and not IsInGuild() )
-		or (this.value == "PARTY" and GetNumPartyMembers() < 1) then
+	MerDKP.tmp.channel = self.value
+	if (self.value == "RAID" and GetNumGroupMembers() < 1)
+		or ((self.value == "GUILD" or self.value == "OFFICER") and not IsInGuild() )
+		or (self.value == "PARTY" and GetNumGroupMembers() < 1) then
 		MerDKPFrameListSendButton:Disable()
 	else
 		MerDKPFrameListSendButton:Enable()
@@ -89,8 +86,8 @@ M.tmp.tbc = {
 	{text = "布甲", "牧师","法师","术士",},
 	{text = "皮甲", "潜行者","德鲁伊",},
 	{text = "锁甲", "猎人","萨满祭司",},
-	{text = "板甲", "战士","圣骑士","死亡骑士",},
-	{text = "所有职业", "圣骑士","战士","牧师","法师","萨满祭司","德鲁伊","潜行者","猎人","术士","死亡骑士",},
+	{text = "板甲", "战士","圣骑士",},
+	{text = "所有职业", "圣骑士","战士","牧师","法师","萨满祭司","德鲁伊","潜行者","猎人","术士",},
 }
 M.tmp.classes = {
 	["战士"] 	= { hex = "|cffA39402", r = 0.78, g = 0.61, b = 0.43 },
@@ -102,7 +99,6 @@ M.tmp.classes = {
 	["牧师"] 	= { hex = "|cffDFDFDF", r = 0.95, g = 0.95, b = 0.95 },
 	["术士"] 	= { hex = "|cff8D54FB", r = 0.58, g = 0.51, b = 0.79 },
 	["圣骑士"] 	= { hex = "|cffFF71A8", r = 0.96, g = 0.55, b = 0.73 },
-	["死亡骑士"] 	= { hex = "|cffC41E3A", r = 0.77, g = 0.12, b = 0.23 },
 }
 M.tmp.initclass = {
 	["战士"] 	= "战士",
@@ -114,7 +110,6 @@ M.tmp.initclass = {
 	["牧师"] 	= "牧师",
 	["术士"] 	= "术士",
 	["圣骑士"] 	= "圣骑士",
-	["死亡骑士"]    = "死亡骑士",
 	---自己添加要初始化的职业,如 ["MS"] = "牧师",
 }
 M.loc = {
@@ -160,7 +155,7 @@ M.DROPMENU = {
 		{ text = "普通频道", value = "SAY", func = DropDownMember,},
 	--	{ text = "修改", value = "CLASS", func = function(id,name,dkp) MerDKP_OpenPopupFrame("edit", MerDKP.tmp.id, name, this.value, dkp) end, },
 	  --  { text = "刪除", value = "CLASS", func = function(id,name,dkp) MerDKP_OpenPopupFrame("delete", MerDKP.tmp.id, name, this.value, dkp, "确定刪除?") end, },
-		{ text = "取消", func = function() HideDropDownMenu(1) end, },
+		{ text = "取消", func = function(self) HideDropDownMenu(1) end, },
 	},
 	checkbutton = {
 		{ text = "开启密语查询", key = "enabled", tooltipText = "开启后，别人可以通过发送特定的密语命令来向你查询分数",},
@@ -176,18 +171,18 @@ M.DROPMENU = {
 		datafrom = {"网站系统","本地缓存","公共注释","官员注释"},
 		{ text = "设置最大发送数目", Min = 1, Max = 100, Step = 1, key = "Outputmax",
 		  tooltipText = "设置一次发送的最大数目,以免发送太多断线",
-		  Onshow = function() this:SetValue(MerDKP.opt.Outputmax) end,
-		  OnValueChang = function()
-			getglobal(this:GetName().."Value"):SetText(this:GetValue())
-			MerDKP.opt.Outputmax = this:GetValue()
+		  Onshow = function(self) self:SetValue(MerDKP.opt.Outputmax) end,
+		  OnValueChang = function(self)
+			getglobal(self:GetName().."Value"):SetText(self:GetValue())
+			MerDKP.opt.Outputmax = self:GetValue()
 		  end,
 		},
 		--[[{ text = "迷你地图按钮位置", Min = 0, Max = 360, Step = 1, key = "Minimap",
 		  tooltipText = "设置迷你地图按钮的位置",
-		  Onshow = function() this:SetValue(MerDKP.opt.Minimap) end,
-		  OnValueChang = function()
-			getglobal(this:GetName().."Value"):SetText(this:GetValue())
-			--MerDKP.opt.Minimap = this:GetValue()
+		  Onshow = function(self) self:SetValue(MerDKP.opt.Minimap) end,
+		  OnValueChang = function(self)
+			getglobal(this:GetName().."Value"):SetText(self:GetValue())
+			--MerDKP.opt.Minimap = self:GetValue()
 			if MerDKP.opt.Minimap == 0 then
 				MerDKPMinimapButton:Hide()
 			else
@@ -198,10 +193,10 @@ M.DROPMENU = {
 		},--]]
 		{ text = "数据信息来源设置", Min = 1, Max = 4, Step = 1, key = "Datafrom",
 		  tooltipText = "设置数据来源，网站:本地计算机:公共注释:官员注释",
-		  Onshow = function() this:SetValue(MerDKP.opt.Datafrom) end,
-		  OnValueChang = function()
-			getglobal(this:GetName().."Value"):SetText(MerDKP.DROPMENU.slider.datafrom[this:GetValue()])
-			MerDKP.opt.Datafrom = this:GetValue()
+		  Onshow = function(self) self:SetValue(MerDKP.opt.Datafrom) end,
+		  OnValueChang = function(self)
+			getglobal(self:GetName().."Value"):SetText(MerDKP.DROPMENU.slider.datafrom[self:GetValue()])
+			MerDKP.opt.Datafrom = self:GetValue()
 		  end,
 		},
 	},
@@ -386,7 +381,7 @@ function M:CHAT_MSG_SYSTEM(arg1)
 end
 
 function M:RAID_ROSTER_UPDATE()
-	local numMembers = GetNumRaidMembers()
+	local numMembers = GetNumGroupMembers()
 	local toggle
 	if numMembers < 1 then
 		for k in pairs(self.tmp.raidmembers) do
@@ -652,14 +647,14 @@ function MerDKP_ColorValue(val)
 end
 
 
-function MerDKPFrame_DropDownDkpType_Init()
+function MerDKPFrame_DropDownDkpType_Init(self)
 	local info
 	for i = 1, #MerDKP.db do
 		info = {}
 		info.text = MerDKP.db[i].title
 		info.value = MerDKP.db[i].title
-		info.func = function()
-			local id = this:GetID()
+		info.func = function(self)
+			local id = self:GetID()
 			UIDropDownMenu_SetSelectedID(MerDKPFrameListColumnHeader3, id)
 			MerDKP.tmp.id = id
 			MerDKP:InitDKP()
@@ -667,13 +662,13 @@ function MerDKPFrame_DropDownDkpType_Init()
 		UIDropDownMenu_AddButton(info)
 	end
 end
-function MerDKPFrame_DropDownMinDKP_Init()
+function MerDKPFrame_DropDownMinDKP_Init(self)
 	for _, v in ipairs(MerDKP.DROPMENU.dkpscore) do
 		v.checked = nil
 		UIDropDownMenu_AddButton(v)
 	end
 end
-function MerDKPFrame_DropDownChannel_Init()
+function MerDKPFrame_DropDownChannel_Init(self)
 	for _, v in ipairs(MerDKP.DROPMENU.channel) do
 		v.checked = nil
 		UIDropDownMenu_AddButton(v)
@@ -683,17 +678,17 @@ end
 function M:DkpListButton_OnClick(button)
 	if button == "RightButton" then
 		HideDropDownMenu(1)
-		MerDKPFrameDropDown.initialize = function()
+		MerDKPFrameDropDown.initialize = function(self)
 			for _, v in ipairs(MerDKP.DROPMENU.member) do
 				if v.isTitle then
-					v.text = this.name
+					v.text = self.name
 				end
 				if v.value then
-					v.arg1 = this.name
-					v.arg2 = this.dkp
+					v.arg1 = self.name
+					v.arg2 = self.dkp
 				end
 				if v.value == "CLASS" then
-					v.value = this.class
+					v.value = self.class
 					UIDropDownMenu_AddButton(v)
 					v.value = "CLASS"
 				else
@@ -707,7 +702,7 @@ function M:DkpListButton_OnClick(button)
 end
 
 function M:RaidCheckButton_OnClick()
-	if this:GetChecked() then
+	if MerDKPFrameListRaidCheckButton:GetChecked() then
 		MerDKPFrameListWhisperButton:Show()
 		MerDKPFrame:RegisterEvent("CHAT_MSG_SYSTEM")
 		MerDKPFrame:RegisterEvent("RAID_ROSTER_UPDATE")
@@ -739,40 +734,40 @@ function M:ColumnHeader_OnClick(key)
 	self:UpdateList()
 end
 
-function MerDKPFrame_DkpClass_OnLoad(id)
+function MerDKPFrame_DkpClass_OnLoad(self, id)
 	if MerDKP.tmp.tbc[5][id] then
 		local color = MerDKP.tmp.classes[ MerDKP.tmp.tbc[5][id] ] or NORMAL_FONT_COLOR
-		getglobal(this:GetName().."Text"):SetTextColor(color.r, color.g, color.b)
-		getglobal(this:GetName().."Text"):SetText(MerDKP.tmp.tbc[5][id])
-		this.class = MerDKP.tmp.tbc[5][id]
-		this:Show()
+		getglobal(self:GetName().."Text"):SetTextColor(color.r, color.g, color.b)
+		getglobal(self:GetName().."Text"):SetText(MerDKP.tmp.tbc[5][id])
+		self.class = MerDKP.tmp.tbc[5][id]
+		self:Show()
 	else
-		this:Hide()
+		self:Hide()
 	end
 end
-function MerDKPFrame_DkpClass_OnClick(id)
-	if this:GetChecked() then
-		if not MerDKP.tmp.list_class[this.class] then
-			MerDKP.tmp.list_class[this.class] = this.class
+function MerDKPFrame_DkpClass_OnClick(self, id)
+	if self:GetChecked() then
+		if not MerDKP.tmp.list_class[self.class] then
+			MerDKP.tmp.list_class[self.class] = self.class
 		end
 	else
-		MerDKP.tmp.list_class[this.class] = nil
+		MerDKP.tmp.list_class[self.class] = nil
 	end
 	MerDKP:InitDKP()
 end
-function MerDKPFrameClothButton_OnLoad(id)
+function MerDKPFrameClothButton_OnLoad(self, id)
 	if MerDKP.tmp.tbc[id] then
-		getglobal(this:GetName().."Text"):SetText(MerDKP.tmp.tbc[id].text)
-		this:Show()
+		getglobal(self:GetName().."Text"):SetText(MerDKP.tmp.tbc[id].text)
+		self:Show()
 	else
-		this:Hide()
+		self:Hide()
 	end
 end
-function MerDKPFrameClothButton_OnClick(id)
+function MerDKPFrameClothButton_OnClick(self, id)
 	for k in pairs(MerDKP.tmp.list_class) do
 		MerDKP.tmp.list_class[k] = nil
 	end
-	if this:GetChecked() then
+	if self:GetChecked() then
 		for _, v in ipairs(MerDKP.tmp.tbc[id]) do
 			MerDKP.tmp.list_class[v] = v
 		end
@@ -950,9 +945,9 @@ end
 
 StaticPopupDialogs["MerDKP_ConfirmSend"] = {
 	text = MerDKP.loc.sendText,
-	button1 = TEXT(YES),
-	button2 = TEXT(NO),
-	OnAccept = function()
+	button1 = ACCEPT,
+	button2 = CANCEL,
+	OnAccept = function(self)
 		MerDKP:SendButton_OnClick(true)
 	end,
 	timeout = 0,
@@ -961,12 +956,12 @@ StaticPopupDialogs["MerDKP_ConfirmSend"] = {
 }
 StaticPopupDialogs["MerDKP_BatEditDkp"] = {
 	text = MerDKP.loc.bateditText,
-	button1 = TEXT(ACCEPT),
-	button2 = TEXT(CANCEL),
+	button1 = ACCEPT,
+	button2 = CANCEL,
 	hasEditBox = 1,
 	maxLetters = 12,
-	OnAccept = function()
-		local dkp = getglobal(this:GetParent():GetName().."EditBox"):GetText()
+	OnAccept = function(self)
+		local dkp = getglobal(self:GetParent():GetName().."EditBox"):GetText()
 		dkp = tonumber(dkp) or 0
 		dkp = tonumber(format("%.2f",dkp))
 		if not MerDKP.tmp.id or not MerDKP.db[MerDKP.tmp.id] then
@@ -981,19 +976,19 @@ StaticPopupDialogs["MerDKP_BatEditDkp"] = {
 			end
 		end
 		MerDKP:InitDKP()
-		this:GetParent():Hide()
+		self:GetParent():Hide()
 	end,
-	OnShow = function()
-		getglobal(this:GetName().."EditBox"):SetFocus();
+	OnShow = function(self)
+		getglobal(self:GetName().."EditBox"):SetFocus();
 	end,
-	OnHide = function()
+	OnHide = function(self)
 		if ( ChatFrameEditBox:IsVisible() ) then
 			ChatFrameEditBox:SetFocus();
 		end
-		getglobal(this:GetName().."EditBox"):SetText("");
+		getglobal(self:GetName().."EditBox"):SetText("");
 	end,
-	EditBoxOnEnterPressed = function()
-		local dkp = getglobal(this:GetParent():GetName().."EditBox"):GetText()
+	EditBoxOnEnterPressed = function(self)
+		local dkp = getglobal(self:GetParent():GetName().."EditBox"):GetText()
 		dkp = tonumber(dkp) or 0
 		dkp = tonumber(format("%.2f",dkp))
 		if not MerDKP.tmp.id or not MerDKP.db[MerDKP.tmp.id] then
@@ -1008,10 +1003,10 @@ StaticPopupDialogs["MerDKP_BatEditDkp"] = {
 			end
 		end
 		MerDKP:InitDKP()
-		this:GetParent():Hide()
+		self:GetParent():Hide()
 	end,
-	EditBoxOnEscapePressed = function()
-		this:GetParent():Hide();
+	EditBoxOnEscapePressed = function(self)
+		self:GetParent():Hide();
 	end,
 	timeout = 0,
 	whileDead = 1,
@@ -1019,8 +1014,8 @@ StaticPopupDialogs["MerDKP_BatEditDkp"] = {
 }
 StaticPopupDialogs["MerDKP_GuildRosterDKP"] = {
 	text = MerDKP.loc.guildrosterdkp,
-	button1 = TEXT(YES),
-	button2 = TEXT(NO),
+	button1 = ACCEPT,
+	button2 = CANCEL,
 	OnAccept = function()
 		MerDKP.db = MerDKP:GuildRoster_InitDKP() or {}
 		MerDKP:InitDataFrom(MerDKP.opt.Datafrom)

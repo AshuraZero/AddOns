@@ -24,5 +24,5 @@ ML_RaidTracker_Custom_Options = {
 	["WipePercent"] = 0.4899999797344208,
 	["MLdkp"] = 1,
 	["Wipe"] = 1,
-	["MaxLevel"] = 70,
+	["MaxLevel"] = 60,
 }

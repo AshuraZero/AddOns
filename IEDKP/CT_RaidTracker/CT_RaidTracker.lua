@@ -11,12 +11,12 @@ CT_RaidTracker_Online = { };
 if (not ieReloadUI) then
 	StaticPopupDialogs["IE_RELOADUI"] = {
 		text = "确定|cffff7000重新载入界面|r?",
-		button1 = TEXT(OKAY),
-		button2 = TEXT(CANCEL),
-		OnAccept = function()		
+		button1 = ACCEPT,
+		button2 = CANCEL,
+		OnAccept = function(self)		
 			ReloadUI();
 		end,
-		OnCancel = function()
+		OnCancel = function(self)
 		end,
 		timeout = 30,
 		showAlert = 1,
@@ -28,31 +28,8 @@ if (not ieReloadUI) then
 	end
 end
 
-function GetCurrentDungeonDifficulty()
-	local SysDif = 1;	--小队：1=普通 2=英雄		团队：1=10人  2=25人  3=10人(英雄)  4=25人(英雄)
-	local EQDif = 0;	--返回值：1=普通  2=英雄  0=未知
-	if UnitInRaid("player") then
-		SysDif = GetRaidDifficulty();
-		if not SysDif then return 0;end
-		if SysDif == 1 or SysDif == 2 then
-			EQDif = 1;
-		else
-			EQDif = 2;
-		end
-	elseif GetNumPartyMembers() > 0 then
-		SysDif = GetDungeonDifficulty();
-		if not SysDif then return 0;end
-		if SysDif == 1 then
-			EQDif = 1;
-		else
-			EQDif = 2;
-		end
-	end
-	return EQDif;
-end
-
-CT_RaidTracker_Version = "WOLK1.0 beta14";--GetAddOnMetadata("CT_RaidTracker", "Version");
-CT_RaidTracker_Revision = "1576";--GetAddOnMetadata("CT_RaidTracker", "X-Revision");
+CT_RaidTracker_Version = "Classic 1.13.2";
+CT_RaidTracker_Revision = "20191030";
 CT_RaidTracker_Events = { };
 CT_RaidTracker_RaidLog = { };
 CT_RaidTracker_GetCurrentRaid = nil;
@@ -87,11 +64,6 @@ CT_RaidTracker_RarityTable = {
 	["ffe6cc80"] = 7,
 };
 
-CT_RaidTracker_SexTable = {
-	[1] = '男性',
-	[2] = '女性',
-	[3] = '中性',
-}
 CT_RaidTracker_ClassTable = {
 	["WARRIOR"] = '1',
 	["ROGUE"] = '4',
@@ -115,18 +87,10 @@ CT_RaidTracker_RaceTable = {
 	["Scourge"] = '亡灵', --Undead
 	["Orc"] = '兽人',
 	["Tauren"] = '牛头人',
-	["Draenei"] = '德莱尼',
-	["BloodElf"] = '血精灵',
 	["UNKNOW"] = '未知种族',
 }
 
-CT_RaidTracker_DifficultyTable = {
-    [1] = "普通模式",
-    [2] = "英雄模式",
-    [3] = "史诗模式",
-}
 CT_RaidTracker_Options = {
-	["NewRaidOnNewZone"] = 0,
 	["24hFormat"] = 1,
 	["AutoZone"] = 1,
 	["SaveTooltips"] = 1,
@@ -137,20 +101,11 @@ CT_RaidTracker_Options = {
 	["AutoBossBoss"] = "",
 	["TimeSync"] = 1,
 	["AutoBoss"] = 2,
-	["LogBattlefield"] = 0,
-	["LogGroup"] = 0,
-	["WipePercent"] = 0.5,
-	["AutoGroup"] = 0,
 	["ExportFormat"] = 0,
-	["WipeCoolDown"] = 150,
-	["GuildSnapshot"] = 0,
 	["AutoBossChangeMinTime"] = 120,
-	["MaxLevel"] = 70,
+	["MaxLevel"] = 60,
 	["MinQuality"] = 5,
-	["NextBoss"] = 0,
-	["SaveExtendedPlayerInfo"] = 1,
 	["GetDkpValue"] = 5,
-	["Wipe"] = 0,
 	["LogAttendees"] = 0,
 	["AutoWhisper"] = 1,
 	["FilterWhisper"] = 0,
@@ -160,7 +115,6 @@ CT_RaidTracker_QuickLooter = {"分解_", "仓库_"};
 
 
 CT_RaidTracker_AutoBossChangedTime = 0;
-CT_RaidTracker_LastWipe = 0;
 CT_RaidTracker_TimeOffsetStatus = nil;
 CT_RaidTracker_TimeOffset = 0;
 CT_RaidTracker_CustomZoneTriggers = {};
@@ -169,7 +123,6 @@ CT_RaidTracker_Temp_Boss = {};
 
 function CT_RaidTracker_RunVersionFix()
 	local debugflagpre = CT_RaidTracker_Options["DebugFlag"];
-	--CT_RaidTracker_Options["DebugFlag"] = 1;
 	if(not CT_RaidTracker_VersionFix) then
 		CT_RaidTracker_Debug("VersionFix", 1);
 		for k, v in pairs(CT_RaidTracker_RaidLog) do
@@ -190,11 +143,9 @@ function CT_RaidTracker_RunVersionFix()
 		CT_RaidTracker_VersionFix = 1;
 	end
 	if(CT_RaidTracker_VersionFix == 1) then
-		CT_RaidTracker_Debug("VersionFix", 2);
 		CT_RaidTracker_VersionFix = 2; -- Do not remove tooltips any longer
 	end
 	if(CT_RaidTracker_VersionFix == 2) then
-		CT_RaidTracker_Debug("VersionFix", 3);
 		if(CT_RaidTracker_MinQuality) then CT_RaidTracker_Options["MinQuality"] = CT_RaidTracker_MinQuality; CT_RaidTracker_Debug("VersionFix", 3, "CT_RaidTracker_MinQuality", CT_RaidTracker_MinQuality); end
 		if(CT_RaidTracker_AutoRaidCreation) then CT_RaidTracker_Options["AutoRaidCreation"] = CT_RaidTracker_AutoRaidCreation; CT_RaidTracker_Debug("VersionFix", 3, "CT_RaidTracker_AutoRaidCreation", CT_RaidTracker_AutoRaidCreation); end
 		if(CT_RaidTracker_GroupItems) then CT_RaidTracker_Options["GroupItems"] = CT_RaidTracker_GroupItems; CT_RaidTracker_Debug("VersionFix", 3, "CT_RaidTracker_GroupItems", CT_RaidTracker_GroupItems); end
@@ -230,7 +181,6 @@ function CT_RaidTracker_RunVersionFix()
 		CT_RaidTracker_VersionFix = 3;
 	end
 	if(CT_RaidTracker_VersionFix == 3) then
-		CT_RaidTracker_Debug("VersionFix", 4);
 		for k, v in pairs(CT_RaidTracker_RaidLog) do
 			if(CT_RaidTracker_RaidLog[k]["BossKills"]) then
 				for k2, v2 in pairs(CT_RaidTracker_RaidLog[k]["BossKills"]) do
@@ -246,19 +196,11 @@ function CT_RaidTracker_RunVersionFix()
 		CT_RaidTracker_VersionFix = 4;
 	end
 	if(CT_RaidTracker_VersionFix == 4) then
-		CT_RaidTracker_Options["Wipe"] = 0;  							-- ask if the group dies if it is a wipe, if all are dead it will not ask
-		CT_RaidTracker_Options["WipePercent"] = 0.5;    		-- how many prozent of group must be dead to ask
-		CT_RaidTracker_Options["WipeCoolDown"] = 150;			-- how long should death be ignored after a wipe count (seconds)
-	--xd	CT_RaidTracker_Options["NextBoss"] = 1;  				-- ask on boss kill whats the next boss is
-		
 		CT_RaidTracker_VersionFix = 5;
 	end
 	
 	if (CT_RaidTracker_VersionFix == 5) then
---xd		CT_RaidTracker_Options["MaxLevel"] = 80;  -- If player lvl is maxlevel it will not be exported to mldkp
-		CT_RaidTracker_Options["MLdkp"] = 1; 			-- Export für mldkp
-		CT_RaidTracker_Options["GuildSnapshot"] = 0; -- Snapshots the guildroster on bosskill
-		
+		CT_RaidTracker_Options["MLdkp"] = 1; 			-- Export for mldkp
 		CT_RaidTracker_VersionFix = 6;
 	end;
 
@@ -279,7 +221,6 @@ function CT_RaidTracker_RunVersionFix()
 	end;
 	
 	if (CT_RaidTracker_VersionFix == 7) then
-		CT_RaidTracker_Options["NewRaidOnNewZone"] = 0;
 		CT_RaidTracker_Options["AutoBossChangeMinTime"] = 120;
 		--,32227,32228,32229,32230,32231,32249
 		for _,idtoadd in pairs({29434,22450}) do
@@ -381,7 +322,7 @@ function ML_RaidTracker_LoadCustomOptions()
 	end;
 end;
 
-function CT_RaidTracker_GetTime(dDate)
+function CT_RaidTracker_GetTime(dDate) --Reviewed
 	if ( not dDate ) then
 		return nil;
 	end
@@ -404,7 +345,7 @@ function CT_RaidTracker_GetTime(dDate)
 	return timestamp;
 end
 
-function CT_RaidTracker_SortRaidTable()
+function CT_RaidTracker_SortRaidTable() --Reviewed
 	table.sort(
 		CT_RaidTracker_RaidLog,
 		function(a1, a2)
@@ -415,8 +356,8 @@ function CT_RaidTracker_SortRaidTable()
 	);
 end
 
-function CT_RaidTracker_GameTimeFrame_Update(self)
-	CT_RaidTracker_GameTimeFrame_Update_Original(self);
+function CT_RaidTracker_GameTimeFrame_Update() --Reviewed
+	CT_RaidTracker_GameTimeFrame_Update_Original();
 	local hour, minute = GetGameTime();
 	local time = ((hour * 60) + minute) * 60;
 	if(not CT_RaidTracker_TimeOffsetStatus) then
@@ -448,7 +389,7 @@ function CT_RaidTracker_GameTimeFrame_Update(self)
 	end
 end
 
-function CT_RaidTracker_GetGameTimeOffset()
+function CT_RaidTracker_GetGameTimeOffset() --Reviewed
 	if(CT_RaidTracker_TimeOffsetStatus) then
 		return;
 	end
@@ -459,7 +400,7 @@ function CT_RaidTracker_GetGameTimeOffset()
 	return;
 end
 
-function CT_RaidTracker_GetRaidTitle(id, hideid, showzone, shortdate)
+function CT_RaidTracker_GetRaidTitle(id, hideid, showzone, shortdate) --Reviewed
 	local RaidTitle = "";
 	if ( CT_RaidTracker_RaidLog[id] and CT_RaidTracker_RaidLog[id].key ) then
 		local _, _, mon, day, year, hr, min, sec = string.find(CT_RaidTracker_RaidLog[id].key, "(%d+)/(%d+)/(%d+) (%d+):(%d+):(%d+)");
@@ -494,7 +435,7 @@ function CT_RaidTracker_GetRaidTitle(id, hideid, showzone, shortdate)
 	return "";
 end
 
-function CT_RaidTracker_GetLootId(raidid, sPlayer, sItem, sTime)
+function CT_RaidTracker_GetLootId(raidid, sPlayer, sItem, sTime) --Reviewed
 	CT_RaidTracker_Debug("CT_RaidTracker_GetLootId", raidid, sPlayer, sItem, sTime);
 	local lootid = nil;
 	for key, val in pairs(CT_RaidTracker_RaidLog[raidid]["Loot"]) do
@@ -515,19 +456,18 @@ function CT_RaidTracker_Update()
         --CT_RaidTrackerFrameSnapshotButton:Disable();
     end       
     
-    if((GetNumRaidMembers() == 0) and (GetNumPartyMembers() == 0)) then
-        CT_RaidTrackerFrameNewRaidButton:Disable();
-    else
-	    if((GetNumRaidMembers() > 0)) then
+	if(IsInRaid() == true) then
         CT_RaidTrackerFrameNewRaidButton:Enable();
-      else
-		    if((GetNumPartyMembers() > 0) and (CT_RaidTracker_Options["LogGroup"] == 1)) then
-	        CT_RaidTrackerFrameNewRaidButton:Enable();
-      	else
-	        CT_RaidTrackerFrameNewRaidButton:Disable();
-      	end;
-      end;
+
+		if((GetNumGroupMembers() > 0)) then
+			CT_RaidTrackerFrameNewRaidButton:Enable();
+		else
+			CT_RaidTrackerFrameNewRaidButton:Disable();
+		end;
+    else
+        CT_RaidTrackerFrameNewRaidButton:Disable();
     end
+
     
     if( CT_RaidTracker_GetCurrentRaid ) then
         CT_RaidTrackerFrameNewRaidButton:Disable();
@@ -673,18 +613,19 @@ function CT_RaidTracker_Update()
 	end
 end
 
-function CT_RaidTracker_SelectRaid(id)
+function CT_RaidTracker_SelectRaid(id) --Reviewed
 	local raidid = id + FauxScrollFrame_GetOffset(CT_RaidTrackerListScrollFrame);
 	CT_RaidTracker_GetPage();
 	CT_RaidTrackerFrame.selected = raidid;
 	--if ( getn(CT_RaidTracker_RaidLog[raidid]["Loot"]) == 0 or ( CT_RaidTrackerFrame.type and CT_RaidTrackerFrame.type ~= "items" ) ) then
 		CT_RaidTrackerFrame.type = "events";
-	--end    
+	--end
+
 	CT_RaidTracker_UpdateView();
 	CT_RaidTracker_Update();
 end
 
-function CT_RaidTracker_ShowInfo(player)
+function CT_RaidTracker_ShowInfo(player) --Reviewed
 	CT_RaidTracker_GetPage();
 
 	CT_RaidTrackerFrame.type = "player";
@@ -695,7 +636,7 @@ function CT_RaidTracker_ShowInfo(player)
 	CT_RaidTracker_UpdateView();
 end
 
-function CT_RaidTracker_Delete(id, type, typeid)
+function CT_RaidTracker_Delete(self, id, type, typeid)
 	CT_RaidTracker_Debug("DELETE", type, typeid);
 	if ( type == "raid" ) then
 		table.remove(CT_RaidTracker_RaidLog, id);
@@ -711,9 +652,9 @@ function CT_RaidTracker_Delete(id, type, typeid)
 		end
 	elseif ( type == "item" ) then
 		local itemplayer, itemitemid, itemtime;
-		itemplayer = this:GetParent().itemplayer;
-		itemitemid = this:GetParent().itemitemid;
-		itemtime = this:GetParent().itemtime;
+		itemplayer = self:GetParent().itemplayer;
+		itemitemid = self:GetParent().itemitemid;
+		itemtime = self:GetParent().itemtime;
 		local lootid = CT_RaidTracker_GetLootId(id, itemplayer, itemitemid, itemtime);
 		table.remove(CT_RaidTracker_RaidLog[id]["Loot"], lootid);
 	elseif ( type == "player" ) then
@@ -749,7 +690,7 @@ function CT_RaidTracker_Delete(id, type, typeid)
 	CT_RaidTracker_UpdateView();
 end
 
-function CT_RaidTracker_Sort(tbl, method, way)
+function CT_RaidTracker_Sort(tbl, method, way) --Reviewed
 	if ( way == "asc" ) then
 		table.sort(
 			tbl,
@@ -768,7 +709,7 @@ function CT_RaidTracker_Sort(tbl, method, way)
 	return tbl;
 end
 
-function CT_RaidTracker_SortPlayerRaids(id)
+function CT_RaidTracker_SortPlayerRaids(id) --Reviewed
 	if ( CT_RaidTrackerFrame.type == "itemhistory" ) then
 		local table = { "name", "looter" };
 
@@ -792,7 +733,7 @@ function CT_RaidTracker_SortPlayerRaids(id)
 	CT_RaidTracker_UpdateView();
 end
 
-function CT_RaidTracker_CompareItems(a1, a2)
+function CT_RaidTracker_CompareItems(a1, a2) --Reviewed
 	-- This function could probably be better, but I can't think of any better way while still maintaining functionality
 
 	local filter, method, way = CT_RaidTracker_SortOptions["itemfilter"], CT_RaidTracker_SortOptions["itemmethod"], CT_RaidTracker_SortOptions["itemway"];
@@ -855,7 +796,7 @@ function CT_RaidTracker_CompareItems(a1, a2)
 	end
 end
 
-function CT_RaidTracker_SortItem(tbl, method, way)
+function CT_RaidTracker_SortItem(tbl, method, way) --Reviewed
     table.sort(
         tbl,
         CT_RaidTracker_CompareItems
@@ -867,7 +808,7 @@ function CT_RaidTracker_SortItem(tbl, method, way)
     return newtable;
 end
 
-function CT_RaidTracker_SortItemBy(id)
+function CT_RaidTracker_SortItemBy(id) --Reviewed
 	local table = { "name", "looted", "looter", "rarity" };
 	local prefix = "";
 	if ( CT_RaidTrackerFrame.type == "playeritems" ) then
@@ -886,7 +827,7 @@ function CT_RaidTracker_SortItemBy(id)
 	CT_RaidTracker_UpdateView();
 end
 
-function CT_RaidTracker_SortBy(id)
+function CT_RaidTracker_SortBy(id) --Reviewed
 	local table = { "name", "join", "leave" };
 	if ( CT_RaidTracker_SortOptions["method"] == table[id] ) then
 		if ( CT_RaidTracker_SortOptions["way"] == "asc" ) then
@@ -910,8 +851,6 @@ function CT_RaidTracker_UpdateView()
 		return;
 	end
 	local raidid = CT_RaidTrackerFrame.selected;
-    
-	
 	if (CT_RaidTracker_RaidLog[raidid] == nil) then
 		raidid = nil;
 	end;
@@ -1036,13 +975,14 @@ function CT_RaidTracker_UpdateView()
 				end
 			end
 		);
+		
 		getglobal("CT_RaidTrackerDetailScrollFramePlayer").data = raids;
 		getglobal("CT_RaidTrackerDetailScrollFramePlayer").name = name;
 		getglobal("CT_RaidTrackerDetailScrollFramePlayer").maxlines = getn(raids);
 		CT_RaidTracker_DetailScrollFramePlayer_Update();
 		CT_RaidTrackerDetailScrollFramePlayer:Show();
 		
-		CT_RaidTrackerPlayerText:SetText(name .. "'s Raids (" .. getn(raids) .. "):");
+		CT_RaidTrackerPlayerText:SetText(name .. "的Raids (" .. getn(raids) .. "):");
 	elseif ( CT_RaidTrackerFrame.type == "itemhistory" ) then
 		CT_RaidTrackerDetailScrollFramePlayers:Hide();
 		CT_RaidTrackerDetailScrollFramePlayer:Show();
@@ -1254,7 +1194,7 @@ function CT_RaidTracker_DetailScrollFrameItems_Update()
 					getglobal("CT_RaidTrackerItem" .. line .. "Count"):Hide();
 				end
 				if ( val["item"]["icon"] ) then
-					getglobal("CT_RaidTrackerItem" .. line .. "IconTexture"):SetTexture("Interface\\Icons\\" .. val["item"]["icon"]);
+					getglobal("CT_RaidTrackerItem" .. line .. "IconTexture"):SetTexture(val["item"]["icon"]);
 				else
 					getglobal("CT_RaidTrackerItem" .. line .. "IconTexture"):SetTexture("Interface\\Icons\\INV_Misc_Gear_08");
 				end
@@ -1295,7 +1235,7 @@ function CT_RaidTracker_DetailScrollFrameItems_Update()
 					color = "ff005D00";
 				end
 				getglobal("CT_RaidTrackerItem" .. line .. "Description"):SetText("|c" .. color .. val["item"]["name"]);
-				getglobal("CT_RaidTrackerItem" .. line .. "Looted"):SetText("Looted " .. CT_RaidTracker_GetRaidTitle(val["ids"][1], 1));
+				getglobal("CT_RaidTrackerItem" .. line .. "Looted"):SetText("拾取 " .. CT_RaidTracker_GetRaidTitle(val["ids"][1], 1));
 
 				if ( val["note"] ) then
 					getglobal("CT_RaidTrackerItem" .. line .. "NoteNormalTexture"):SetVertexColor(1, 1, 1);
@@ -1413,7 +1353,7 @@ function CT_RaidTracker_DetailScrollFrameBoss_Update()
 	CT_RaidTrackerDetailScrollFrameEvents:Show();
 end
 
-function CT_RaidTracker_ColorToRGB(str)
+function CT_RaidTracker_ColorToRGB(str) --Reviewed
 	str = strlower(strsub(str, 3));
 	local tbl = { };
 	tbl[1], tbl[2], tbl[3], tbl[4], tbl[5], tbl[6] = strsub(str, 1, 1), strsub(str, 2, 2), strsub(str, 3, 3), strsub(str, 4, 4), strsub(str, 5, 5), strsub(str, 6, 6);
@@ -1439,12 +1379,12 @@ function CT_RaidTracker_ColorToRGB(str)
 	return r, g, b;
 end
 
-function CT_RaidTrackerItem_SetHyperlink()
-	local raidid = this.raidid;
-	local lootid = this.itemid;
+function CT_RaidTrackerItem_SetHyperlink(self)
+	local raidid = self.raidid;
+	local lootid = self.itemid;
 	if ( CT_RaidTracker_RaidLog[raidid] and CT_RaidTracker_RaidLog[raidid]["Loot"][lootid] ) then
 		local item = CT_RaidTracker_RaidLog[raidid]["Loot"][lootid]["item"];
-		GameTooltip:SetOwner(this, "ANCHOR_RIGHT");
+		GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
 		if (GetItemInfo("item:" .. item["id"])) then
 			GameTooltip:SetHyperlink("item:" .. item["id"]);
 		else
@@ -1477,9 +1417,9 @@ function CT_RaidTrackerItem_SetHyperlink()
 	end
 end
 
-function CT_RaidTrackerItem_GetChatHyperlink()
-	local raidid = this.raidid;
-	local lootid = this.itemid;
+function CT_RaidTrackerItem_GetChatHyperlink(self)
+	local raidid = self.raidid;
+	local lootid = self.itemid;
 	if ( IsShiftKeyDown() and ( type(WIM_API_InsertText) == "function" ) and CT_RaidTracker_RaidLog[raidid] and CT_RaidTracker_RaidLog[raidid]["Loot"][lootid] ) then
 		local item = CT_RaidTracker_RaidLog[raidid]["Loot"][lootid]["item"];
 		WIM_API_InsertText( "|c" .. item.c .. "|Hitem:" .. item.id .. "|h[" .. item.name .. "]|h|r" );
@@ -1491,7 +1431,7 @@ function CT_RaidTrackerItem_GetChatHyperlink()
 end
 
 function CT_RaidTracker_GetItemTooltip(sItem)
-	CT_RTTooltip:SetOwner(this, "ANCHOR_NONE");
+	--CT_RTTooltip:SetOwner(this, "ANCHOR_NONE");
 	CT_RTTooltip:SetHyperlink("spell:1");
 	CT_RTTooltip:Show();
 	CT_RTTooltip:SetHyperlink("item:" .. sItem);
@@ -1521,8 +1461,7 @@ end
 
 -- Debug function(s)
 
-function CT_RaidTracker_Debug(...)
-	--local a = ...;
+function CT_RaidTracker_Debug(...) --Reviewed
 	if ( CT_RaidTracker_Options["DebugFlag"] ) then
 		local sDebug = "#";
 		for i = 1, select("#", ...) , 1 do
@@ -1530,31 +1469,34 @@ function CT_RaidTracker_Debug(...)
 				sDebug = sDebug .. tostring(select(i, ...) ) .. "#";
 			end
 		end
-		DEFAULT_CHAT_FRAME:AddMessage(CT_RaidTracker_Revision..sDebug, 1, 0.5, 0);
+		DEFAULT_CHAT_FRAME:AddMessage(sDebug, 1, 0.5, 0);
 	end
 end
 		
-
-function CT_RaidTracker_OnLoad(self)	
+-- OnFoo functions
+function CT_RaidTracker_OnLoad(this)
 	CT_RaidTrackerTitleText:SetText("IEDKP插件 " .. CT_RaidTracker_Version);
 	-- Register events
-	self:RegisterEvent("CHAT_MSG_LOOT");
-	self:RegisterEvent("CHAT_MSG_SYSTEM");
-	self:RegisterEvent("RAID_ROSTER_UPDATE");
-	self:RegisterEvent("ADDON_LOADED");
-	self:RegisterEvent("UPDATE_MOUSEOVER_UNIT");
-	self:RegisterEvent("ZONE_CHANGED_NEW_AREA");
-	self:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED");
-	self:RegisterEvent("CHAT_MSG_MONSTER_YELL");
-	self:RegisterEvent("CHAT_MSG_MONSTER_EMOTE");
-	self:RegisterEvent("PLAYER_ENTERING_WORLD");
-	self:RegisterEvent("PARTY_MEMBERS_CHANGED");
-	self:RegisterEvent("UNIT_HEALTH");
-	self:RegisterEvent("UPDATE_INSTANCE_INFO");	
+	this:RegisterEvent("CHAT_MSG_LOOT");
+	this:RegisterEvent("CHAT_MSG_SYSTEM");
+
+	this:RegisterEvent("RAID_ROSTER_UPDATE");
+	this:RegisterEvent("GROUP_ROSTER_UPDATE");
+	this:RegisterEvent("ADDON_LOADED");
+	this:RegisterEvent("UPDATE_MOUSEOVER_UNIT");
+	this:RegisterEvent("ZONE_CHANGED_NEW_AREA");
+	this:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED");
+	this:RegisterEvent("CHAT_MSG_MONSTER_YELL");
+	this:RegisterEvent("CHAT_MSG_MONSTER_EMOTE");
+	this:RegisterEvent("PLAYER_ENTERING_WORLD");
+	this:RegisterEvent("UPDATE_INSTANCE_INFO");	
+
+	--this:RegisterEvent("UNIT_HEALTH");
 end
 
-function CT_RaidTracker_OnEvent(self, event)
-	
+function CT_RaidTracker_OnEvent(self, event, ...)
+    local arg1 = ...;
+    local _, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, _, _, _, _, _, _, _ = CombatLogGetCurrentEventInfo()
 	--CT_RaidTracker_Debug("event fired", event);
 
 	if ( event == "ADDON_LOADED"and arg1 == "IEDKP") then
@@ -1562,24 +1504,18 @@ function CT_RaidTracker_OnEvent(self, event)
         ChatFrame_AddMessageEventFilter("CHAT_MSG_WHISPER_INFORM", whisperFilter);
         
         --CT_RaidTracker_Options["LogAttendees"] = 1;
-		CT_RaidTrackerFrame:CreateTitleRegion()
-		CT_RaidTrackerFrame:GetTitleRegion():SetAllPoints()
+		--CT_RaidTrackerFrame:CreateTitleRegion()
+		--CT_RaidTrackerFrame:GetTitleRegion():SetAllPoints()
 		CT_RaidTracker_RunVersionFix();
 		ML_RaidTracker_LoadCustomOptions();
 		CT_RaidTracker_GetGameTimeOffset();
 		CT_RaidTracker_Options["ExportFormat"] = 0;
-		CT_RaidTracker_Options["NextBoss"] = 0;
-		CT_RaidTracker_Options["Wipe"] = 0;
 		CT_RaidTracker_Options["24hFormat"] = 1;
 		CT_RaidTracker_Options["Timezone"] = 0;
-		CT_RaidTracker_Options["LogBattlefield"] = 0;
-		CT_RaidTracker_Options["NewRaidOnNewZone"] = 0;
 		CT_RaidTracker_Options["AutoZone"] = 1;
 		CT_RaidTracker_Options["AutoBoss"] = 2;
 		CT_RaidTracker_Options["AutoBossChangeMinTime"] = 120;
 		CT_RaidTracker_Options["AutoRaidCreation"] = 0;
-		CT_RaidTracker_Options["LogGroup"] = 0;
-		CT_RaidTracker_Options["AutoGroup"] = 0;
 
 		MerDKP_Table_init = deepcopy(MerDKP_Table);        
 		if CT_RaidTracker_GetCurrentRaid then
@@ -1592,16 +1528,6 @@ function CT_RaidTracker_OnEvent(self, event)
 		return;
 	end
 
-	if ( CT_RaidTracker_Options["LogBattlefield"] == 0 and ((GetNumBattlefieldScores() > 0) or (IsActiveBattlefieldArena() == 1))) then
-		if ( CT_RaidTracker_GetCurrentRaid ) then
-			CT_RaidTracker_Delete( CT_RaidTracker_GetCurrentRaid, "raid", 0 );
-			CT_RaidTracker_Debug("Battlegroup detected, removing raid entry from list.");
-			return;
-		else
-			CT_RaidTracker_Debug("Battlegroup detected, skipped event.");
-			return;
-		end;
-	end;
 	if ( event == "" and arg7 == CT_RaidTracker_lang_BossKills_Julianne_BossName) then
 		
 	end;
@@ -1637,7 +1563,7 @@ function CT_RaidTracker_OnEvent(self, event)
 	end
 
 	if ( event == "RAID_ROSTER_UPDATE" or event == "PLAYER_ENTERING_WORLD") then 
-		if ( not CT_RaidTracker_GetCurrentRaid and GetNumRaidMembers() > 0 and event == "RAID_ROSTER_UPDATE" and CT_RaidTracker_Options["AutoRaidCreation"] == 1) then
+		if ( not CT_RaidTracker_GetCurrentRaid and GetNumGroupMembers() > 0 and event == "RAID_ROSTER_UPDATE" and CT_RaidTracker_Options["AutoRaidCreation"] == 1) then
 			CT_RaidTracker_EditDKPSystem();
 		end
 		if ( not CT_RaidTracker_GetCurrentRaid ) then
@@ -1647,12 +1573,7 @@ function CT_RaidTracker_OnEvent(self, event)
 		--check for players not longer in raid
 		if ( event == "RAID_ROSTER_UPDATE") then
 			for k, v in pairs(CT_RaidTracker_Online) do
-				local online;
-	--			if CT_RaidTracker_Options["GuildSnapshot"] then
-				online = UnitIsConnected(k);
---				else
---					online = UnitInRaid(k);
-	--			end;
+				local online = UnitIsConnected(k);
 				CT_RaidTracker_Debug("Check connection for",k,online);
 				if ( online ~= v ) then
 					tinsert(CT_RaidTracker_RaidLog[CT_RaidTracker_GetCurrentRaid]["Leave"],
@@ -1667,14 +1588,13 @@ function CT_RaidTracker_OnEvent(self, event)
 				end		
 			end
 		end
-		for i = 1, GetNumRaidMembers(), 1 do
+		for i = 1, GetNumGroupMembers(), 1 do
 			local name, online = UnitName("raid" .. i), UnitIsConnected("raid" .. i);
 			CT_RaidTracker_Debug("Player is ",name,online);
 			if ( name and name ~= UKNOWNBEING and name ~= UNKNOWN) then
 				CT_RaidTracker_Debug("Player is updating",name,online);
 				local _, race = UnitRace("raid" .. i);
 				local _, class = UnitClass("raid" .. i);
-				local sex = UnitSex("raid" .. i);
 				local level = UnitLevel("raid" .. i);
 				local guild = GetGuildInfo("raid" .. i);
 				
@@ -1684,13 +1604,12 @@ function CT_RaidTracker_OnEvent(self, event)
 				if(not CT_RaidTracker_RaidLog[CT_RaidTracker_GetCurrentRaid]["PlayerInfos"][name]) then
 					CT_RaidTracker_RaidLog[CT_RaidTracker_GetCurrentRaid]["PlayerInfos"][name] = { };
 				end
-			--	if(CT_RaidTracker_Options["SaveExtendedPlayerInfo"] == 1) then
+
 				    if(race) then CT_RaidTracker_RaidLog[CT_RaidTracker_GetCurrentRaid]["PlayerInfos"][name]["race"] = race; end
 				    if(class) then CT_RaidTracker_RaidLog[CT_RaidTracker_GetCurrentRaid]["PlayerInfos"][name]["class"] = class; end
-						if(sex) then CT_RaidTracker_RaidLog[CT_RaidTracker_GetCurrentRaid]["PlayerInfos"][name]["sex"] = sex; end
 				    if(level > 0) then CT_RaidTracker_RaidLog[CT_RaidTracker_GetCurrentRaid]["PlayerInfos"][name]["level"] = level; end
 				    if(guild) then CT_RaidTracker_RaidLog[CT_RaidTracker_GetCurrentRaid]["PlayerInfos"][name]["guild"] = guild; end
-			--	end
+
 				if ( online ~= CT_RaidTracker_Online[name] ) then
 					-- Status isn't updated
 					CT_RaidTracker_Debug("Status isn't updated", name, online);
@@ -1740,13 +1659,13 @@ function CT_RaidTracker_OnEvent(self, event)
 		end
 
 	-- Party code added thx to Gof
-	elseif ( GetNumRaidMembers() == 0 and (event == "PARTY_MEMBERS_CHANGED" or event == "PLAYER_ENTERING_WORLD")) then 
+	elseif ( event == "GROUP_ROSTER_UPDATE" or event == "PLAYER_ENTERING_WORLD" ) then 
 		
 		if ( not CT_RaidTracker_GetCurrentRaid ) then
 			return;
 		end
 		local updated;
-		for i = 1, GetNumPartyMembers(), 1 do
+		for i = 1, GetNumGroupMembers(), 1 do
 			local name, online = UnitName("party" .. i), UnitIsConnected("party" .. i);
 			if ( name and name ~= UKNOWNBEING and name ~= UNKNOWN) then
 				local _, race = UnitRace("party" .. i);
@@ -1760,12 +1679,12 @@ function CT_RaidTracker_OnEvent(self, event)
 				if(not CT_RaidTracker_RaidLog[CT_RaidTracker_GetCurrentRaid]["PlayerInfos"][name]) then
 					CT_RaidTracker_RaidLog[CT_RaidTracker_GetCurrentRaid]["PlayerInfos"][name] = { };
 				end
-		--		if(CT_RaidTracker_Options["SaveExtendedPlayerInfo"] == 1) then
-				    if(race) then CT_RaidTracker_RaidLog[CT_RaidTracker_GetCurrentRaid]["PlayerInfos"][name]["race"] = race; end
-				    if(class) then CT_RaidTracker_RaidLog[CT_RaidTracker_GetCurrentRaid]["PlayerInfos"][name]["class"] = class; end
-				    if(level > 0) then CT_RaidTracker_RaidLog[CT_RaidTracker_GetCurrentRaid]["PlayerInfos"][name]["level"] = level; end
-				    if(guild) then CT_RaidTracker_RaidLog[CT_RaidTracker_GetCurrentRaid]["PlayerInfos"][name]["guild"] = guild; end
-			--	end
+
+				if(race) then CT_RaidTracker_RaidLog[CT_RaidTracker_GetCurrentRaid]["PlayerInfos"][name]["race"] = race; end
+				if(class) then CT_RaidTracker_RaidLog[CT_RaidTracker_GetCurrentRaid]["PlayerInfos"][name]["class"] = class; end
+				if(level > 0) then CT_RaidTracker_RaidLog[CT_RaidTracker_GetCurrentRaid]["PlayerInfos"][name]["level"] = level; end
+				if(guild) then CT_RaidTracker_RaidLog[CT_RaidTracker_GetCurrentRaid]["PlayerInfos"][name]["guild"] = guild; end
+
 				if ( online ~= CT_RaidTracker_Online[name] ) then
 					-- Status isn't updated
 					CT_RaidTracker_Debug("Status isn't updated", name, online);
@@ -1824,12 +1743,12 @@ function CT_RaidTracker_OnEvent(self, event)
 			if(not CT_RaidTracker_RaidLog[CT_RaidTracker_GetCurrentRaid]["PlayerInfos"][name]) then
 				CT_RaidTracker_RaidLog[CT_RaidTracker_GetCurrentRaid]["PlayerInfos"][name] = { };
 			end
-			--if(CT_RaidTracker_Options["SaveExtendedPlayerInfo"] == 1) then
-				if(race) then CT_RaidTracker_RaidLog[CT_RaidTracker_GetCurrentRaid]["PlayerInfos"][name]["race"] = race; end
-				if(class) then CT_RaidTracker_RaidLog[CT_RaidTracker_GetCurrentRaid]["PlayerInfos"][name]["class"] = class; end
-				if(level > 0) then CT_RaidTracker_RaidLog[CT_RaidTracker_GetCurrentRaid]["PlayerInfos"][name]["level"] = level; end
-				if(guild) then CT_RaidTracker_RaidLog[CT_RaidTracker_GetCurrentRaid]["PlayerInfos"][name]["guild"] = guild; end
-		--	end
+
+			if(race) then CT_RaidTracker_RaidLog[CT_RaidTracker_GetCurrentRaid]["PlayerInfos"][name]["race"] = race; end
+			if(class) then CT_RaidTracker_RaidLog[CT_RaidTracker_GetCurrentRaid]["PlayerInfos"][name]["class"] = class; end
+			if(level > 0) then CT_RaidTracker_RaidLog[CT_RaidTracker_GetCurrentRaid]["PlayerInfos"][name]["level"] = level; end
+			if(guild) then CT_RaidTracker_RaidLog[CT_RaidTracker_GetCurrentRaid]["PlayerInfos"][name]["guild"] = guild; end
+
 			if ( online ~= CT_RaidTracker_Online[name] ) then
 				-- Status isn't updated
 				CT_RaidTracker_Debug("Status isn't updated", name, online);
@@ -1885,6 +1804,7 @@ function CT_RaidTracker_OnEvent(self, event)
 		CT_RaidTracker_Debug("arg1", arg1);
 		CT_RaidTracker_Debug(string.sub(arg1,1,-2));
 		CT_RaidTracker_Debug(string.sub(arg1,1,-5));
+
 		if(string.find(arg1, CT_RaidTracker_lang_ReceivesLoot1)) then
 			iStart, iEnd, sPlayerName, sItem = string.find(arg1, CT_RaidTracker_lang_ReceivesLoot1);
 			iCount = 1;
@@ -1961,7 +1881,7 @@ function CT_RaidTracker_OnEvent(self, event)
 					end
 					if ( not found ) then
 						local nameGIF, linkGIF, qualityGIF, iLevelGIF, minLevelGIF, classGIF, subclassGIF, maxStackGIF, invtypeGIV, iconGIF = GetItemInfo("item:"..sItem);
-						_, _, iconGIF = string.find(iconGIF, "^.*\\(.*)$");
+						--_, _, iconGIF = string.find(iconGIF, "^.*\\(.*)$");
 						local splitted = { [0] = 0, [1] = 0, [2] = 0, [3] = 0 };
 						local trimed;
 						local i = 0;
@@ -1974,6 +1894,7 @@ function CT_RaidTracker_OnEvent(self, event)
 								i = i + 1;
 							end
 						end
+
 						if( (itemoptions and itemoptions["costsgrabbing"] and itemoptions["costsgrabbing"] == 1) or ((CT_RaidTracker_Options["GetDkpValue"] ~= 0 and CT_RaidTracker_RarityTable[sColor] >= CT_RaidTracker_Options["GetDkpValue"]) and (not itemoptions or not itemoptions["costsgrabbing"]))) then
 							if(DKPValues and DKPValues[tostring(splitted[0])]) then -- AdvancedItemTooltip
 								sCosts = tonumber(DKPValues[tostring(splitted[0])]);
@@ -2035,7 +1956,6 @@ function CT_RaidTracker_OnEvent(self, event)
 									["subclass"] = subclassGIF,
 								},
 								["zone"] = GetRealZoneText(),
-								["difficulty"] = GetCurrentDungeonDifficulty(), --This currently isn't used.  Difficulty is found in the root raid object for the purposes of string generation.
 								["costs"] = sCosts,
 								["boss"] = sBoss,
 								["time"] = sTime,
@@ -2117,15 +2037,6 @@ function CT_RaidTracker_OnEvent(self, event)
 		if(CT_RaidTracker_Options["AutoZone"] == 1) then
 			CT_RaidTracker_DoZoneCheck();
 			CT_RaidTracker_DoRaidIdCheck();
-		else
-            -- There is no other way to automatically set the current difficulty without first being in the instance.
-            -- Don't revert to "Normal" as soon as you exit though if you were in a heroic raid.
-            if (CT_RaidTracker_RaidLog[CT_RaidTracker_GetCurrentRaid["difficulty"]] ~= 2) then
-               -- CT_RaidTracker_RaidLog[CT_RaidTracker_GetCurrentRaid["difficulty"]] = GetDungeonDifficulty();
-	       CT_RaidTracker_RaidLog[CT_RaidTracker_GetCurrentRaid["difficulty"]] = GetCurrentDungeonDifficulty();
-                CT_RaidTracker_Update();
-                CT_RaidTracker_UpdateView();
-            end
         end
 	elseif ( event == "COMBAT_LOG_EVENT_UNFILTERED" and arg2 == "UNIT_DIED" ) then
 		local bosskilled, autoboss_newboss;
@@ -2171,8 +2082,8 @@ function CT_RaidTracker_OnEvent(self, event)
 				if (newboss == 1) and isThatBossKilled(unit) then
 				    local tAttendees = { };
 					if( (CT_RaidTracker_Options["LogAttendees"] == 0) or (CT_RaidTracker_Options["LogAttendees"] == 1) or (CT_RaidTracker_Options["LogAttendees"] == 2)) then
-						if( GetNumRaidMembers() > 0 ) then
-							for i = 1, GetNumRaidMembers() do
+						if( GetNumGroupMembers() > 0 ) then
+							for i = 1, GetNumGroupMembers() do
 								local name, rank, subgroup, level, class, fileName, zone, online = GetRaidRosterInfo(i);
 								local name = UnitName("raid" .. i);
 								if (name and name ~= UKNOWNBEING and name ~= UNKNOWN) then
@@ -2189,18 +2100,6 @@ function CT_RaidTracker_OnEvent(self, event)
 									end;
 								end
 							end
-						elseif( (GetNumPartyMembers() > 0) and (CT_RaidTracker_Options["LogGroup"] == 1) ) then
-							for i = 1, GetNumPartyMembers() do
-								local name = UnitName("party" .. i);
-								if (name and name ~= UKNOWNBEING and name ~= UNKNOWN) then
-									tinsert(tAttendees, name);
-								end
-							end
-							--Party dosent include player, so add individual
-							local name = UnitName("player");
-							if (name and name ~= UKNOWNBEING and name ~= UNKNOWN) then
-								tinsert(tAttendees, name);
-							end
 						end
 					end
 				    tinsert(CT_RaidTracker_RaidLog[CT_RaidTracker_GetCurrentRaid]["BossKills"],
@@ -2213,13 +2112,6 @@ function CT_RaidTracker_OnEvent(self, event)
 			      CT_RaidTracker_Print("CT_RaidTracker Boss 击杀: 设置 \""..bosskilled.."\" 击杀时间为 "..sDate, 1, 1, 0);
                   
                   CT_RaidTracker_EditBossDKP(CT_RaidTracker_GetCurrentRaid, getn(CT_RaidTracker_RaidLog[CT_RaidTracker_GetCurrentRaid]["BossKills"]));
-                  
-			      if (CT_RaidTracker_Options["NextBoss"] == 1) then
-			      	CT_RaidTrackerNextBossFrame:Show();
-			      end;
-					
-			      
-
 				end
 				
 				--if(not CT_RaidTracker_RaidLog[CT_RaidTracker_GetCurrentRaid]["BossKills"][bosskilled]) then
@@ -2228,49 +2120,6 @@ function CT_RaidTracker_OnEvent(self, event)
 				--end
 			end
 --		end
-	elseif ( event == "UNIT_HEALTH" ) then
-		-- check for wipe count
-		if (CT_RaidTracker_Options["Wipe"] == 0) then
-			return -- wipecounting is disabled 
-		end;
-		if (InCombatLockdown()) then
-			return -- we are in combat and don't want to ask if this is a wipe if one of this members died and he tried to heal him ;-)
-		end;
-		if (not CT_RaidTracker_GetCurrentRaid) then
-			return -- no raid tracking
-		end;
-		if (GetTime() < CT_RaidTracker_LastWipe) then
-			return -- wipe cooldown
-		end;
-		local membercount = 0;
-		local unitprefix = 0;
-		local memberdead = 0;
-		if ( GetNumRaidMembers() > 0) then -- in raid and active
-			membercount = GetNumRaidMembers();
-			unitprefix = "raid";
-		elseif ( GetNumPartyMembers() > 0) then -- in group and active
-			membercount = GetNumPartyMembers()+1;
-			unitprefix = "party";
-			if (UnitIsDeadOrGhost("player")) then
-				memberdead = memberdead + 1;
-			end;
-		else
-			return -- not in group
-		end;
-		for i = 1, membercount, 1 do
-			if (UnitIsDeadOrGhost(unitprefix..i)) then
-				memberdead = memberdead + 1;
-			end;
-		end;
-		if (memberdead == membercount) then
-			CT_RaidTracker_AddWipe();
-			CT_RaidTrackerAcceptWipeFrame:Hide();
-			return;
-		end;
-		if ((memberdead / membercount) > CT_RaidTracker_Options["WipePercent"]) then
-			CT_RaidTrackerAcceptWipeFrame:Show();
-
-		end;
 	elseif ( event == "UPDATE_INSTANCE_INFO" ) then
 		CT_RaidTracker_Debug("UPDATE_INSTANCE_INFO");
 		CT_RaidTracker_DoRaidIdCheck();
@@ -2291,8 +2140,8 @@ function CT_RaidTracker_CreateBoss(bossName,playerName,dkp)
     				if playerName ~= nil then
     					tinsert(tAttendees, playerName);
 					elseif( (CT_RaidTracker_Options["LogAttendees"] == 0) or (CT_RaidTracker_Options["LogAttendees"] == 1) or (CT_RaidTracker_Options["LogAttendees"] == 2)) then
-						if( GetNumRaidMembers() > 0 ) then
-							for i = 1, GetNumRaidMembers() do
+						if( GetNumGroupMembers() > 0 ) then
+							for i = 1, GetNumGroupMembers() do
 								local name, rank, subgroup, level, class, fileName, zone, online = GetRaidRosterInfo(i);
 								local name = UnitName("raid" .. i);
 								if (name and name ~= UKNOWNBEING and name ~= UNKNOWN) then
@@ -2308,18 +2157,6 @@ function CT_RaidTracker_CreateBoss(bossName,playerName,dkp)
 										tinsert(tAttendees, name);
 									end;
 								end
-							end
-						elseif( (GetNumPartyMembers() > 0) and (CT_RaidTracker_Options["LogGroup"] == 1) ) then
-							for i = 1, GetNumPartyMembers() do
-								local name = UnitName("party" .. i);
-								if (name and name ~= UKNOWNBEING and name ~= UNKNOWN) then
-									tinsert(tAttendees, name);
-								end
-							end
-							--Party dosent include player, so add individual
-							local name = UnitName("player");
-							if (name and name ~= UKNOWNBEING and name ~= UNKNOWN) then
-								tinsert(tAttendees, name);
 							end
 						end
 					end
@@ -2344,23 +2181,6 @@ function CT_RaidTracker_CreateBoss(bossName,playerName,dkp)
 	CT_RaidTracker_UpdateView();
 end
 
-
-
-function CT_RaidTracker_AddWipe()
-	CT_RaidTracker_Debug("WIPED");
-	CT_RaidTracker_LastWipe = GetTime()+CT_RaidTracker_Options["WipeCoolDown"]; -- wait for 120 seconds
-	if (CT_RaidTracker_RaidLog[CT_RaidTracker_GetCurrentRaid]["wipes"] == nil) then
-		CT_RaidTracker_RaidLog[CT_RaidTracker_GetCurrentRaid]["wipes"] = {};
-	end;
-	tinsert(CT_RaidTracker_RaidLog[CT_RaidTracker_GetCurrentRaid]["wipes"],time());
-	CT_RaidTracker_Print("Wipe has been recorded!", 1, 1, 0);
-end;
-
-function CT_RaidTackes_NextBoss(name)
-	CT_RaidTracker_Debug("NEXTBOSS",name);
-	CT_RaidTracker_RaidLog[CT_RaidTracker_GetCurrentRaid]["nextboss"] = name;
-end;
-
 function CT_RaidTracker_DoZoneCheck()
 	if(not CT_RaidTracker_GetCurrentRaid) then
 		return;
@@ -2368,8 +2188,6 @@ function CT_RaidTracker_DoZoneCheck()
 	local newzone = GetRealZoneText();
 	CT_RaidTracker_Debug("Current Zone",newzone);
 	local checkednewzone = "";
-	local difficulty = 0;
-	local difficulty_text = "";
 	for k, v in pairs(CT_RaidTracker_ZoneTriggers) do
 		if(newzone == k) then
 			CT_RaidTracker_Debug("Zone is Instance",v);
@@ -2385,14 +2203,6 @@ function CT_RaidTracker_DoZoneCheck()
 		end
 	end
 
-	difficulty = GetInstanceDifficulty();
-	difficulty = GetCurrentDungeonDifficulty();
-	difficulty_text = CT_RaidTracker_DifficultyTable[difficulty];       
-	CT_RaidTracker_Debug("Difficulty is",difficulty,difficulty_text);
-	if (difficulty and CT_RaidTracker_RaidLog[CT_RaidTracker_GetCurrentRaid]["difficulty"] ~= difficulty) then
-		CT_RaidTracker_Debug("Set Difficulty",difficulty,difficulty_text);
-		CT_RaidTracker_RaidLog[CT_RaidTracker_GetCurrentRaid]["difficulty"] = difficulty;
-	end
 	if (checkednewzone == "") then
 		return false;
 	end;
@@ -2401,15 +2211,6 @@ function CT_RaidTracker_DoZoneCheck()
 		CT_RaidTracker_RaidLog[CT_RaidTracker_GetCurrentRaid]["zone"] = checkednewzone;
 	else
 		CT_RaidTracker_Debug("Current Raid Zone",CT_RaidTracker_RaidLog[CT_RaidTracker_GetCurrentRaid]["zone"]);
-		if (CT_RaidTracker_Options["NewRaidOnNewZone"]==1) then
-			if (checkednewzone ~= "") then
-				if (CT_RaidTracker_RaidLog[CT_RaidTracker_GetCurrentRaid]["zone"] ~= checkednewzone) then
-					CT_RaidTracker_Debug("Create new Raid while zoning",CT_RaidTracker_RaidLog[CT_RaidTracker_GetCurrentRaid]["zone"],newzone,checkednewzone);
-					CT_RaidTracker_Print("Autocreating new Raid cause of zoning.");
-					CT_RaidTracker_EditDKPSystem();
-				end
-			end
-		end
 	end
 
 	CT_RaidTracker_Update();
@@ -2439,7 +2240,7 @@ end;
 
 
 -- Item functions
-function CT_RaidTracker_GetItemInfo(sItem)
+function CT_RaidTracker_GetItemInfo(sItem) --Reviewed
 	local sStart, sEnde, sColor, sItemName, sName = string.find(sItem, "|c(%x+)|Hitem:([-%d:]+)|h%[(.-)%]|h|r");
   CT_RaidTracker_Debug("sColor:", sColor,"sItemName:", sItemName,"sName:", sName);
 	return sColor, sItemName, sName, sStart, sEnde;
@@ -2454,19 +2255,17 @@ SlashCmdList["RAIDTRACKER"] = function(msg)
 	if(command == "debug") then
 		if(args == "1") then
 			CT_RaidTracker_Options["DebugFlag"] = 1;
-			CT_RaidTracker_Print("Enabled Debug Output", 1, 1, 0);
+			CT_RaidTracker_Print("开启调试输出", 1, 1, 0);
 		elseif(args == "0") then
 			CT_RaidTracker_Options["DebugFlag"] = nil;
-			CT_RaidTracker_Print("Disabled Debug Output", 1, 1, 0);
+			CT_RaidTracker_Print("关闭调试输出", 1, 1, 0);
 		else
 			if(CT_RaidTracker_Options["DebugFlag"] == 1) then
-				CT_RaidTracker_Print("Debug Output: Enabled", 1, 1, 0);
+				CT_RaidTracker_Print("调试输出: 开启", 1, 1, 0);
 			else
-				CT_RaidTracker_Print("Debug Output: Disabled", 1, 1, 0);
+				CT_RaidTracker_Print("调试输出: 关闭", 1, 1, 0);
 			end
 		end
-	elseif(command == "addwipe") then
-		CT_RaidTracker_AddWipe();
 	elseif(command == "deleteall") then
 		CT_RaidTracker_Print("删除全部活动 "..getn(CT_RaidTracker_RaidLog).." Raids", 1, 1, 0);
 		CT_RaidTracker_RaidLog = { };
@@ -2487,7 +2286,7 @@ SlashCmdList["RAIDTRACKER"] = function(msg)
 				if(CT_RaidTrackerFrame.selected) then
 					local nameGIF, linkGIF, qualityGIF, iLevelGIF, minLevelGIF, classGIF, subclassGIF, maxStackGIF, invtypeGIV, iconGIF = GetItemInfo("item:"..sItem);
 					if(iconGIF) then 
-						_, _, iconGIF = string.find(iconGIF, "^.*\\(.*)$");
+						--_, _, iconGIF = string.find(iconGIF, "^.*\\(.*)$");
 					end
 					
 					local tAttendees = { };
@@ -2608,7 +2407,6 @@ SlashCmdList["RAIDTRACKER"] = function(msg)
 		CT_RaidTracker_Print("/rt leave [PLAYER] - 手动删除当前活动里的一个玩家", 1, 1, 0);
 		CT_RaidTracker_Print("/rt deleteall - 删除所有活动", 1, 1, 0);
 		CT_RaidTracker_Print("/rt debug 0/1 - Enables/Disables 显示调试信息", 1, 1, 0);
-		CT_RaidTracker_Print("/rt addwipe - 添加灭团记录", 1, 1, 0);
 	else
 		ShowUIPanel(CT_RaidTrackerFrame);	
 	end
@@ -2617,7 +2415,7 @@ end
 SLASH_RAIDTRACKER1 = "/raidtracker";
 SLASH_RAIDTRACKER2 = "/rt";
 
-function CT_RaidTracker_Print(msg, r, g, b)
+function CT_RaidTracker_Print(msg, r, g, b) --Reviewed
 	if ( CT_Print ) then
 		CT_Print(msg, r, g, b);
 	else
@@ -2625,7 +2423,7 @@ function CT_RaidTracker_Print(msg, r, g, b)
 	end
 end
 
-function CT_RaidTracker_RarityDropDown_OnLoad()
+function CT_RaidTracker_RarityDropDown_OnLoad(this) --Reviewed
 	UIDropDownMenu_Initialize(this, CT_RaidTracker_RarityDropDown_Initialize);
 	--UIDropDownMenu_SetWidth(130);
 	UIDropDownMenu_SetSelectedID(CT_RaidTrackerRarityDropDown, 1);
@@ -2638,14 +2436,14 @@ end
 -- Purple = a335ee
 -- Orange = ff8000
 -- Red e6cc80
-function CT_RaidTracker_DKPSystemDropDown_Initialize()
+function CT_RaidTracker_DKPSystemDropDown_Initialize(self)
 	local info;
 	for i = 1, #MerDKP_Table do
 		info = {}
 		info.text = MerDKP_Table[i].title
 		info.value = MerDKP_Table[i].title
-		info.func = function()
-			local id = this:GetID()
+		info.func = function(self)
+			local id = self:GetID()
 			UIDropDownMenu_SetSelectedID(CT_RaidTracker_DKPSystemDropDown, id)
 			UIDropDownMenu_SetSelectedID(MerDKPFrameListColumnHeader3, id)
 			MerDKP.tmp.id = id
@@ -2655,7 +2453,7 @@ function CT_RaidTracker_DKPSystemDropDown_Initialize()
 	end		
 end
 
-function CT_RaidTracker_PlayerDKPDropDown_Initialize()
+function CT_RaidTracker_PlayerDKPDropDown_Initialize(self)
 	local info;
 	if(CT_RaidTracker_GetCurrentRaid==nil) then
 		return
@@ -2664,8 +2462,8 @@ function CT_RaidTracker_PlayerDKPDropDown_Initialize()
 		info = {}
 		info.text = k;
 		info.value = k;
-		info.func = function()
-			local id = this:GetID()
+		info.func = function(self)
+			local id = self:GetID()
 			UIDropDownMenu_SetSelectedID(CT_RaidTracker_PlayerDKPDropDown, id)			
 		end
 		UIDropDownMenu_AddButton(info)
@@ -2673,7 +2471,7 @@ function CT_RaidTracker_PlayerDKPDropDown_Initialize()
 end
 
 
-function CT_RaidTracker_RarityDropDown_Initialize()
+function CT_RaidTracker_RarityDropDown_Initialize() --Reviewed
 	local info = {};
 	info.text = "|c009d9d9d劣质|r";
 	info.func = CT_RaidTracker_RarityDropDown_OnClick;
@@ -2710,18 +2508,17 @@ function CT_RaidTracker_RarityDropDown_Initialize()
 	UIDropDownMenu_AddButton(info);
 end
 
-
-function CT_RaidTracker_RarityDropDown_OnClick()
-	UIDropDownMenu_SetSelectedID(CT_RaidTrackerRarityDropDown, this:GetID());
+function CT_RaidTracker_RarityDropDown_OnClick(self) --Reviewed
+	UIDropDownMenu_SetSelectedID(CT_RaidTrackerRarityDropDown, self:GetID());
 	if ( CT_RaidTrackerFrame.type == "items" ) then
-		CT_RaidTracker_SortOptions["itemfilter"] = this:GetID();
+		CT_RaidTracker_SortOptions["itemfilter"] = self:GetID();
 	else
-		CT_RaidTracker_SortOptions["playeritemfilter"] = this:GetID();
+		CT_RaidTracker_SortOptions["playeritemfilter"] = self:GetID();
 	end
 	CT_RaidTracker_UpdateView();
 end
 
-function CT_RaidTracker_SelectItem(name)
+function CT_RaidTracker_SelectItem(name) --Reviewed
 	CT_RaidTracker_GetPage();
 	CT_RaidTrackerFrame.type = "itemhistory";
 	CT_RaidTrackerFrame.itemname = name;
@@ -2730,9 +2527,8 @@ function CT_RaidTracker_SelectItem(name)
 	CT_RaidTracker_UpdateView();
 end
 
-function CT_RaidTracker_GetPage()
+function CT_RaidTracker_GetPage() --Reviewed
 	if ( CT_RaidTrackerFrame.type or CT_RaidTrackerFrame.itemname or CT_RaidTrackerFrame.selected or CT_RaidTrackerFrame.player ) then
-
 		tinsert(CT_RaidTracker_LastPage,
 			{
 				["type"] = CT_RaidTrackerFrame.type,
@@ -2750,7 +2546,7 @@ function CT_RaidTracker_GetPage()
 	end
 end
 
-function CT_RaidTracker_GoBack()
+function CT_RaidTracker_GoBack() --Reviewed
 	local t = table.remove(CT_RaidTracker_LastPage);
 
 	if ( t ) then
@@ -2768,7 +2564,7 @@ function CT_RaidTracker_GoBack()
 	end
 end
 
-if ( CT_RegisterMod ) then
+if ( CT_RegisterMod ) then --Reviewed
 	CT_RaidTracker_DisplayWindow = function()
 		ShowUIPanel(CT_RaidTrackerFrame);
 	end
@@ -2777,7 +2573,7 @@ else
 	--CT_RaidTracker_Print("<CTMod> CT_RaidTracker loaded. Type /rt to show the RaidTracker window.", 1, 1, 0);
 end
 
-function CT_RaidTracker_FixZero(num)
+function CT_RaidTracker_FixZero(num) --Reviewed
 	if ( num < 10 ) then
 		return "0" .. num;
 	else
@@ -2796,7 +2592,7 @@ function CT_RaidTracker_Date()
 	return CT_RaidTracker_FixZero(t.month) .. "/" .. CT_RaidTracker_FixZero(t.day) .. "/" .. strsub(t.year, 3) .. " " .. CT_RaidTracker_FixZero(t.hour) .. ":" .. CT_RaidTracker_FixZero(t.min) .. ":" .. CT_RaidTracker_FixZero(t.sec);
 end
 
-function CT_RaidTrackerUpdateFrame_OnUpdate(elapsed)
+function CT_RaidTrackerUpdateFrame_OnUpdate(this, elapsed) --Reviewed
 	if ( this.time ) then
 		this.time = this.time + elapsed;
 		if ( this.time > 2 ) then
@@ -2808,7 +2604,7 @@ function CT_RaidTrackerUpdateFrame_OnUpdate(elapsed)
 	end
 end
 
-function CT_RaidTrackerCreateNewRaid(system)
+function CT_RaidTrackerCreateNewRaid(system) --Reviewed
     if system ~= nil and strtrim(system) ~= "" then
         DKPSystem = getDKPSystemID(system);
         if DKPSystem == 0 then
@@ -2825,7 +2621,7 @@ function CT_RaidTrackerCreateNewRaid(system)
 			CT_RaidTracker_Debug("ADDING LEAVE", k, sDate);
 			tinsert(CT_RaidTracker_RaidLog[CT_RaidTracker_GetCurrentRaid]["Leave"],
 				{
-					["player"] = k,
+					["player"] = GetFixedUpUnitName(k),
 					["time"] = sDate,
 				}
 			);
@@ -2848,24 +2644,24 @@ function CT_RaidTrackerCreateNewRaid(system)
 	});
 	CT_RaidTracker_SortRaidTable();
 	CT_RaidTracker_GetCurrentRaid = 1;
-	if( GetNumRaidMembers() > 0 ) then
-		for i = 1, GetNumRaidMembers(), 1 do
-			local sPlayer = UnitName("raid" .. i);
-			local _, race = UnitRace("raid" .. i);
-			local sex = UnitSex("raid" .. i);
+    if( (IsInRaid() == true) and (GetNumGroupMembers() > 0) ) then
+		for i = 1, GetNumGroupMembers(), 1 do
+			local sPlayer = GetFixedUpUnitName("raid" .. i);
+			local race, en_race = UnitRace("raid" .. i);
 			local guild = GetGuildInfo("raid" .. i);
-			local name, rank, subgroup, level, class, fileName, zone, online = GetRaidRosterInfo(i);
+			local name = GetFixedUpUnitName("raid" .. i, true);
+            local sName, _, _, level, class, en_class, zone, online = GetRaidRosterInfo(i);
+
 			if(sPlayer ~= UKNOWNBEING and name and name ~= UKNOWNBEING and name ~= UNKNOWN) then
 				if(not CT_RaidTracker_RaidLog[CT_RaidTracker_GetCurrentRaid]["PlayerInfos"][name]) then
 					CT_RaidTracker_RaidLog[CT_RaidTracker_GetCurrentRaid]["PlayerInfos"][name] = { };
 				end
-		--		if(CT_RaidTracker_Options["SaveExtendedPlayerInfo"] == 1) then
-				    if(race) then CT_RaidTracker_RaidLog[CT_RaidTracker_GetCurrentRaid]["PlayerInfos"][name]["race"] = race; end
-				    if(fileName) then CT_RaidTracker_RaidLog[CT_RaidTracker_GetCurrentRaid]["PlayerInfos"][name]["class"] = fileName; end
-						if(sex) then CT_RaidTracker_RaidLog[CT_RaidTracker_GetCurrentRaid]["PlayerInfos"][name]["sex"] = sex; end
-				    if(level > 0) then CT_RaidTracker_RaidLog[CT_RaidTracker_GetCurrentRaid]["PlayerInfos"][name]["level"] = level; end
-				    if(guild) then CT_RaidTracker_RaidLog[CT_RaidTracker_GetCurrentRaid]["PlayerInfos"][name]["guild"] = guild; end
-	--			end
+
+				if(race) then CT_RaidTracker_RaidLog[CT_RaidTracker_GetCurrentRaid]["PlayerInfos"][name]["race"] = race; end
+				if(class) then CT_RaidTracker_RaidLog[CT_RaidTracker_GetCurrentRaid]["PlayerInfos"][name]["class"] = class; end
+				if(level > 0) then CT_RaidTracker_RaidLog[CT_RaidTracker_GetCurrentRaid]["PlayerInfos"][name]["level"] = level; end
+				if(guild) then CT_RaidTracker_RaidLog[CT_RaidTracker_GetCurrentRaid]["PlayerInfos"][name]["guild"] = guild; end
+
 				tinsert(CT_RaidTracker_RaidLog[CT_RaidTracker_GetCurrentRaid]["Join"],
 					{
 						["player"] = sPlayer,
@@ -2875,95 +2671,13 @@ function CT_RaidTrackerCreateNewRaid(system)
 				if ( not online ) then
 					tinsert(CT_RaidTracker_RaidLog[CT_RaidTracker_GetCurrentRaid]["Leave"],
 						{
-							["player"] = UnitName("raid" .. i),
+							["player"] = GetFixedUpUnitName("raid" .. i),
 							["time"] = sDate
 						}
 					);
 				end
 				CT_RaidTracker_Online[name] = online;
 			end
-		end
-	elseif( (GetNumPartyMembers()  > 0) and (CT_RaidTracker_Options["LogGroup"] == 1) ) then
-		for i = 1, GetNumPartyMembers(), 1 do
-			local sPlayer = UnitName("party" .. i);
-			local _, race = UnitRace("party" .. i);
-			local sex = UnitSex("party" .. i);
-			local guild = GetGuildInfo("party" .. i);
-			local name = UnitName("party" .. i);
-			local rank = UnitPVPRank("party" .. i);
-			local level = UnitLevel("party" .. i);
-			local _, class = UnitClass("party" .. i);
-			local online = UnitIsConnected("party" .. i);
-			if (class) then
-				local fileName = string.upper(class);
-			end;
-			if(sPlayer ~= UKNOWNBEING and name and name ~= UKNOWNBEING and name ~= UNKNOWN) then
-				if(not CT_RaidTracker_RaidLog[CT_RaidTracker_GetCurrentRaid]["PlayerInfos"][name]) then
-					CT_RaidTracker_RaidLog[CT_RaidTracker_GetCurrentRaid]["PlayerInfos"][name] = { };
-				end
-	--			if(CT_RaidTracker_Options["SaveExtendedPlayerInfo"] == 1) then
-				    if(race) then CT_RaidTracker_RaidLog[CT_RaidTracker_GetCurrentRaid]["PlayerInfos"][name]["race"] = race; end
-				    if(fileName) then CT_RaidTracker_RaidLog[CT_RaidTracker_GetCurrentRaid]["PlayerInfos"][name]["class"] = fileName; end
-						if(sex) then CT_RaidTracker_RaidLog[CT_RaidTracker_GetCurrentRaid]["PlayerInfos"][name]["sex"] = sex; end
-				    if(level > 0) then CT_RaidTracker_RaidLog[CT_RaidTracker_GetCurrentRaid]["PlayerInfos"][name]["level"] = level; end
-				    if(guild) then CT_RaidTracker_RaidLog[CT_RaidTracker_GetCurrentRaid]["PlayerInfos"][name]["guild"] = guild; end
-	--			end
-				tinsert(CT_RaidTracker_RaidLog[CT_RaidTracker_GetCurrentRaid]["Join"],
-					{
-						["player"] = sPlayer,
-						["time"] = sDate
-					}
-				);
-				if ( not online ) then
-					tinsert(CT_RaidTracker_RaidLog[CT_RaidTracker_GetCurrentRaid]["Leave"],
-						{
-							["player"] = name,
-							["time"] = sDate
-						}
-					);
-				end
-				CT_RaidTracker_Online[name] = online;
-			end
-		end
-		
-		--Player isnt in party so add individual
-		
-		local sPlayer = UnitName("player");
-		local _, race = UnitRace("player");
-		local sex = UnitSex("player");
-		local guild = GetGuildInfo("player");
-		local name = UnitName("player");
-		local rank = UnitPVPRank("player");
-		local level = UnitLevel("player");
-		local _, class = UnitClass("player");
-		local online = UnitIsConnected("player");
-		local fileName = string.upper(class);
-		if(sPlayer ~= UKNOWNBEING and name and name ~= UKNOWNBEING and name ~= UNKNOWN) then
-			if(not CT_RaidTracker_RaidLog[CT_RaidTracker_GetCurrentRaid]["PlayerInfos"][name]) then
-				CT_RaidTracker_RaidLog[CT_RaidTracker_GetCurrentRaid]["PlayerInfos"][name] = { };
-			end
---			if(CT_RaidTracker_Options["SaveExtendedPlayerInfo"] == 1) then
-			    if(race) then CT_RaidTracker_RaidLog[CT_RaidTracker_GetCurrentRaid]["PlayerInfos"][name]["race"] = race; end
-			    if(fileName) then CT_RaidTracker_RaidLog[CT_RaidTracker_GetCurrentRaid]["PlayerInfos"][name]["class"] = fileName; end
-					if(sex) then CT_RaidTracker_RaidLog[CT_RaidTracker_GetCurrentRaid]["PlayerInfos"][name]["sex"] = sex; end
-			    if(level > 0) then CT_RaidTracker_RaidLog[CT_RaidTracker_GetCurrentRaid]["PlayerInfos"][name]["level"] = level; end
-			    if(guild) then CT_RaidTracker_RaidLog[CT_RaidTracker_GetCurrentRaid]["PlayerInfos"][name]["guild"] = guild; end
-		--	end
-			tinsert(CT_RaidTracker_RaidLog[CT_RaidTracker_GetCurrentRaid]["Join"],
-				{
-					["player"] = sPlayer,
-					["time"] = sDate
-				}
-			);
-			if ( not online ) then
-				tinsert(CT_RaidTracker_RaidLog[CT_RaidTracker_GetCurrentRaid]["Leave"],
-					{
-						["player"] = name,
-						["time"] = sDate
-					}
-				);
-			end
-			CT_RaidTracker_Online[name] = online;
 		end
 	end
 	if(CT_RaidTracker_Options["AutoZone"] == 1) then
@@ -2974,7 +2688,7 @@ function CT_RaidTrackerCreateNewRaid(system)
 	CT_RaidTracker_UpdateView();
 end
 
-function CT_RaidTrackerEndRaid()
+function CT_RaidTrackerEndRaid() --Reviewed
     local raidendtime = CT_RaidTracker_Date();
     if(CT_RaidTracker_GetCurrentRaid) then
         CT_RaidTracker_Print("活动结束时间 "..raidendtime, 1, 1, 0);
@@ -2998,7 +2712,7 @@ function CT_RaidTrackerEndRaid()
     end
 end
 
-function CT_RaidTrackerSnapshotRaid()
+function CT_RaidTrackerSnapshotRaid() --Reviewed
     local sDate = CT_RaidTracker_Date();
     local newraid = {};
     if(CT_RaidTracker_GetCurrentRaid) then
@@ -3009,7 +2723,7 @@ function CT_RaidTrackerSnapshotRaid()
     		["Leave"] = { },
     		["PlayerInfos"] = { },
     		["BossKills"] = { },
-		["BossKilled"] = { },
+			["BossKilled"] = { },
     		["key"] = sDate,
     		["End"] = sDate,
 	        });
@@ -3032,9 +2746,6 @@ function CT_RaidTrackerSnapshotRaid()
     	CT_RaidTracker_Update();
     end
 end	
-
-
-PlayerGroupsIndexes = {"A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"};
 
 function CT_RaidTracker_GetPlayerIndexes(raidid)
 	local PlayerIndexes = { };
@@ -3059,24 +2770,31 @@ function CT_RaidTracker_GetPlayerIndexes(raidid)
 	return PlayerIndexes;
 end
 
-function CT_RaidTracker_GetPlayerGroups(raidid)
-	local PlayerIndexes = CT_RaidTracker_GetPlayerIndexes(raidid);
-	local PlayerGroups = { };
-	local PlayerGroup;
-	local Classes;
-	for k, v in pairs(PlayerIndexes) do		
-		Classes = CT_RaidTracker_RaidLog[raidid]["PlayerInfos"][v]["class"];
-		
-		PlayerGroup = CT_RaidTracker_PlayerGroupIndex(CT_RaidTracker_ClassTable[Classes]);
-		if(not PlayerGroups[PlayerGroup]) then
-			PlayerGroups[PlayerGroup] = { };
-		end
-		tinsert(PlayerGroups[PlayerGroup], v);
-	end
-	return PlayerGroups;
+function CT_RaidTracker_GetPlayerGroups(raidid) --fixed class init
+    local PlayerIndexes = CT_RaidTracker_GetPlayerIndexes(raidid);
+    local ClassGroups = { };
+    local PlayerClass;
+
+    if (PlayerIndexes) then
+        for k, v in pairs(PlayerIndexes) do
+            PlayerClass = CT_RaidTracker_RaidLog[raidid]["PlayerInfos"][v]["class"];
+            if(PlayerClass) then
+                ClassGroups[PlayerClass] = { };
+            end
+        end
+
+        for k, v in pairs(PlayerIndexes) do
+            PlayerClass = CT_RaidTracker_RaidLog[raidid]["PlayerInfos"][v]["class"];
+            if(PlayerClass) then
+                tinsert(ClassGroups[PlayerClass], v);
+            end
+        end
+    end
+
+    return ClassGroups;
 end
 
-function CT_RaidTracker_PlayerGroupIndex(letter)
+function CT_RaidTracker_PlayerGroupIndex(letter) --not used
 	if(letter == '' or letter == nil ) then 
 		return '未知职业';
 	end
@@ -3088,6 +2806,7 @@ function CT_RaidTracker_PlayerGroupIndex(letter)
 	return '未知职业';
 end
 
+--[[
 function CT_RaidTracker_StripSpecialChars(sstring)
 	
 	sstring = string.gsub(sstring, "\194\161", "!");
@@ -3158,15 +2877,15 @@ function CT_RaidTracker_StripSpecialChars(sstring)
 	sstring = string.gsub(sstring, "\195\190", "th");
 	return sstring;
 end
-
-function CT_RaidTrackerShowDkpLink(link)
+--]]
+function CT_RaidTrackerShowDkpLink(link) --Reviewed
 	URLFrameEditBox:SetText(link);
 	URLFrameEditBox:HighlightText();
 	URLFrame:Show();
 end
 
 function CT_RaidTrackerGenerateMLdkpXML(id)
-	local race, class, level, sex;
+	local race, class, level;
 	
 	if (not CT_RaidTracker_RaidLog[id]["End"]) then
 		CT_RaidTracker_Print("请结束活动后再导出到IEDKP");
@@ -3189,10 +2908,6 @@ function CT_RaidTrackerGenerateMLdkpXML(id)
 	if(CT_RaidTracker_RaidLog[id]["zone"]) then
 		xml = xml.."<zone>"..CT_RaidTracker_RaidLog[id]["zone"].."</zone>";
 	end
-    
-    if(CT_RaidTracker_RaidLog[id]["difficulty"]) then
-        xml = xml.."<difficulty>"..CT_RaidTracker_RaidLog[id]["difficulty"].."</difficulty>";
-    end
     
 	if(CT_RaidTracker_RaidLog[id]["instanceid"]) then
 		xml = xml.."<instanceid>"..CT_RaidTracker_RaidLog[id]["instanceid"].."</instanceid>";
@@ -3234,17 +2949,6 @@ function CT_RaidTrackerGenerateMLdkpXML(id)
 		end
 		xml = xml.."</bosskills>";
 	end
-	if(CT_RaidTracker_RaidLog[id]["wipes"]) then
-		xml = xml.."<wipes>";
-		for key, val in pairs(CT_RaidTracker_RaidLog[id]["wipes"]) do
-			xml = xml.."<wipe><time>"..val.."</time></wipe>";
-		end
-		xml = xml.."</wipes>";
-	end
-	if(CT_RaidTracker_RaidLog[id]["nextboss"]) then
-		xml = xml.."<nextboss>"..CT_RaidTracker_RaidLog[id]["nextboss"].."</nextboss>";
-	end
-
 	if(CT_RaidTracker_RaidLog[id]["note"]) then 
 		xml = xml.."<note><![CDATA["..CT_RaidTracker_RaidLog[id]["note"].."]]></note>"; 
 	end
@@ -3280,9 +2984,6 @@ function CT_RaidTrackerGenerateMLdkpXML(id)
 			xml = xml.."<costs>"..val["costs"].."</costs>";
 		end
 		xml = xml.."<time>"..CT_RaidTracker_GetTime(val["time"]).."</time>";
-        if(CT_RaidTracker_RaidLog[id]["difficulty"]) then
-            xml = xml.."<difficulty>"..CT_RaidTracker_RaidLog[id]["difficulty"].."</difficulty>";
-        end
 		if(val["zone"]) then 
 			xml = xml.."<zone>"..val["zone"].."</zone>";
 		end
@@ -3302,7 +3003,7 @@ function CT_RaidTrackerGenerateMLdkpXML(id)
 end
 
 function CT_RaidTrackerGenerateDkpLink(id)
-	local race, class, level, sex;
+	local race, class, level;
 	if (CT_RaidTracker_Options["ExportFormat"]==2) then
 		CT_RaidTrackerGenerateMLdkpXML(id);
 		return;
@@ -3332,9 +3033,6 @@ function CT_RaidTrackerGenerateDkpLink(id)
 	if(CT_RaidTracker_RaidLog[id]["zone"]) then
 		link = link.."<zone>"..CT_RaidTracker_RaidLog[id]["zone"].."</zone>";
 	end
-    if(CT_RaidTracker_RaidLog[id]["difficulty"]) then
-        link = link.."<difficulty>"..CT_RaidTracker_RaidLog[id]["difficulty"].."</difficulty>";
-    end
 	if(CT_RaidTracker_RaidLog[id]["PlayerInfos"]) then
 		link = link.."<PlayerInfos>";
 		local playerinfosindex = 1;
@@ -3344,7 +3042,6 @@ function CT_RaidTrackerGenerateDkpLink(id)
 			for key2, val2 in pairs(CT_RaidTracker_RaidLog[id]["PlayerInfos"][key]) do
 				if(key2 == "note") then
 					link = link.."<"..key2.."><![CDATA["..val2.."]]></"..key2..">";
-				
 				else
 					link = link.."<"..key2..">"..val2.."</"..key2..">";
 				end
@@ -3384,18 +3081,6 @@ function CT_RaidTrackerGenerateDkpLink(id)
 		end
 		link = link.."</BossKills>";
 	end
-	-- new exports
-	if(CT_RaidTracker_RaidLog[id]["wipes"]) then
-		link = link.."<Wipes>";
-		for key, val in pairs(CT_RaidTracker_RaidLog[id]["wipes"]) do
-			link = link.."<Wipe>"..val.."</Wipe>";
-		end
-		link = link.."</Wipes>";
-	end
-	if(CT_RaidTracker_RaidLog[id]["nextboss"]) then
-		link = link.."<NextBoss>"..CT_RaidTracker_RaidLog[id]["nextboss"].."</NextBoss>";
-	end
-	--	
 	if(CT_RaidTracker_Options["ExportFormat"] == 0) then
 			local sNote = "<note><![CDATA[";
 			if(CT_RaidTracker_RaidLog[id]["note"]) then sNote = sNote..CT_RaidTracker_RaidLog[id]["note"]; end
@@ -3427,13 +3112,8 @@ function CT_RaidTrackerGenerateDkpLink(id)
 		else
 			link = link.."<Time>"..val["time"].."</Time>";
 		end
-    if(val["difficulty"]) then
-        difficulty_text = " ("..CT_RaidTracker_DifficultyTable[val["difficulty"]]..")";
-    else
-        difficulty_text = "";
-    end
+
 		if(val["zone"]) then link = link.."<Zone>"..val["zone"].."</Zone>"; end
-        if(CT_RaidTracker_RaidLog[id]["difficulty"]) then link = link.."<Difficulty>"..CT_RaidTracker_RaidLog[id]["difficulty"].."</Difficulty>"; end
 		if(val["boss"]) then link = link.."<Boss>"..val["boss"].."</Boss>"; end
 
 		val["item"]["tooltip"] = CT_RaidTracker_GetItemTooltip(val["item"]["id"]);
@@ -3442,7 +3122,7 @@ function CT_RaidTrackerGenerateDkpLink(id)
 		if(CT_RaidTracker_Options["ExportFormat"] == 0) then
 			local sNote = "<Note><![CDATA[";
 			if(val["note"]) then sNote = sNote..val["note"]; end
-			if(val["zone"]) then sNote = sNote.." - Zone: "..val["zone"]..difficulty_text; end
+			if(val["zone"]) then sNote = sNote.." - Zone: "..val["zone"]; end
 			if(val["boss"]) then sNote = sNote.." - Boss: "..val["boss"]; end
 			if(val["costs"]) then sNote = sNote.." - "..val["costs"].." DKP"; end
 			sNote = sNote.."]]></Note>";
@@ -3474,28 +3154,29 @@ function CT_RaidTracker_EditBossDKP(raidid, bossid)
     CT_RaidTrackerEditNoteFrame:Show();
 end
 
-function CT_RaidTracker_EditPlayerNote(raidid, playerid)
+-- Editing
+function CT_RaidTracker_EditPlayerNote(raidid, playerid) --Reviewed
     CT_RaidTrackerEditNoteFrame.type = "playernote";
     CT_RaidTrackerEditNoteFrame.raidid = raidid;
     CT_RaidTrackerEditNoteFrame.playerid = playerid;
     CT_RaidTrackerEditNoteFrame:Show();
 end
 
-function CT_RaidTracker_EditRaidNote(raidid)
+function CT_RaidTracker_EditRaidNote(raidid) --Reviewed
 	CT_RaidTrackerEditNoteFrame:Hide();
 	CT_RaidTrackerEditNoteFrame.type = "raidnote";
 	CT_RaidTrackerEditNoteFrame.raidid = raidid;
 	CT_RaidTrackerEditNoteFrame:Show();
 end
 
-function CT_RaidTracker_EditItemNote(raidid, itemid)
+function CT_RaidTracker_EditItemNote(raidid, itemid) --Reviewed
     CT_RaidTrackerEditNoteFrame.type = "itemnote";
     CT_RaidTrackerEditNoteFrame.raidid = raidid;
     CT_RaidTrackerEditNoteFrame.itemid = itemid;
     CT_RaidTrackerEditNoteFrame:Show();
 end
 
-function CT_RaidTracker_EditItemCount(raidid, itemid)
+function CT_RaidTracker_EditItemCount(raidid, itemid) --Reviewed
     CT_RaidTrackerEditNoteFrame.type = "itemcount";
     CT_RaidTrackerEditNoteFrame.raidid = raidid;
     CT_RaidTrackerEditNoteFrame.itemid = itemid;
@@ -3509,7 +3190,7 @@ function CT_RaidTracker_EditCosts(raidid, itemid)
     CT_RaidTrackerEditCostFrame:Show();
 end
 
-function CT_RaidTracker_EditLooter(raidid, itemid)
+function CT_RaidTracker_EditLooter(raidid, itemid) --Reviewed
 	CT_RaidTracker_Debug("CT_RaidTracker_EditLooter", raidid, itemid);
 	CT_RaidTrackerEditNoteFrame.type = "looter";
     CT_RaidTrackerEditNoteFrame.raidid = raidid;
@@ -3517,7 +3198,7 @@ function CT_RaidTracker_EditLooter(raidid, itemid)
     CT_RaidTrackerEditNoteFrame:Show();
 end
 
-function CT_RaidTracker_EditTime(raidid, what)
+function CT_RaidTracker_EditTime(raidid, what) --Reviewed
 	-- what: raidend/raidstart
  	CT_RaidTrackerEditNoteFrame.type = "time";
  	CT_RaidTrackerEditNoteFrame.what = what;
@@ -3525,7 +3206,7 @@ function CT_RaidTracker_EditTime(raidid, what)
 	CT_RaidTrackerEditNoteFrame:Show();
 end
 
-function CT_RaidTracker_EditItemTime(raidid, itemid)
+function CT_RaidTracker_EditItemTime(raidid, itemid) --Reviewed
  	CT_RaidTrackerEditNoteFrame.type = "time";
  	CT_RaidTrackerEditNoteFrame.what = "item";
 	CT_RaidTrackerEditNoteFrame.raidid = raidid;
@@ -3533,17 +3214,15 @@ function CT_RaidTracker_EditItemTime(raidid, itemid)
 	CT_RaidTrackerEditNoteFrame:Show();
 end
 
-function CT_RaidTracker_EditZone(raidid)
+function CT_RaidTracker_EditZone(raidid) --Reviewed
 	CT_RaidTrackerEditNoteFrame.type = "zone";
 	CT_RaidTrackerEditNoteFrame.raidid = raidid;
 	CT_RaidTrackerEditNoteFrame:Show();
 end
 
-
-
-function CT_RaidTracker_EditNote_OnShow()
+function CT_RaidTracker_EditNote_OnShow(this)
 	local text;
-	--CT_RaidTracker_Print(this.type);
+
 	if ( this.itemid ) then
 		CT_RaidTrackerEditNoteFrame.itemitemid = CT_RaidTracker_RaidLog[this.raidid]["Loot"][this.itemid]["item"]["id"];
 		CT_RaidTrackerEditNoteFrame.itemtime = CT_RaidTracker_RaidLog[this.raidid]["Loot"][this.itemid]["time"];
@@ -3756,7 +3435,6 @@ function CT_RaidTracker_SaveNote()
 	
 	elseif(type == "looter") then
 	    if(text and strlen(text) > 0) then 
-        
 	        CT_RaidTracker_RaidLog[raidid]["Loot"][lootid]["player"] = text;
 	    end
 	
@@ -3857,7 +3535,7 @@ function CT_RaidTracker_SaveZone(raidid, text)
 	CT_RaidTracker_RaidLog[raidid]["zone"] = zone;
 end
 
-function CT_RaidTracker_LootSetBoss(raidid, itemitemid, itemtime, itemplayer, boss)
+function CT_RaidTracker_LootSetBoss(raidid, itemitemid, itemtime, itemplayer, boss) --Reviewed
 
 	local lootid = CT_RaidTracker_GetLootId(raidid, itemplayer, itemitemid, itemtime);
 	CT_RaidTracker_RaidLog[raidid]["Loot"][lootid]["boss"] = boss;
@@ -3865,50 +3543,36 @@ function CT_RaidTracker_LootSetBoss(raidid, itemitemid, itemtime, itemplayer, bo
 	CT_RaidTracker_UpdateView();
 end
 
-function CT_RaidTracker_LootSetLooter(raidid, itemitemid, itemtime, itemplayer, player)
+function CT_RaidTracker_LootSetLooter(raidid, itemitemid, itemtime, itemplayer, player) --Reviewed
 	local lootid = CT_RaidTracker_GetLootId(raidid, itemplayer, itemitemid, itemtime);
-    --[[xd
-            local costs = CT_RaidTracker_RaidLog[raidid]["Loot"][lootid]["costs"];
-            local oldLooter = CT_RaidTracker_RaidLog[raidid]["Loot"][lootid]["player"];
-            if( MerDKP_Table[MerDKP.tmp.id] and costs) then
-               for k,v in pairs(MerDKP_Table[MerDKP.tmp.id]) do
-                    if(v.name == oldLooter) then                       
-                       v.dkp = 0 +v.dkp + costs;
-                    elseif(v.name == player) then                       
-                       v.dkp = 0 + v.dkp - costs;
-                   end
-               end
-            end
-            if(MerDKP) then
-        MerDKP:UpdateList();
-    end
-    --xd]]
 	CT_RaidTracker_RaidLog[raidid]["Loot"][lootid]["player"] = player;
     CT_RaidTracker_Update_MerDKP(raidid);
 	CT_RaidTracker_Update();
 	CT_RaidTracker_UpdateView();
 end
 
-function CT_RaidTracker_RaidSetZone(raidid, zone)
+function CT_RaidTracker_RaidSetZone(raidid, zone) --Reviewed
 	CT_RaidTracker_RaidLog[raidid]["zone"] = zone;
 	CT_RaidTracker_Update();
 	CT_RaidTracker_UpdateView();
 end
 
-function CT_RaidTracker_ItemsRightClickMenu_Initialize(frame, level)
+function CT_RaidTracker_ItemsRightClickMenu_Initialize(self, level) --Reviewed
 	if(not level) then
 		return;
 	end
 	local raidid, itemid = 0, 0;
 	local dropdown, info, lvalue;
+
 	if ( UIDROPDOWNMENU_OPEN_MENU ) then
 		dropdown = getglobal(UIDROPDOWNMENU_OPEN_MENU);
 	else
-		dropdown = this;
+		dropdown = self;
 	end
+
 	if (level == 1) then
-		raidid = this:GetParent().raidid;
-		itemid = this:GetParent().itemid;
+		raidid = self:GetParent().raidid;
+		itemid = self:GetParent().itemid;
 		local itemitemid = CT_RaidTracker_RaidLog[raidid]["Loot"][itemid]["item"]["id"];
 		local itemtime = CT_RaidTracker_RaidLog[raidid]["Loot"][itemid]["time"];
 		local itemplayer = CT_RaidTracker_RaidLog[raidid]["Loot"][itemid]["player"];
@@ -3917,10 +3581,10 @@ function CT_RaidTracker_ItemsRightClickMenu_Initialize(frame, level)
 		info.text = "编辑拾取者";
 		info.hasArrow = 1;
 		info.value = { ["opt"] = "quick_looter", ["raidid"] = raidid, ["itemid"] = itemid, ["itemitemid"] = itemitemid, ["itemtime"] = itemtime, ["itemplayer"] = itemplayer, ["cplayer"] = CT_RaidTracker_RaidLog[raidid]["Loot"][itemid]["player"] };
-		info.func = function()
+		info.func = function(self)
 			HideDropDownMenu(1);
-			local lootid = CT_RaidTracker_GetLootId(this.value["raidid"], this.value["itemplayer"], this.value["itemitemid"], this.value["itemtime"]);
-			CT_RaidTracker_EditLooter(this.value["raidid"], lootid);
+			local lootid = CT_RaidTracker_GetLootId(self.value["raidid"], self.value["itemplayer"], self.value["itemitemid"], self.value["itemtime"]);
+			CT_RaidTracker_EditLooter(self.value["raidid"], lootid);
 		end;
 		UIDropDownMenu_AddButton(info, level);
 		
@@ -3931,10 +3595,10 @@ function CT_RaidTracker_ItemsRightClickMenu_Initialize(frame, level)
 			info.text = "编辑DKP";
 		end
 		info.value = { ["raidid"] = raidid, ["itemid"] = itemid, ["itemitemid"] = itemitemid, ["itemtime"] = itemtime, ["itemplayer"] = itemplayer };
-		info.func = function()
+		info.func = function(self)
 			HideDropDownMenu(1);
-			local lootid = CT_RaidTracker_GetLootId(this.value["raidid"], this.value["itemplayer"], this.value["itemitemid"], this.value["itemtime"]);
-			CT_RaidTracker_EditCosts(this.value.raidid, lootid);
+			local lootid = CT_RaidTracker_GetLootId(self.value["raidid"], self.value["itemplayer"], self.value["itemitemid"], self.value["itemtime"]);
+			CT_RaidTracker_EditCosts(self.value.raidid, lootid);
 		end;
 		UIDropDownMenu_AddButton(info, level);
 		
@@ -3945,20 +3609,20 @@ function CT_RaidTracker_ItemsRightClickMenu_Initialize(frame, level)
 			info.text = "编辑数量";
 		end
 		info.value = { ["raidid"] = raidid, ["itemid"] = itemid, ["itemitemid"] = itemitemid, ["itemtime"] = itemtime, ["itemplayer"] = itemplayer };
-		info.func = function()
+		info.func = function(self)
 			HideDropDownMenu(1);
-			local lootid = CT_RaidTracker_GetLootId(this.value["raidid"], this.value["itemplayer"], this.value["itemitemid"], this.value["itemtime"]);
-			CT_RaidTracker_EditItemCount(this.value.raidid, lootid);
+			local lootid = CT_RaidTracker_GetLootId(self.value["raidid"], self.value["itemplayer"], self.value["itemitemid"], self.value["itemtime"]);
+			CT_RaidTracker_EditItemCount(self.value.raidid, lootid);
 		end;
 		UIDropDownMenu_AddButton(info, level);
 		
 		info = UIDropDownMenu_CreateInfo();
 		info.text = "编辑时间";
 		info.value = { ["raidid"] = raidid, ["itemid"] = itemid, ["itemitemid"] = itemitemid, ["itemtime"] = itemtime, ["itemplayer"] = itemplayer };
-		info.func = function()
+		info.func = function(self)
 			HideDropDownMenu(1);
-			local lootid = CT_RaidTracker_GetLootId(this.value["raidid"], this.value["itemplayer"], this.value["itemitemid"], this.value["itemtime"]);
-			CT_RaidTracker_EditItemTime(this.value.raidid, lootid);
+			local lootid = CT_RaidTracker_GetLootId(self.value["raidid"], self.value["itemplayer"], self.value["itemitemid"], self.value["itemtime"]);
+			CT_RaidTracker_EditItemTime(self.value.raidid, lootid);
 		end;
 		UIDropDownMenu_AddButton(info, level);
 		
@@ -3976,23 +3640,18 @@ function CT_RaidTracker_ItemsRightClickMenu_Initialize(frame, level)
 		UIDropDownMenu_AddButton(info, level);
 		
 	elseif (level == 2) then
-		if(this.value) then
-			lvalue = this.value;
-		else
-			lvalue = this:GetParent().value;
-		end;
+		lvalue = UIDROPDOWNMENU_MENU_VALUE;
 		
 		if(lvalue) then
 			if(lvalue["opt"] == "dropped_from_zones") then
-				
 				for k, v in pairs(CT_RaidTracker_Bosses) do
 					info = {};
 					if(v == 1) then
 						info.text = k;
 						info.value = { ["raidid"] = lvalue["raidid"], ["itemid"] = lvalue["itemid"], ["zone"] = lvalue["zone"], ["boss"] = k, ["itemitemid"] = lvalue["itemitemid"], ["itemtime"] = lvalue["itemtime"], ["itemplayer"] = lvalue["itemplayer"] };
-						info.func = function()
+						info.func = function(self)
 							HideDropDownMenu(1);
-							CT_RaidTracker_LootSetBoss(lvalue["raidid"], lvalue["itemitemid"], lvalue["itemtime"], lvalue["itemplayer"], this.value["boss"])
+							CT_RaidTracker_LootSetBoss(lvalue["raidid"], lvalue["itemitemid"], lvalue["itemtime"], lvalue["itemplayer"], self.value["boss"])
 						end;
 						if(lvalue["cboss"] == k) then
 							info.checked = 1;
@@ -4016,9 +3675,9 @@ function CT_RaidTracker_ItemsRightClickMenu_Initialize(frame, level)
 				info = UIDropDownMenu_CreateInfo();
 				info.text = "无";
 				info.value = lvalue;
-				info.func = function()
+				info.func = function(self)
 					HideDropDownMenu(1);
-					CT_RaidTracker_LootSetBoss(this.value["raidid"], this.value["itemitemid"], this.value["itemtime"], this.value["itemplayer"], nil)
+					CT_RaidTracker_LootSetBoss(self.value["raidid"], self.value["itemitemid"], self.value["itemtime"], self.value["itemplayer"], nil)
 				end;
 				UIDropDownMenu_AddButton(info, level);
 			elseif(lvalue["opt"] == "quick_looter") then
@@ -4027,9 +3686,9 @@ function CT_RaidTracker_ItemsRightClickMenu_Initialize(frame, level)
 						info = UIDropDownMenu_CreateInfo();
 						info.text = v;
 						info.value = { ["raidid"] = lvalue["raidid"], ["itemid"] = lvalue["itemid"], ["itemitemid"] = lvalue["itemitemid"], ["itemtime"] = lvalue["itemtime"], ["itemplayer"] = lvalue["itemplayer"], ["player"] = v, ["cplayer"] = lvalue["cplayer"] };
-						info.func = function()
+						info.func = function(self)
 							HideDropDownMenu(1);
-							CT_RaidTracker_LootSetLooter(this.value["raidid"], this.value["itemitemid"], this.value["itemtime"], this.value["itemplayer"], this.value["player"]);
+							CT_RaidTracker_LootSetLooter(self.value["raidid"], self.value["itemitemid"], self.value["itemtime"], self.value["itemplayer"], self.value["player"]);
 						end;
 						if(lvalue["cplayer"] == v) then
 							info.checked = 1;
@@ -4040,11 +3699,10 @@ function CT_RaidTracker_ItemsRightClickMenu_Initialize(frame, level)
 					info.disabled = 1;
 					UIDropDownMenu_AddButton(info, level);
 				end
-				
 				PlayerGroups = CT_RaidTracker_GetPlayerGroups(lvalue["raidid"]);
 				for k, v in pairs(PlayerGroups) do
 					info = UIDropDownMenu_CreateInfo();
-					info.text = PlayerGroupsIndexes[k];
+					info.text = k;
 					info.hasArrow = 1;
 					info.value = { ["opt"] = "quick_looter_subplayers", ["raidid"] = lvalue["raidid"], ["itemid"] = lvalue["itemid"], ["playergroupsindex"] = k, ["itemitemid"] = lvalue["itemitemid"], ["itemtime"] = lvalue["itemtime"], ["itemplayer"] = lvalue["itemplayer"], ["players"] = v, ["cplayer"] = lvalue["cplayer"] };
 					for k2, v2 in pairs(v) do
@@ -4058,11 +3716,7 @@ function CT_RaidTracker_ItemsRightClickMenu_Initialize(frame, level)
 			end
 		end
 	elseif (level == 3) then
-		if(this.value) then
-			lvalue = this.value;
-		else
-			lvalue = this:GetParent().value;
-		end;
+		lvalue = UIDROPDOWNMENU_MENU_VALUE;
 		
 		if(lvalue) then
 			if(lvalue["opt"] == "dropped_from_bosses") then
@@ -4072,9 +3726,9 @@ function CT_RaidTracker_ItemsRightClickMenu_Initialize(frame, level)
 							info = UIDropDownMenu_CreateInfo();
 							info.text = k..' - '..v2;
 							info.value = { ["raidid"] = lvalue["raidid"], ["itemid"] = lvalue["itemid"], ["zone"] = lvalue["zone"], ["itemitemid"] = lvalue["itemitemid"], ["itemtime"] = lvalue["itemtime"], ["itemplayer"] = lvalue["itemplayer"], ["boss"] = v2 };
-							info.func = function()
+							info.func = function(self)
 								HideDropDownMenu(1);
-								CT_RaidTracker_LootSetBoss(this.value["raidid"], this.value["itemitemid"], this.value["itemtime"], this.value["itemplayer"], this.value["boss"])
+								CT_RaidTracker_LootSetBoss(self.value["raidid"], self.value["itemitemid"], self.value["itemtime"], self.value["itemplayer"], self.value["boss"])
 							end;
 							if(lvalue["cboss"] == v) then
 								info.checked = 1;
@@ -4085,24 +3739,24 @@ function CT_RaidTracker_ItemsRightClickMenu_Initialize(frame, level)
 						info = UIDropDownMenu_CreateInfo();
 						info.text = v;
 						info.value = { ["raidid"] = lvalue["raidid"], ["itemid"] = lvalue["itemid"], ["zone"] = lvalue["zone"], ["itemitemid"] = lvalue["itemitemid"], ["itemtime"] = lvalue["itemtime"], ["itemplayer"] = lvalue["itemplayer"], ["boss"] = v };
-						info.func = function()
+						info.func = function(self)
 							HideDropDownMenu(1);
-							CT_RaidTracker_LootSetBoss(this.value["raidid"], this.value["itemitemid"], this.value["itemtime"], this.value["itemplayer"], this.value["boss"])
+							CT_RaidTracker_LootSetBoss(self.value["raidid"], self.value["itemitemid"], self.value["itemtime"], self.value["itemplayer"], self.value["boss"])
 						end;
 						if(lvalue["cboss"] == v) then
 							info.checked = 1;
 						end
 						UIDropDownMenu_AddButton(info, level);
-					end;
+					end
 				end
 			elseif(lvalue["opt"] == "quick_looter_subplayers") then
 				for k, v in pairs(lvalue["players"]) do
 					info = UIDropDownMenu_CreateInfo();
 					info.text = v;
 					info.value = { ["raidid"] = lvalue["raidid"], ["itemid"] = lvalue["itemid"], ["itemitemid"] = lvalue["itemitemid"], ["itemtime"] = lvalue["itemtime"], ["itemplayer"] = lvalue["itemplayer"], ["player"] = v };
-					info.func = function()
+					info.func = function(self)
 						HideDropDownMenu(1);
-						CT_RaidTracker_LootSetLooter(this.value["raidid"], this.value["itemitemid"], this.value["itemtime"], this.value["itemplayer"], this.value["player"]);
+						CT_RaidTracker_LootSetLooter(self.value["raidid"], self.value["itemitemid"], self.value["itemtime"], self.value["itemplayer"], self.value["player"]);
 					end;
 					if(CT_RaidTracker_RaidLog[lvalue["raidid"]]["Loot"][lvalue["itemid"]]["player"] == v) then
 						info.checked = 1;
@@ -4114,27 +3768,28 @@ function CT_RaidTracker_ItemsRightClickMenu_Initialize(frame, level)
 	end
 end
 
-function CT_RaidTracker_ItemsRightClickMenu_Toggle()
-	local menu = getglobal(this:GetParent():GetName().."RightClickMenu");
+function CT_RaidTracker_ItemsRightClickMenu_Toggle(self) --Reviewed
+	local menu = getglobal(self:GetParent():GetName().."RightClickMenu");
 	menu.point = "TOPLEFT";
 	menu.relativePoint = "BOTTOMLEFT";
 	ToggleDropDownMenu(1, nil, menu, "cursor", -60, 0);
 end
 
-function CT_RaidTracker_RaidsRightClickMenu_Initialize(frame,level)
+function CT_RaidTracker_RaidsRightClickMenu_Initialize(self,level)
 	if(not level) then
 		return;
 	end
 	local raidid, itemid = 0, 0;
 	local dropdown, info, lvalue;
+
 	if ( UIDROPDOWNMENU_OPEN_MENU ) then
 		dropdown = getglobal(UIDROPDOWNMENU_OPEN_MENU);
 	else
-		dropdown = this;
+		dropdown = self;
 	end
 	
 	if (level == 1) then
-		raidid = this:GetID() + FauxScrollFrame_GetOffset(CT_RaidTrackerListScrollFrame);
+		raidid = self:GetID() + FauxScrollFrame_GetOffset(CT_RaidTrackerListScrollFrame);
 		
 		info = {};
 		if ( CT_RaidTracker_RaidLog[raidid]["key"] ) then
@@ -4143,9 +3798,9 @@ function CT_RaidTracker_RaidsRightClickMenu_Initialize(frame,level)
 			info.text = "编辑开始时间";
 		end
 		info.value = { ["raidid"] = raidid, ["what"] = "raidstart"};
-		info.func = function()
+		info.func = function(self)
 			HideDropDownMenu(1);
-			CT_RaidTracker_EditTime(this.value["raidid"], this.value["what"]);
+			CT_RaidTracker_EditTime(self.value["raidid"], self.value["what"]);
 		end;
 		UIDropDownMenu_AddButton(info, level);
 		
@@ -4156,9 +3811,9 @@ function CT_RaidTracker_RaidsRightClickMenu_Initialize(frame,level)
 			info.text = "编辑结束时间";
 		end
 		info.value = { ["raidid"] = raidid, ["what"] = "raidend"};
-		info.func = function()
+		info.func = function(self)
 			HideDropDownMenu(1);
-			CT_RaidTracker_EditTime(this.value["raidid"], this.value["what"]);
+			CT_RaidTracker_EditTime(self.value["raidid"], self.value["what"]);
 		end;
 		UIDropDownMenu_AddButton(info, level);
 		
@@ -4170,9 +3825,9 @@ function CT_RaidTracker_RaidsRightClickMenu_Initialize(frame,level)
 		end
 		info.hasArrow = 1;
 		info.value = { ["opt"] = "raid_zones", ["raidid"] = raidid};
-		info.func = function()
+		info.func = function(self)
 			HideDropDownMenu(1);
-			CT_RaidTracker_EditZone(this.value["raidid"]);
+			CT_RaidTracker_EditZone(self.value["raidid"]);
 		end;
 		if ( CT_RaidTracker_RaidLog[raidid]["zone"] ) then
 			for k, v in pairs(CT_RaidTracker_Zones) do
@@ -4191,26 +3846,26 @@ function CT_RaidTracker_RaidsRightClickMenu_Initialize(frame,level)
 			info.text = "编辑活动的备注";
 		end
 		info.value = { ["raidid"] = raidid};
-		info.func = function()
+		info.func = function(self)
 			HideDropDownMenu(1);
-			--CT_RaidTracker_EditNote(this.value["raidid"], "raidnote")
-			CT_RaidTracker_EditRaidNote(this.value["raidid"]);
+			--CT_RaidTracker_EditNote(self.value["raidid"], "raidnote")
+			CT_RaidTracker_EditRaidNote(self.value["raidid"]);
 		end;
 		UIDropDownMenu_AddButton(info, level);
 		
 		info = {};
 		info.text = "导出到IEDKP";
 		info.value = { ["raidid"] = raidid};
-		info.func = function()
+		info.func = function(self)
 			HideDropDownMenu(1);
-			CT_RaidTrackerGenerateDkpLink(this.value["raidid"]);
+			CT_RaidTrackerGenerateDkpLink(self.value["raidid"]);
 		end;
 		UIDropDownMenu_AddButton(info, level);
 	elseif (level == 2) then
-		if(this.value) then
-			lvalue = this.value;
+		if(self.value) then
+			lvalue = self.value;
 		else
-			lvalue = this:GetParent().value;
+			lvalue = self:GetParent().value;
 		end;		
 		if(lvalue) then
 			if(lvalue["opt"] == "raid_zones") then
@@ -4218,9 +3873,9 @@ function CT_RaidTracker_RaidsRightClickMenu_Initialize(frame,level)
 					info = {};
 					info.text = v;
 					info.value = { ["raidid"] = lvalue["raidid"], ["zone"] = v};
-					info.func = function()
+					info.func = function(self)
 						HideDropDownMenu(1);
-						CT_RaidTracker_RaidSetZone(this.value["raidid"], this.value["zone"]);
+						CT_RaidTracker_RaidSetZone(self.value["raidid"], self.value["zone"]);
 					end;
 					if(CT_RaidTracker_RaidLog[lvalue["raidid"]]["zone"] == v) then
 						info.checked = 1;
@@ -4231,9 +3886,9 @@ function CT_RaidTracker_RaidsRightClickMenu_Initialize(frame,level)
 				info = {};
 				info.text = "无";
 				info.value = { ["raidid"] = lvalue["raidid"]};
-				info.func = function()
+				info.func = function(self)
 					HideDropDownMenu(1);
-					CT_RaidTracker_RaidSetZone(this.value["raidid"], nil);
+					CT_RaidTracker_RaidSetZone(self.value["raidid"], nil);
 				end;
 				UIDropDownMenu_AddButton(info, level);
 				
@@ -4249,9 +3904,9 @@ function CT_RaidTracker_RaidsRightClickMenu_Initialize(frame,level)
 					info = {};
 					info.text = v;
 					info.value = { ["raidid"] = lvalue["raidid"], ["zone"] = v};
-					info.func = function()
+					info.func = function(self)
 						HideDropDownMenu(1);
-						CT_RaidTracker_RaidSetZone(this.value["raidid"], this.value["zone"]);
+						CT_RaidTracker_RaidSetZone(self.value["raidid"], self.value["zone"]);
 					end;
 					if(CT_RaidTracker_RaidLog[lvalue["raidid"]]["zone"] == v) then
 						info.checked = 1;
@@ -4263,14 +3918,14 @@ function CT_RaidTracker_RaidsRightClickMenu_Initialize(frame,level)
 	end
 end
 
-function CT_RaidTracker_RaidsRightClickMenu_Toggle()
-	local menu = getglobal(this:GetName().."RightClickMenu");
+function CT_RaidTracker_RaidsRightClickMenu_Toggle(self)
+	local menu = getglobal(self:GetName().."RightClickMenu");
 	menu.point = "TOPLEFT";
 	menu.relativePoint = "BOTTOMLEFT";
 	ToggleDropDownMenu(1, nil, menu, "cursor", 0, 0);
 end
 
-function CT_RaidTracker_ConvertGlobalString(globalString)
+function CT_RaidTracker_ConvertGlobalString(globalString) --Reviewed
 	-- Stolen from nurfed (and fixed for german clients)
 	globalString = string.gsub(globalString, "%%%d%$", "%%"); 
 	globalString = string.gsub(globalString, "%%s", "(.+)");
@@ -4278,7 +3933,7 @@ function CT_RaidTracker_ConvertGlobalString(globalString)
 	return globalString;
 end
 
-function CT_RaidTracker_JoinLeaveSave()
+function CT_RaidTracker_JoinLeaveSave() --Reviewed 
     local player_name = CT_RaidTrackerJoinLeaveFrameNameEB:GetText();
 	local player_note = CT_RaidTrackerJoinLeaveFrameNoteEB:GetText();
 	local player_time = CT_RaidTrackerJoinLeaveFrameTimeEB:GetText();
@@ -4324,88 +3979,6 @@ function CT_RaidTracker_JoinLeaveSave()
         CT_RaidTracker_UpdateView();
     end
 end
-
-
-
--- Next Boss selection handling
-
-function CT_RaidTracker_Boss_InitWindow()
-	UIDropDownMenu_Initialize(CT_RaidTrackerNextBossFrameBossDropdown, CT_RaidTracker_Boss_Init);
-end;
-
-function CT_RaidTracker_Boss_Init()
-	local i = 0;
-	local ii = 0;
-	if (CT_RaidTracker_GetCurrentRaid == nil) then
-		return;
-	end;
-
-	i = CT_RaidTracker_Boss_Add_Button(CT_RaidTracker_BossUnitTriggers["DEFAULTBOSS"],i);
-	ii = ii + 1;
-	if (CT_RaidTracker_RaidLog[CT_RaidTracker_GetCurrentRaid]["zone"] == nil) then
-		for k,v in pairs(CT_RaidTracker_Bosses) do
-				CT_RaidTracker_Debug(k,v);
-			if (v == 1) then
-				ii = ii + 1;
-				for k2,v2 in pairs(CT_RaidTracker_BossUnitTriggers) do
-					if (v2 == v) then
-						i = CT_RaidTracker_Boss_Add_Button(k2,i);
-					end;
-				end;
-			end;
-		end
-	else
-		for k,v in pairs(CT_RaidTracker_Bosses[CT_RaidTracker_RaidLog[CT_RaidTracker_GetCurrentRaid]["zone"]]) do
-			local addit = true;
-			for k2,v2 in pairs(CT_RaidTracker_RaidLog[CT_RaidTracker_GetCurrentRaid]["BossKills"]) do
-				if (v2["boss"] == v) then
-					addit = false;
-				end;
-			end;
-			if (addit == true) then
-				if (type(v) == "table") then
-					for k2,v2 in pairs(v) do
-						ii = ii + 1;
-						for k3,v3 in pairs(CT_RaidTracker_BossUnitTriggers) do
-							if (v3 == v2) then
-								i = CT_RaidTracker_Boss_Add_Button(k..' - '..k3,i);
-							end;
-						end;
-					end;
-				else
-					ii = ii + 1;
-					for k2,v2 in pairs(CT_RaidTracker_BossUnitTriggers) do
-						if (v2 == v) then
-							i = CT_RaidTracker_Boss_Add_Button(k2,i);
-						end;
-					end;
-				end;
-			end;
-		end
-	end;
-	if (ii == 2) then
-		UIDropDownMenu_SetSelectedID(CT_RaidTrackerNextBossFrameBossDropdown, ii);
-	end;
-end;
-
-function CT_RaidTracker_Boss_Add_Button(k,i)
-	local info = {
-		text = k;
-		func = CT_RaidTracker_Boss_Update;
-	};
-	UIDropDownMenu_AddButton(info);
-	if (i == cur_class_id) then
-		UIDropDownMenu_SetSelectedID(CT_RaidTrackerNextBossFrameBossDropdown, i+1);
-		UIDropDownMenu_SetText(info.text, CT_RaidTrackerNextBossFrameBossDropdown);
-	end
-	return i
-end;
-
-function CT_RaidTracker_Boss_Update()
-	i = this:GetID();
-	UIDropDownMenu_SetSelectedID(CT_RaidTrackerNextBossFrameBossDropdown, i);
-end;
-
 
 function CT_RaidTracker_Update_MerDKP(raidid)
     if (not CT_RaidTracker_GetCurrentRaid) or DKPSystem==0 or DKPSystem==nil or CT_RaidTracker_GetCurrentRaid~=raidid or MerDKP_Table_init[DKPSystem]==nil then
@@ -4560,4 +4133,38 @@ function CT_RaidTracker_EditPlayerDKP(reason,name,dkp)
 	
 	CT_RaidTracker_CreateBoss("#"..reason,name,dkp);
 	
+end
+
+function GetFixedUpUnitName(name) --modify to remove realmName
+    if name == nil then
+        return name;
+    end
+
+    local realmName = GetRealmName(name);
+    if (realmName == nil) then
+        realmName = "";
+    end
+    
+    local fixedName = GetNameWithRealmName(name);
+    if string.match(fixedName, "-") then
+        fixedName = string.gsub(fixedName, "-"..realmName,"");
+    end
+    return fixedName;
+end
+
+function GetNameWithRealmName(name) --Reviewed
+    if name == nil then
+        return name
+    else
+        local fixedUpUnitName = GetUnitName(name, true)
+        if fixedUpUnitName == nil then
+            return name
+        end
+        if string.match(fixedUpUnitName, "-") then
+            return fixedUpUnitName:gsub("%s+", "")
+        else
+            local realmName = GetRealmName(name)
+            return fixedUpUnitName.."-"..realmName:gsub("%s+", "")
+        end
+    end
 end

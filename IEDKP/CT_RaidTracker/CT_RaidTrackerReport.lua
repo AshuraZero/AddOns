@@ -1,5 +1,4 @@
-﻿--by Mermaid 2008-12-07
-
+﻿
 local L = {
 	["Raid Start:"] 	= "活動時間：",
 	["Raid Zone:"] 		= "活動地點：",
@@ -53,8 +52,7 @@ or "") .. "\n"
 		text = text .. L["Drops:"]
 		for _, v in pairs(profile.Loot) do
 			if v.item.count > 1 then
-				text = text .. "[".. v.item.name .. "]x" .. v.item.count ..
-L["Looter:"] .. v.player
+				text = text .. "[".. v.item.name .. "]x" .. v.item.count ..L["Looter:"] .. v.player
 			else
 				text = text .. "[".. v.item.name .. "]" .. L["Looter:"] .. v.player			
 			end

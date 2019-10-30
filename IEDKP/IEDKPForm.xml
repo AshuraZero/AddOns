@@ -775,7 +775,7 @@
     </Frames>
     <Scripts>
       <OnLoad>
-        tinsert(UISpecialFrames,this:GetName());SlashCmdList["IEDKP"] = function() ShowUIPanel(CT_RaidTrackerFrame);
+        tinsert(UISpecialFrames,self:GetName());SlashCmdList["IEDKP"] = function() ShowUIPanel(CT_RaidTrackerFrame);
         MerDKPFrame:Show();  end;SLASH_IEDKP1 = "/iedkp"
       </OnLoad>
     </Scripts>
@@ -833,8 +833,8 @@
         </Layers>
         <Scripts>
           <OnLoad>
-            getglobal(this:GetName().."Icon"):SetVertexColor(1, 1, 0);
-            this.tooltipText = "IEDKP插件";
+            getglobal(self:GetName().."Icon"):SetVertexColor(1, 1, 0);
+            self.tooltipText = "IEDKP插件";
           </OnLoad>
           <OnClick>
             ShowUIPanel(CT_RaidTrackerFrame);
@@ -855,9 +855,9 @@
             end
           </OnMouseUp>
           <OnEnter>
-            if ( this.tooltipText ) then
-            GameTooltip:SetOwner(this, "ANCHOR_LEFT");
-            GameTooltip:SetText(this.tooltipText, nil, nil, nil, nil, 1);
+            if ( self.tooltipText ) then
+            GameTooltip:SetOwner(self, "ANCHOR_LEFT");
+            GameTooltip:SetText(self.tooltipText, nil, nil, nil, nil, 1);
             GameTooltip:Show();
             end
           </OnEnter>
@@ -869,7 +869,7 @@
     </Frames>
     <Scripts>
       <OnLoad>
-        this:RegisterEvent("VARIABLES_LOADED");
+        self:RegisterEvent("VARIABLES_LOADED");
       </OnLoad>
     </Scripts>
   </Frame>
@@ -886,13 +886,13 @@
 		</Anchors>
 		<Scripts>
 			<OnLoad>
-				this.tooltipText = "IEDKP插件";	
+				self.tooltipText = "IEDKP插件";	
 			</OnLoad>
 			<OnClick>IEDKPForm:Show();</OnClick>
 			<OnEnter>
-				if ( this.tooltipText ) then
-					GameTooltip:SetOwner(this, "ANCHOR_LEFT");
-					GameTooltip:SetText(this.tooltipText, nil, nil, nil, nil, 1);
+				if ( self.tooltipText ) then
+					GameTooltip:SetOwner(self, "ANCHOR_LEFT");
+					GameTooltip:SetText(self.tooltipText, nil, nil, nil, nil, 1);
 					GameTooltip:Show();
 				end
 			</OnEnter>

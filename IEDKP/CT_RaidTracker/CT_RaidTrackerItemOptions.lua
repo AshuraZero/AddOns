@@ -20,7 +20,7 @@ function CT_RaidTracker_ItemOptions_ScrollBar_Update()
     		local _, _, _, color = GetItemQualityColor(CT_RaidTracker_ItemOptions[lineplusoffset]["quality"]);
     		text = color..CT_RaidTracker_ItemOptions[lineplusoffset]["name"];
     	else
-    		text = "Unknown (ID: "..CT_RaidTracker_ItemOptions[lineplusoffset]["id"]..")";
+    		text = "未知 (ID: "..CT_RaidTracker_ItemOptions[lineplusoffset]["id"]..")";
     	end
     	thisline.id = lineplusoffset;
     	thisline.itemid = CT_RaidTracker_ItemOptions[lineplusoffset]["id"];
@@ -46,13 +46,13 @@ function CT_RaidTracker_ItemOptions_SetFrame(id)
 		local _, _, _, color = GetItemQualityColor(CT_RaidTracker_ItemOptions[id]["quality"]);
     itemname = color..CT_RaidTracker_ItemOptions[id]["name"];
 	else
-		itemname = "Unknown (ID: "..CT_RaidTracker_ItemOptions[id]["id"]..")";
+		itemname = "未知 (ID: "..CT_RaidTracker_ItemOptions[id]["id"]..")";
 	end
 	CT_RaidTracker_ItemOptions_EditFrame_Item:SetText(itemname);
 	CT_RaidTracker_ItemOptions_EditFrame:Show();
 end
 
-function CT_RaidTracker_ItemOptions_Delete(id)
+function CT_RaidTracker_ItemOptions_Delete(id) -- Reviewed
 	table.remove(CT_RaidTracker_ItemOptions, id);
 	if(CT_RaidTracker_ItemOptions_selected) then
 		if(CT_RaidTracker_ItemOptions_selected == id) then
@@ -65,8 +65,8 @@ function CT_RaidTracker_ItemOptions_Delete(id)
 	CT_RaidTracker_ItemOptions_ScrollBar_Update();
 end
 
-function CT_RaidTracker_ItemOptions_Save()
-	local id = this:GetParent().id;
+function CT_RaidTracker_ItemOptions_Save(self) -- Reviewed
+	local id = self:GetParent().id;
 	if(CT_RaidTracker_ItemOptions_EditFrame_TrackAlways:GetChecked()) then
 		CT_RaidTracker_ItemOptions[id]["status"] = 1;
 	elseif(CT_RaidTracker_ItemOptions_EditFrame_TrackNever:GetChecked()) then
