@@ -1033,13 +1033,15 @@
         end
       </OnShow>
       <OnMouseDown>
-        if ( arg1 == "LeftButton" ) then
+        if (   button == "LeftButton" and IsAltKeyDown() ) then
+        self.isMoving = true;
         self:StartMoving();
         end
       </OnMouseDown>
       <OnMouseUp>
-        if ( arg1 == "LeftButton" ) then
+        if ( self.isMoving ) then
         self:StopMovingOrSizing();
+        self.isMoving = false;
         end
       </OnMouseUp>
     </Scripts>

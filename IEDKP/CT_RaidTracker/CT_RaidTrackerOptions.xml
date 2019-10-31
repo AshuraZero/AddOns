@@ -3,7 +3,7 @@
   <Script file="CT_RaidTrackerOptions.lua"/>
   <Frame name="CT_RaidTrackerOptionsFrame" toplevel="true" enableMouse="true" movable="true" parent="UIParent" hidden="true">
     <Size>
-      <AbsDimension x="650" y="555"/>
+      <AbsDimension x="600" y="240"/>
     </Size>
     <Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\DialogFrame\UI-DialogBox-Border" tile="true">
       <BackgroundInsets>
@@ -61,7 +61,7 @@
         <Anchors>
           <Anchor point="TOPLEFT" relativePoint="TOP">
             <Offset>
-              <AbsDimension x="-20" y="-80" />
+              <AbsDimension x="-20" y="-40" />
             </Offset>
           </Anchor>
         </Anchors>
@@ -365,208 +365,18 @@
             </FontString>
           </Layer>
         </Layers>
+        <Scripts>
+          <OnClick>
+            CT_RaidTracker_OptionsFrame_Save(self);
+          </OnClick>
+        </Scripts>
       </CheckButton>
-      <Slider name="$parentLogAttendeesSlider" enableMouse="true" minValue="0" maxValue="2" defaultValue="0" valueStep="1" orientation="HORIZONTAL">
-        <Size>
-          <AbsDimension x="128" y="20"/>
-        </Size>
-        <Anchors>
-          <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentSaveTooltipsCB">
-          </Anchor>
-        </Anchors>
-        <Backdrop bgFile="Interface\Buttons\UI-SliderBar-Background" edgeFile="Interface\Buttons\UI-SliderBar-Border" tile="true">
-          <BackgroundInsets>
-            <AbsInset left="3" right="3" top="6" bottom="6" />
-          </BackgroundInsets>
-          <TileSize>
-            <AbsValue val="8" />
-          </TileSize>
-          <EdgeSize>
-            <AbsValue val="8" />
-          </EdgeSize>
-        </Backdrop>
-        <ThumbTexture name="$parentThumb" file="Interface\Buttons\UI-SliderBar-Button-Horizontal">
-          <Size>
-            <AbsDimension x="32" y="32" />
-          </Size>
-        </ThumbTexture>
-        <Layers>
-          <Layer>
-            <FontString name="$parentTitle" inherits="GameFontNormalSmall" text="记录集体分事件的人员范围:">
-              <Anchors>
-                <Anchor point="RIGHT" relativePoint="LEFT">
-                  <Offset>
-                    <AbsDimension x="-10" y="0"/>
-                  </Offset>
-                </Anchor>
-              </Anchors>
-              <FontHeight>
-                <AbsValue val="10" />
-              </FontHeight>
-            </FontString>
-            <FontString name="$parentValue" inherits="GameFontNormalSmall" text="">
-              <Anchors>
-                <Anchor point="LEFT" relativePoint="RIGHT">
-                  <Offset>
-                    <AbsDimension x="10" y="0"/>
-                  </Offset>
-                </Anchor>
-              </Anchors>
-              <FontHeight>
-                <AbsValue val="10" />
-              </FontHeight>
-            </FontString>
-          </Layer>
-        </Layers>
-        <Scripts>
-          <OnUpdate>
-            local text = {
-            "|c00ffffff全团",
-            "|c00ffffff1-6队",
-            "|c00ffffff1-5队",
-            };
-            getglobal(self:GetName() .. "Value"):SetText(text[self:GetValue()+1]);
-          </OnUpdate>
-          <OnValueChanged>
-            self:SetValue(floor(self:GetValue()));
-          </OnValueChanged>
-        </Scripts>
-      </Slider>
-      <Slider name="$parentMaxLevelSlider" enableMouse="true" minValue="0" maxValue="60" defaultValue="60" valueStep="1" orientation="HORIZONTAL">
-        <Size>
-          <AbsDimension x="128" y="20"/>
-        </Size>
-        <Anchors>
-          <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentLogAttendeesSlider">
-          </Anchor>
-        </Anchors>
-        <Backdrop bgFile="Interface\Buttons\UI-SliderBar-Background" edgeFile="Interface\Buttons\UI-SliderBar-Border" tile="true">
-          <BackgroundInsets>
-            <AbsInset left="3" right="3" top="6" bottom="6" />
-          </BackgroundInsets>
-          <TileSize>
-            <AbsValue val="8" />
-          </TileSize>
-          <EdgeSize>
-            <AbsValue val="8" />
-          </EdgeSize>
-        </Backdrop>
-        <ThumbTexture name="$parentThumb" file="Interface\Buttons\UI-SliderBar-Button-Horizontal">
-          <Size>
-            <AbsDimension x="32" y="32" />
-          </Size>
-        </ThumbTexture>
-        <Layers>
-          <Layer>
-            <FontString name="$parentTitle" inherits="GameFontNormalSmall" text="最高等级:">
-              <Anchors>
-                <Anchor point="RIGHT" relativePoint="LEFT">
-                  <Offset>
-                    <AbsDimension x="-10" y="0"/>
-                  </Offset>
-                </Anchor>
-              </Anchors>
-              <FontHeight>
-                <AbsValue val="10" />
-              </FontHeight>
-            </FontString>
-            <FontString name="$parentValue" inherits="GameFontNormalSmall" text="">
-              <Anchors>
-                <Anchor point="LEFT" relativePoint="RIGHT">
-                  <Offset>
-                    <AbsDimension x="10" y="0"/>
-                  </Offset>
-                </Anchor>
-              </Anchors>
-              <FontHeight>
-                <AbsValue val="10" />
-              </FontHeight>
-            </FontString>
-          </Layer>
-        </Layers>
-        <Scripts>
-          <OnUpdate>
-            getglobal(self:GetName() .. "Value"):SetText(self:GetValue());
-          </OnUpdate>
-          <OnValueChanged>
-            self:SetValue(floor(self:GetValue()));
-          </OnValueChanged>
-        </Scripts>
-      </Slider>
-      <!-- ExportFormat Silder -->
-      <Slider name="$parentExportFormatSlider" enableMouse="ture" minValue="0" maxValue="2" defaultValue="2" valueStep="1" orientation="HORIZONTAL">
-        <Size>
-          <AbsDimension x="128" y="20"/>
-        </Size>
-        <Anchors>
-          <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentMaxLevelSlider">
-          </Anchor>
-        </Anchors>
-        <Backdrop bgFile="Interface\Buttons\UI-SliderBar-Background" edgeFile="Interface\Buttons\UI-SliderBar-Border" tile="true">
-          <BackgroundInsets>
-            <AbsInset left="3" right="3" top="6" bottom="6" />
-          </BackgroundInsets>
-          <TileSize>
-            <AbsValue val="8" />
-          </TileSize>
-          <EdgeSize>
-            <AbsValue val="8" />
-          </EdgeSize>
-        </Backdrop>
-        <ThumbTexture name="$parentThumb" file="Interface\Buttons\UI-SliderBar-Button-Horizontal">
-          <Size>
-            <AbsDimension x="32" y="32" />
-          </Size>
-        </ThumbTexture>
-        <Layers>
-          <Layer>
-            <FontString name="$parentTitle" inherits="GameFontNormalSmall" text="DKP导出格式:">
-              <Anchors>
-                <Anchor point="RIGHT" relativePoint="LEFT">
-                  <Offset>
-                    <AbsDimension x="-10" y="0"/>
-                  </Offset>
-                </Anchor>
-              </Anchors>
-              <FontHeight>
-                <AbsValue val="10" />
-              </FontHeight>
-            </FontString>
-            <FontString name="$parentValue" inherits="GameFontNormalSmall" text="">
-              <Anchors>
-                <Anchor point="LEFT" relativePoint="RIGHT">
-                  <Offset>
-                    <AbsDimension x="10" y="0"/>
-                  </Offset>
-                </Anchor>
-              </Anchors>
-              <FontHeight>
-                <AbsValue val="10" />
-              </FontHeight>
-            </FontString>
-          </Layer>
-        </Layers>
-        <Scripts>
-          <OnUpdate>
-            local colors = {
-            "|c00ffffffIEDKP系统",
-            "|c00ffffffEQdkp Unknown",
-            "|c00ffffffMLdkp 1.5",
-            };
-            getglobal(self:GetName() .. "Value"):SetText(colors[self:GetValue()+1]);
-          </OnUpdate>
-          <OnValueChanged>
-            self:SetValue(floor(self:GetValue()));
-          </OnValueChanged>
-        </Scripts>
-      </Slider>
-      <!-- ExportFormat Slider end -->
       <CheckButton name="$parentAutoWhisperCB" inherits="OptionsCheckButtonTemplate" checked="false">
         <Size>
           <AbsDimension x="20" y="20"/>
         </Size>
         <Anchors>
-          <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentExportFormatSlider">
+          <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentSaveTooltipsCB">
           </Anchor>
         </Anchors>
         <Layers>
@@ -585,6 +395,11 @@
             </FontString>
           </Layer>
         </Layers>
+        <Scripts>
+          <OnClick>
+            CT_RaidTracker_OptionsFrame_Save(self);
+          </OnClick>
+        </Scripts>
       </CheckButton>
       <CheckButton name="$parentFilterWhisperCB" inherits="OptionsCheckButtonTemplate" checked="false">
         <Size>
@@ -610,8 +425,12 @@
             </FontString>
           </Layer>
         </Layers>
+        <Scripts>
+          <OnClick>
+            CT_RaidTracker_OptionsFrame_Save(self);
+          </OnClick>
+        </Scripts>
       </CheckButton>
-
       <Button name="$parentCloseButton" inherits="UIPanelCloseButton">
         <Anchors>
           <Anchor point="TOPRIGHT" relativeTo="$parent" relativePoint="TOPRIGHT">
@@ -666,13 +485,15 @@
       <OnEvent>
       </OnEvent>
       <OnMouseDown>
-        if ( arg1 == "LeftButton" ) then
+        if (   button == "LeftButton" and IsAltKeyDown() ) then
+        self.isMoving = true;
         self:StartMoving();
         end
       </OnMouseDown>
       <OnMouseUp>
-        if ( arg1 == "LeftButton" ) then
+        if ( self.isMoving ) then
         self:StopMovingOrSizing();
+        self.isMoving = false;
         end
       </OnMouseUp>
     </Scripts>

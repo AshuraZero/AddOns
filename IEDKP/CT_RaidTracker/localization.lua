@@ -1,15 +1,18 @@
 ﻿--localization for CN Classic
 
-	CT_ITEMREG = "(|c%x+|Hitem:%d+:%d+:%d+:%d+:%d+:%d+:(%-?%d+):(%-?%d+):%d+|h%[.-%]|h|r)%";
-	CT_ITEMREG_MULTI = "(|c%x+|Hitem:%d+:%d+:%d+:%d+:%d+:%d+:(%-?%d+):(%-?%d+):%d+|h%[.-%]|h|r)x(%d+)%";
-
+	--CT_ITEMREG = "(|c%x+|Hitem:%d+:%d+:%d+:%d+:%d+:%d+:(%-?%d+):(%-?%d+):%d+|h%[.-%]|h|r)%";
+	--CT_ITEMREG_MULTI = "(|c%x+|Hitem:%d+:%d+:%d+:%d+:%d+:%d+:(%-?%d+):(%-?%d+):%d+|h%[.-%]|h|r)x(%d+)%";
+    CT_ITEMREG = "(.+)%";
+    CT_ITEMREG_MULTI = "(.+)%x(%d+)";
+   
 	CT_RaidTracker_lang_LeftGroup = "([^%s]+)离开了团队。";
 	CT_RaidTracker_lang_JoinedGroup = "([^%s]+)加入了团队。";
 	CT_RaidTracker_lang_ReceivesLoot1 = "([^%s]+)获得了物品："..CT_ITEMREG.."。";
 	CT_RaidTracker_lang_ReceivesLoot2 = "你获得了物品："..CT_ITEMREG.."。";
-	CT_RaidTracker_lang_ReceivesLoot3 = "([^%s]+)得到了物品："..CT_ITEMREG_MULTI.."。";
-	CT_RaidTracker_lang_ReceivesLoot4 = "你得到了物品："..CT_ITEMREG_MULTI.."。";
+	CT_RaidTracker_lang_ReceivesLoot3 = "([^%s]+)获得了物品："..CT_ITEMREG_MULTI.."。";
+	CT_RaidTracker_lang_ReceivesLoot4 = "你获得了物品："..CT_ITEMREG_MULTI.."。";
 	CT_RaidTracker_lang_ReceivesLootYou = "你";
+    CT_RaidTracker_lang_UnknownEntity = "未知目标";
 
 	CT_RaidTracker_lang_BossKills_Majordomo_Yell = "不……不可能！等一下……我投降！我投降！";
 	CT_RaidTracker_lang_BossKills_Majordomo_BossName = "管理者埃克索图斯";
@@ -18,16 +21,16 @@
 	PlayerGroupsIndexes = {"战士","牧师","法师","潜行者","圣骑士","德鲁伊","术士","萨满祭司","猎人","未知职业"};
 
 	RAID_CLASS_COLORS_CN = {
-              ["猎人"] = { r = 0.67, g = 0.83, b = 0.45 },
-              ["术士"] = { r = 0.58, g = 0.51, b = 0.79 },
-              ["牧师"] = { r = 1.0, g = 1.0, b = 1.0 },
-              ["圣骑士"] = { r = 0.96, g = 0.55, b = 0.73 },
-              ["法师"] = { r = 0.41, g = 0.8, b = 0.94 },
-              ["潜行者"] = { r = 1.0, g = 0.96, b = 0.41 },
-              ["德鲁伊"] = { r = 1.0, g = 0.49, b = 0.04 },
-              ["萨满祭司"] = { r = 0.14, g = 0.35, b = 1.0 },
-              ["战士"] = { r = 0.78, g = 0.61, b = 0.43 },
-              ["未知职业"] = { r = 1.0, g = 1.0, b = 1.0 },
+		["猎人"] = { r = 0.67, g = 0.83, b = 0.45 },
+		["术士"] = { r = 0.58, g = 0.51, b = 0.79 },
+		["牧师"] = { r = 1.0, g = 1.0, b = 1.0 },
+		["圣骑士"] = { r = 0.96, g = 0.55, b = 0.73 },
+		["法师"] = { r = 0.41, g = 0.8, b = 0.94 },
+		["潜行者"] = { r = 1.0, g = 0.96, b = 0.41 },
+		["德鲁伊"] = { r = 1.0, g = 0.49, b = 0.04 },
+		["萨满祭司"] = { r = 0.14, g = 0.35, b = 1.0 },
+		["战士"] = { r = 0.78, g = 0.61, b = 0.43 },
+		["未知职业"] = { r = 1.0, g = 1.0, b = 1.0 },
 	}
 
 	CT_RaidTracker_Zones = {
@@ -145,9 +148,8 @@
 			["安其拉废墟"] = "安其拉废墟",
 			["纳克萨玛斯"] = "纳克萨玛斯",
 	};
-	CT_RaidTracker_BossUnitTriggers = {
 
-	--MC
+	CT_RaidTracker_BossUnitTriggers = {
 		["鲁西弗隆"] = "鲁西弗隆", --Lucifron
 		["玛格曼达"] = "玛格曼达", --Magmadar
 		["基赫纳斯"] = "基赫纳斯", --Gehennas
@@ -158,29 +160,30 @@
 		["焚化者古雷曼格"] = "焚化者古雷曼格", --Golemagg the Incinerator
 		["管理者埃克索图斯"] = "管理者埃克索图斯", --Majordomo Executus
 		["拉格纳罗斯"] = "拉格纳罗斯", --Ragnaros
-		["熔火恶犬"] = "IGNORE", --Core Hound
-		["火誓者"] = "IGNORE", --Firesworn
-		["熔火怒犬"] = "IGNORE", --Core Rager
-		["烈焰行者医师"] = "IGNORE", --Flamewaker Healer
-		["烈焰行者精英"] = "IGNORE", --Flamewaker Elite
-		["烈焰之子"] = "IGNORE", --Son of Flame
-		["上古熔火恶犬"] = "IGNORE",
-		["火焰之王"] = "IGNORE",
-		["火焰行者"] = "IGNORE",
-		["烈焰小鬼"] = "IGNORE",
-		["烈焰之子"] = "IGNORE",
-		["烈焰守卫"] = "IGNORE",
-		["烈焰行者祭司"] = "IGNORE",
-		["烈焰行者护卫"] = "IGNORE",
-		["熔岩元素"] = "IGNORE",
-		["熔岩爪牙"] = "IGNORE",
+
+		["熔核巨人"] = "IGNORE",
+		["熔核摧毁者"] = "IGNORE",
 		["熔岩奔腾者"] = "IGNORE",
 		["熔岩掠夺者"] = "IGNORE",
 		["熔岩歼灭者"] = "IGNORE",
-		["熔核巨人"] = "IGNORE",
-		["熔核摧毁者"] = "IGNORE",
-		
-	--BWL
+		["熔岩元素"] = "IGNORE",
+		["熔岩爪牙"] = "IGNORE",
+		["熔火恶犬"] = "IGNORE", --Core Hound
+		["熔火怒犬"] = "IGNORE", --Core Rager
+		["上古熔火恶犬"] = "IGNORE",
+		["火誓者"] = "IGNORE", --Firesworn
+		["烈焰守卫"] = "IGNORE",
+    	["烈焰行者"] = "IGNORE",
+		["烈焰行者医师"] = "IGNORE", --Flamewaker Healer
+		["烈焰行者精英"] = "IGNORE", --Flamewaker Elite
+		["烈焰行者祭司"] = "IGNORE",
+		["烈焰行者护卫"] = "IGNORE",
+		["烈焰之子"] = "IGNORE", --Son of Flame
+		["烈焰小鬼"] = "IGNORE",
+		["火焰之王"] = "IGNORE",
+		["火焰之子"] = "IGNORE",	
+		["火焰行者"] = "IGNORE",
+
 		["狂野的拉佐格尔"] = "狂野的拉佐格尔", --Razorgore the Untamed"
 		["堕落的瓦拉斯塔兹"] = "堕落的瓦拉斯塔兹", --Vaelastrasz the Corrupt
 		["勒什雷尔"] = "勒什雷尔", --Broodlord Lashlayer
@@ -190,6 +193,7 @@
 		["克洛玛古斯"] = "克洛玛古斯", --Chromaggus
 		["奈法利安"] = "奈法利安", --Nefarian
 		["维克多·奈法里奥斯"] = "奈法利安", --Lord Victor Nefarius
+
 		["黑翼控制者"] = "IGNORE", --Grethok the Controller
 		["黑翼卫士"] = "IGNORE", --Blackwing Guardsman
 		["黑翼军团士兵"] = "IGNORE", --Blackwing Legionnaire
@@ -209,8 +213,7 @@
 		["腐化的青铜雏龙"] = "IGNORE", --Corrupted Bronze Whelp
 		["死爪地卜师"] = "IGNORE", --Death Talon Hatcher
 		["黑翼工头"] = "IGNORE", --Blackwing Taskmaster
-		
-	--ZG
+
 		["高阶祭司耶克里克"] = "高阶祭司耶克里克", --High Priestess Jeklik
 		["高阶祭司温诺希斯"] =	"高阶祭司温诺希斯", --High Priest Venoxis
 		["高阶祭司玛尔里"] =	"高阶祭司玛尔里", --High Priestess Mar'li
@@ -231,6 +234,7 @@
 		["奥根"] = "IGNORE", --Ohgan
 		["疯狂的觅血蝙蝠"] = "IGNORE", --Frenzied Bloodseeker Bat
 		["毒性云雾"] = "IGNORE", --Poisonous Cloud
+
 		["古拉巴什狂暴者"] = "IGNORE",
 		["古拉巴什勇士"] = "IGNORE",
 		["古拉巴什乘蝠者"] = "IGNORE",
@@ -287,7 +291,6 @@
 		["劈颅部族演讲者"] = "IGNORE",
 		["灵魂掠夺者"] = "IGNORE",
 
-	--Onyx	
 		["奥妮克希亚"] = "奥妮克希亚", --Onyxia
 		["奥妮克希亚雏龙"] = "IGNORE", --Onyxian Whelp
 		["奥妮克希亚守卫"] = "IGNORE", --Onyxian Warder
@@ -303,13 +306,13 @@
 		["灵魂之影"] = "IGNORE", --Spirit Shade
 		["疯狂的德鲁伊灵魂"] = "IGNORE", --Demented Druid Spirit
 		
-	--RAQ
 		["库林纳克斯"] = "库林纳克斯", --Kurinnaxx
 		["拉贾克斯将军"] = "拉贾克斯将军", --General Rajaxx
 		["狩猎者阿亚米斯"] = "狩猎者阿亚米斯", --Ayamiss the Hunter
 		["吞咽者布鲁"] = "吞咽者布鲁", --Buru The Gorger
 		["莫阿姆"] = "莫阿姆", --Moam
 		["无疤者奥斯里安"] = "无疤者奥斯里安", --Ossirian The Unscarred
+
 		["布鲁的卵"] = "IGNORE", --Buru Egg
 		["运河狂鱼"] = "IGNORE", --Canal Frenzy
 		["法力恶魔"] = "IGNORE", --Mana Fiend
@@ -348,7 +351,6 @@
 		["瑟瑞姆上尉"] = "IGNORE",
 		["奎兹上尉"] = "IGNORE",
 
-	--taq	
 		["预言者斯克拉姆"] = "预言者斯克拉姆",
 		["克里勋爵"] = "克里勋爵",
 		["亚尔基公主"] = "亚尔基公主",
@@ -361,6 +363,7 @@
 		["维克洛尔大帝"] = "维克洛尔大帝",
 		["奥罗"] = "奥罗",
 		["克苏恩"] = "克苏恩",
+
 		["其拉甲虫"] = "IGNORE",
 		["其拉蝎虫"] = "IGNORE",
 		["奥罗甲虫"] = "IGNORE", --Ouro Scarab
@@ -373,8 +376,7 @@
 		["毒性云雾"] = "IGNORE", --Poison Cloud
 		["维克尼斯雄蜂"] = "IGNORE", --Vekniss Drone
 		["维希度斯水滴"] = "IGNORE", --Glob of Viscidus
-
-	--nax		
+	
 		["阿努布雷坎"] = "阿努布雷坎",
 		["教官拉苏维奥斯"] = "教官拉苏维奥斯",
 		["收割者戈提克"] = "收割者戈提克",
@@ -406,7 +408,7 @@
 		["战地修理机器人110G"]= "IGNORE",
 
 		["杂斑野猪"] = "IGNORE",
-		
+		["迪菲亚小偷"] = "迪菲亚小偷",
 		["DEFAULTBOSS"] = "小怪掉落",
 	};
 

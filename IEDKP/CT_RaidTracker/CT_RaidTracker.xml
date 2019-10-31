@@ -1,6 +1,5 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/ 
 ..\FrameXML\UI.xsd">
-  <Script file="ML_RaidTracker_Custom.lua"/>
   <Script file="localization.lua"/>
   <Script file="CT_RaidTracker.lua"/>
   <Button name="CT_RaidTrackerTabTemplate" virtual="true">
@@ -766,9 +765,7 @@
         --	CT_RaidTrackerFrameBackButton:Disable();
         else
         CT_RaidTracker_RaidsRightClickMenu_Toggle(self);
-        --CT_RaidTrackerGenerateDkpLink(FauxScrollFrame_GetOffset(CT_RaidTrackerListScrollFrame) + self:GetID());
         end
-
       </OnClick>
     </Scripts>
     <Frames>
@@ -952,7 +949,7 @@
           </Anchor>
         </Anchors>
       </Button>
-      <Button name="CT_RaidTrackerFrameView2Button" inherits="UIPanelButtonTemplate" text="加减分">
+      <Button name="CT_RaidTrackerFrameView2Button" inherits="UIPanelButtonTemplate" text="查看事件">
         <Size>
           <AbsDimension x="125" y="21"/>
         </Size>
@@ -1000,7 +997,7 @@
           </OnLeave>
         </Scripts>
       </Button>
-      <Button name="CT_RaidTrackerFrameViewButton" inherits="UIPanelButtonTemplate" text="物品DKP">
+      <Button name="CT_RaidTrackerFrameViewButton" inherits="UIPanelButtonTemplate" text="查看物品">
         <Size>
           <AbsDimension x="123" y="21"/>
         </Size>
@@ -1575,7 +1572,7 @@
               <Anchor point="TOPLEFT"/>
             </Anchors>
             <Frames>
-              <Button name="CT_RaidTrackerFrameGuochengfenButton" inherits="UIPanelButtonTemplate" text="个人加减">
+              <Button name="CT_RaidTrackerFrameGuochengfenButton" inherits="UIPanelButtonTemplate" text="自定义">
                 <Size>
                   <AbsDimension x="80" y="21"/>
                 </Size>
@@ -2644,7 +2641,7 @@
             </Anchor>
           </Anchors>
         </FontString>
-        <FontString name="wowpp" inherits="GameFontNormal" text="复制此字符串,然后去你的DKP网站,选择要上传的DKP系统,选择'快速导入RAID信息'">
+        <FontString name="wowpp" inherits="GameFontNormal" text="复制此字符串,选择'DKPRaid记录导入>计分方式：Boss击杀模式'">
           <Anchors>
             <Anchor point="CENTER">
               <Offset>

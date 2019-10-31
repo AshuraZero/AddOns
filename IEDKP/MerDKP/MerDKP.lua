@@ -251,7 +251,12 @@ function M:OnVarsLoaded()
 	end--]]
 end
 
-function M:OnEvent(this, event)
+function M:OnEvent(this, event, ...)
+	
+	if( event == "CHAT_MSG_WHISPER" ) then --Reviewed
+        local arg1, arg2= ...;
+		self:CHAT_MSG_WHISPER(arg1, arg2);
+	end
 	if event == "CHAT_MSG_CHANNEL_NOTICE" then
 		if arg1 == "YOU_JOINED" or arg1 == "YOU_CHANGED" then
 			for _, v in ipairs(self.DROPMENU.channel) do
@@ -280,8 +285,10 @@ function M:CHAT_MSG_CHANNEL_NOTICE()
 end
 
 function M:CHAT_MSG_WHISPER(arg1, arg2)
+	DEFAULT_CHAT_FRAME:AddMessage(arg1.."|"..arg2);
 	if not self.opt.enabled then return end
 	arg1 = strlower(arg1)
+	DEFAULT_CHAT_FRAME:AddMessage(arg1.."|"..self.opt.rplist);
 	if arg1 == self.opt.rplist then
 		for i = 1, #self.db do
 			local replay = "<" .. self.db[i].title .. "> " .. self.opt.rp .. i
@@ -380,7 +387,7 @@ function M:CHAT_MSG_SYSTEM(arg1)
 	end
 end
 
-function M:RAID_ROSTER_UPDATE()
+function M:GROUP_ROSTER_UPDATE()
 	local numMembers = GetNumGroupMembers()
 	local toggle
 	if numMembers < 1 then
@@ -705,12 +712,12 @@ function M:RaidCheckButton_OnClick()
 	if MerDKPFrameListRaidCheckButton:GetChecked() then
 		MerDKPFrameListWhisperButton:Show()
 		MerDKPFrame:RegisterEvent("CHAT_MSG_SYSTEM")
-		MerDKPFrame:RegisterEvent("RAID_ROSTER_UPDATE")
-		self:RAID_ROSTER_UPDATE()
+		MerDKPFrame:RegisterEvent("GROUP_ROSTER_UPDATE")
+		self:GROUP_ROSTER_UPDATE()
 	else
 		MerDKPFrameListWhisperButton:Hide()
 		MerDKPFrame:UnregisterEvent("CHAT_MSG_SYSTEM")
-		MerDKPFrame:UnregisterEvent("RAID_ROSTER_UPDATE")
+		MerDKPFrame:UnregisterEvent("GROUP_ROSTER_UPDATE")
 	end
 	self:InitDKP()
 end

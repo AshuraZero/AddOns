@@ -1,5 +1,6 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/ 
 ..\FrameXML\UI.xsd">
+  <Script file="MerDKP.lua"/>
   <Button name="MerDKPFrameColumnHeaderTemplate" inherits="WhoFrameColumnHeaderTemplate" virtual="true">
     <Scripts>
       <OnClick>
@@ -288,7 +289,7 @@
             <Anchor point="BOTTOMRIGHT"/>
           </Anchors>
         </Texture>
-        <FontString name="$parentText" inherits="GameFontNormal">
+        <FontString name="$parentText" inherits="GameFontHighlight" text="MerDKP">
           <Size>
             <AbsDimension x="300" y="14"/>
           </Size>
@@ -1200,16 +1201,18 @@
         self:RegisterEvent("CHAT_MSG_CHANNEL_NOTICE");
       </OnLoad>
       <OnEvent>
-        MerDKP:OnEvent(self, event);
+        MerDKP:OnEvent(self, event, ...);
       </OnEvent>
       <OnMouseDown>
-        if(arg1 == "LeftButton") then
+        if (   button == "LeftButton" and IsAltKeyDown() ) then
+        self.isMoving = true;
         self:StartMoving();
         end
       </OnMouseDown>
       <OnMouseUp>
-        if(arg1 == "LeftButton") then
+        if ( self.isMoving ) then
         self:StopMovingOrSizing();
+        self.isMoving = false;
         end
       </OnMouseUp>
     </Scripts>
