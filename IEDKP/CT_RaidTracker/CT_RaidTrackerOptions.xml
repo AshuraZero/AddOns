@@ -485,7 +485,7 @@
       <OnEvent>
       </OnEvent>
       <OnMouseDown>
-        if (   button == "LeftButton" and IsAltKeyDown() ) then
+        if ( button == "LeftButton" and IsAltKeyDown() ) then
         self.isMoving = true;
         self:StartMoving();
         end

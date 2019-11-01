@@ -57,9 +57,9 @@
         </Anchors>
         <Scripts>
           <OnMouseDown>
-            if ( arg1 == "LeftButton" ) then
+            if ( button == "LeftButton" ) then
             self:GetParent():StartMoving();
-            elseif ( arg1 == "RightButton" ) then
+            elseif ( button == "RightButton" ) then
             self:GetParent():ClearAllPoints();
             self:GetParent():SetPoint("CENTER", "UIParent", "CENTER");
             end

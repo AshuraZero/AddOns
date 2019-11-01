@@ -355,6 +355,7 @@
             CT_RaidTrackerEditNoteFrame.id = self:GetParent().raidid;
             CT_RaidTrackerEditNoteFrame.playerid = self:GetParent().playername;
             CT_RaidTrackerEditNoteFrame:Show();
+            DEFAULT_CHAT_FRAME:AddMessage("NoteButtonOnClick");
           </OnClick>
           <OnEnter>
             GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
@@ -603,14 +604,14 @@
             getglobal(self:GetParent():GetName() .. "MouseOver"):Hide();
           </OnLeave>
           <OnClick>
-            if(arg1 == "LeftButton") then
-            --xd		if(IsControlKeyDown()) then
-            --xd			DressUpItemLink("item:"..CT_RaidTracker_RaidLog[self:GetParent().raidid]["Loot"][self:GetParent().itemid]["item"]["id"]);
-            --xd	else
-            --xd			CT_RaidTracker_SelectItem(self:GetParent().itemname);
-            --xd		CT_RaidTracker_Update();
-            --xd		CT_RaidTracker_UpdateView();
-            --xd	end
+            if( button == "LeftButton" ) then
+            --xd        if(IsControlKeyDown()) then
+            --xd            DressUpItemLink("item:"..CT_RaidTracker_RaidLog[self:GetParent().raidid]["Loot"][self:GetParent().itemid]["item"]["id"]);
+            --xd    else
+            --xd            CT_RaidTracker_SelectItem(self:GetParent().itemname);
+            --xd        CT_RaidTracker_Update();
+            --xd        CT_RaidTracker_UpdateView();
+            --xd    end
             else
             CT_RaidTracker_ItemsRightClickMenu_Toggle(self);
             --CT_RaidTrackerEditLooterFrame.type = "looter";
@@ -700,7 +701,7 @@
         GameTooltip:Hide();
       </OnLeave>
       <OnClick>
-        if(arg1 == "RightButton" and CT_RaidTracker_RaidLog[self.raidid]["Loot"][self.itemid]) then
+        if( button == "RightButton" and CT_RaidTracker_RaidLog[self.raidid]["Loot"][self.itemid] ) then
         GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
         GameTooltip:SetHyperlink("item:"..CT_RaidTracker_RaidLog[self.raidid]["Loot"][self.itemid]["item"]["id"]);
         GameTooltip:Hide();
@@ -759,12 +760,12 @@
         self:RegisterForClicks("LeftButtonUp", "RightButtonUp");
       </OnLoad>
       <OnClick>
-        if(arg1 == "LeftButton") then
-        CT_RaidTracker_SelectRaid(self:GetID());
-        CT_RaidTracker_LastPage = { };
-        --	CT_RaidTrackerFrameBackButton:Disable();
+        if( button == "LeftButton" ) then
+          CT_RaidTracker_SelectRaid(self:GetID());
+          CT_RaidTracker_LastPage = { };
+          --  CT_RaidTrackerFrameBackButton:Disable();
         else
-        CT_RaidTracker_RaidsRightClickMenu_Toggle(self);
+          CT_RaidTracker_RaidsRightClickMenu_Toggle(self);
         end
       </OnClick>
     </Scripts>
@@ -1606,7 +1607,7 @@
                 </Anchors>
                 <Scripts>
                   <OnClick>
-                    CT_RaidTracker_CreateBoss("结束分");
+                    CT_RaidTracker_CreateEvent("结束分");
                   </OnClick>
                 </Scripts>
               </Button>
@@ -1623,7 +1624,7 @@
                 </Anchors>
                 <Scripts>
                   <OnClick>
-                    CT_RaidTracker_CreateBoss("集合分");
+                    CT_RaidTracker_CreateEvent("集合分");
                   </OnClick>
                 </Scripts>
               </Button>
@@ -3080,7 +3081,6 @@
       </OnHide>
     </Scripts>
   </Frame>
-
   <Frame name="CT_RaidTrackerEditCostFrame" toplevel="true" frameStrata="DIALOG" movable="true" enableMouse="true" hidden="true" parent="UIParent">
     <Size>
       <AbsDimension x="400" y="130"/>

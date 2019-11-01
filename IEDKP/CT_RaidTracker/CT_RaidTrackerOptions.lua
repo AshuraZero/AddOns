@@ -19,12 +19,12 @@ function CT_RaidTracker_OptionsFrame_Save()
     else
         CT_RaidTracker_Options["SaveTooltips"] = 0;
     end
-	if(CT_RaidTrackerOptionsFrameAutoWhisperCB:GetChecked() == 1) then
+    if(CT_RaidTrackerOptionsFrameAutoWhisperCB:GetChecked() == 1) then
         CT_RaidTracker_Options["AutoWhisper"] = 1;
     else
         CT_RaidTracker_Options["AutoWhisper"] = 0;
     end
-	if(CT_RaidTrackerOptionsFrameFilterWhisperCB:GetChecked() == 1) then
+    if(CT_RaidTrackerOptionsFrameFilterWhisperCB:GetChecked() == 1) then
         CT_RaidTracker_Options["FilterWhisper"] = 1;
     else
         CT_RaidTracker_Options["FilterWhisper"] = 0;

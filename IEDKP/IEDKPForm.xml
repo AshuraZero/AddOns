@@ -770,8 +770,6 @@
           </Layer>
         </Layers>
       </Frame>
-
-
     </Frames>
     <Scripts>
       <OnLoad>
@@ -841,14 +839,14 @@
             MerDKPFrame:Show();
           </OnClick>
           <OnMouseDown>
-            if ( arg1 == "RightButton" ) then
+            if ( button == "RightButton" ) then
             MerDKPMinimap:StartMoving();
             MerDKPMinimap.isMoving = true;
             MerDKPMinimap:SetScript("OnUpdate", snapMinimap);
             end
           </OnMouseDown>
           <OnMouseUp>
-            if ( arg1 == "RightButton" ) then
+            if ( button == "RightButton" ) then
             MerDKPMinimap:StopMovingOrSizing();
             MerDKPMinimap.isMoving = false;
             MerDKPMinimap:SetScript("OnUpdate", nil);
@@ -874,34 +872,33 @@
     </Scripts>
   </Frame>
   <!--Button name="MerDKPMinimapButton" parent="Minimap" toplevel="true" hidden="false">
-		<Size>
-			<AbsDimension x="34" y="34"/>
-		</Size>
-		<Anchors>
-			<Anchor point="CENTER" relativeTo="MinimapBackdrop">
-				<Offset>
-					<AbsDimension x="-63" y="-13"/>
-				</Offset>
-			</Anchor>
-		</Anchors>
-		<Scripts>
-			<OnLoad>
-				self.tooltipText = "IEDKP插件";	
-			</OnLoad>
-			<OnClick>IEDKPForm:Show();</OnClick>
-			<OnEnter>
-				if ( self.tooltipText ) then
-					GameTooltip:SetOwner(self, "ANCHOR_LEFT");
-					GameTooltip:SetText(self.tooltipText, nil, nil, nil, nil, 1);
-					GameTooltip:Show();
-				end
-			</OnEnter>
-			<OnLeave>
-				GameTooltip:Hide();
-			</OnLeave>
-		</Scripts>
-		<NormalTexture file="Interface\AddOns\IEDKP\mblogo"/>
-		<HighlightTexture alphaMode="ADD" file="Interface\Minimap\UI-Minimap-ZoomButton-Highlight"/>
-	</Button-->
-
+        <Size>
+            <AbsDimension x="34" y="34"/>
+        </Size>
+        <Anchors>
+            <Anchor point="CENTER" relativeTo="MinimapBackdrop">
+                <Offset>
+                    <AbsDimension x="-63" y="-13"/>
+                </Offset>
+            </Anchor>
+        </Anchors>
+        <Scripts>
+            <OnLoad>
+                self.tooltipText = "IEDKP插件";   
+            </OnLoad>
+            <OnClick>IEDKPForm:Show();</OnClick>
+            <OnEnter>
+                if ( self.tooltipText ) then
+                    GameTooltip:SetOwner(self, "ANCHOR_LEFT");
+                    GameTooltip:SetText(self.tooltipText, nil, nil, nil, nil, 1);
+                    GameTooltip:Show();
+                end
+            </OnEnter>
+            <OnLeave>
+                GameTooltip:Hide();
+            </OnLeave>
+        </Scripts>
+        <NormalTexture file="Interface\AddOns\IEDKP\mblogo"/>
+        <HighlightTexture alphaMode="ADD" file="Interface\Minimap\UI-Minimap-ZoomButton-Highlight"/>
+    </Button-->
 </Ui>

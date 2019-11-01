@@ -52,7 +52,7 @@
         end
       </OnShow>
       <OnClick>
-        if(arg1 == "RightButton") then
+        if( button == "RightButton" ) then
         GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
         GameTooltip:SetHyperlink("item:"..self.itemid..":0:0:0");
         GameTooltip:Show();
@@ -64,7 +64,6 @@
         getglobal("CT_RaidTracker_ItemOptions_Entry"..i.."MouseOver"):Hide();
         end
         getglobal(self:GetName() .. "MouseOver"):Show();
-        CT_RaidTracker_Debug(self:GetName());
       </OnClick>
     </Scripts>
   </Button>
@@ -1033,7 +1032,7 @@
         end
       </OnShow>
       <OnMouseDown>
-        if (   button == "LeftButton" and IsAltKeyDown() ) then
+        if ( button == "LeftButton" and IsAltKeyDown() ) then
         self.isMoving = true;
         self:StartMoving();
         end
