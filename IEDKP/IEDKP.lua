@@ -4,7 +4,6 @@ IEDKP.hasIcon = "Interface\\Addons\\IEDKP\\mblogo.tga"
 IEDKP.cannotDetachTooltip = true;
 IEDKP.cannotHideText = false;
 
-
 SLASH_IEDKP1 = "/iedkp"
 SLASH_IEDKP2 = "/ie"
 

@@ -36,7 +36,7 @@
         </Anchors>
         <Scripts>
           <OnClick>
-            IEDKPForm:Hide();
+            HideUIPanel(IEDKPForm);
           </OnClick>
         </Scripts>
         <NormalTexture file="Interface\Buttons\UI-Panel-Button-Up">
@@ -107,7 +107,7 @@
         </Anchors>
         <Scripts>
           <OnClick>
-            IEDKPForm:Hide();
+            HideUIPanel(IEDKPForm);
           </OnClick>
         </Scripts>
         <NormalTexture file="Interface\Buttons\UI-Panel-Button-Up">
@@ -355,7 +355,7 @@
         <Scripts>
           <OnClick>
             ShowUIPanel(CT_RaidTrackerFrame);
-            IEDKPForm:Hide();
+            HideUIPanel(IEDKPForm);
           </OnClick>
         </Scripts>
         <NormalTexture file="Interface\Buttons\UI-Panel-Button-Up">
@@ -427,7 +427,7 @@
         <Scripts>
           <OnClick>
             CT_RaidTrackerItemOptionsFrame:Show();
-            IEDKPForm:Hide();
+            HideUIPanel(IEDKPForm);
           </OnClick>
         </Scripts>
         <NormalTexture file="Interface\Buttons\UI-Panel-Button-Up">
@@ -499,7 +499,7 @@
         <Scripts>
           <OnClick>
             CT_RaidTrackerOptionsFrame:Show();
-            IEDKPForm:Hide();
+            HideUIPanel(IEDKPForm);
           </OnClick>
         </Scripts>
         <NormalTexture file="Interface\Buttons\UI-Panel-Button-Up">
@@ -571,7 +571,7 @@
         <Scripts>
           <OnClick>
             ShowUIPanel(MerDKPFrame);
-            IEDKPForm:Hide();
+            HideUIPanel(IEDKPForm);
           </OnClick>
         </Scripts>
         <NormalTexture file="Interface\Buttons\UI-Panel-Button-Up">
