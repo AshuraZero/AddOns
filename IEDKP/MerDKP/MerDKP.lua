@@ -5,7 +5,11 @@ SlashCmdList["MerDKP"] = function(msg)
 	ShowUIPanel(MerDKPFrame);   
 end
 
-MsgPrefix = "#IEDKP#";
+MsgPrefix = "#MYDKP#";
+MSG_CMD = "my";
+MSG_CMD_MY = "mydkp";
+MSG_CMD_LIST = "mylist";
+
 
 if Mer_DKP_Table then
 	MerDKP_Table = {}
@@ -24,10 +28,10 @@ MerDKP = {}
 MerDKP.db = {}
 
 MerDKP.opt = {
-    rp          = "ie", --查询指令
-    mydkp       = "iedkp", --个人所有DKP查询指令
-    rplist      = "ielist", --指令查询命令
-    prefix      = "#IEDKP#", --密语发送前缀
+    rp          = MSG_CMD, --查询指令
+    mydkp       = MSG_CMD_MY, --个人所有DKP查询指令
+    rplist      = MSG_CMD_LIST, --指令查询命令
+    prefix      = MsgPrefix, --密语发送前缀
 
     enabled     = true, --是否开启密语
     rpexact     = nil, --精确查询or模糊查询
@@ -223,10 +227,10 @@ function MerDKP_ADDON_LOADED(arg1)
         MerDKPDB = MerDKPDB or {}
         MerDKP.opt = MerDKPDB.opt or MerDKP.opt
         MerDKP.opt = {
-            rp          = "ie", --查询指令
-            mydkp       = "iedkp", --个人所有DKP查询指令
-            rplist      = "ielist", --指令查询命令
-            prefix      = "#IEDKP#", --密语发送前缀
+            rp          = MSG_CMD, --查询指令
+            mydkp       = MSG_CMD_MY, --个人所有DKP查询指令
+            rplist      = MSG_CMD_LIST, --指令查询命令
+            prefix      = MsgPrefix, --密语发送前缀
 
             enabled     = true, --是否开启密语
             rpexact     = nil, --精确查询or模糊查询
@@ -267,20 +271,6 @@ function MerDKP_OnVarsLoaded()
         getglobal("MerDKPFrameOptionSliders"..k).OnValueChang = v.OnValueChang
     end
 
-   --[[
-    MerDKP_ChatFrame_OnEvent = ChatFrame_OnEvent
-    ChatFrame_OnEvent = function(self,event)
-        if MerDKP.opt.HideWhisper and event == "CHAT_MSG_WHISPER" then
-            if strfind(arg1,"^"..MerDKP.opt.rp) or strlower(arg1)==MerDKP.opt.rplist or strlower(arg1)==MerDKP.opt.mydkp then
-                return
-            end
-        end
-        if MerDKP.opt.HideWhisper and event == "CHAT_MSG_WHISPER_INFORM" and strfind(arg1,"^"..MsgPrefix) then
-            return
-        end
-        MerDKP_ChatFrame_OnEvent(self,event)      
-    end
-    ]]--
     MerDKPFrameTab1:SetText(MerDKP.loc.MerDKPFrameTab1)
     MerDKPFrameTab2:SetText(MerDKP.loc.MerDKPFrameTab2)
     MerDKPFrameListBatEditButtonText:SetText(MerDKP.loc.MerDKPFrameListBatEditButtonText)
@@ -300,7 +290,6 @@ end
 
 function MerDKP_CHAT_MSG_WHISPER(msg, who)
 	who = GetFixedUpUnitName(who);
-	CT_RaidTracker_Debug(msg, who, MerDKP.opt.rplist);
     if not MerDKP.opt.enabled then return end
 
     msg = strlower(msg)
@@ -326,11 +315,11 @@ function MerDKP_CHAT_MSG_WHISPER(msg, who)
         return
     end
     if strfind(msg, "^"..MerDKP.opt.rp.."%d+") then
-        id, text = select(3,strfind(arg1,"^"..MerDKP.opt.rp.."(%d+)(.*)"))
-        id = tonumber(id)
-        local tab = MerDKP.db[id]
+        local id, text = select(3,strfind(msg,"^"..MerDKP.opt.rp.."(%d+)(.*)"));
+        id = tonumber(id);
+        local tab = MerDKP.db[id];
         if not tab then
-            SendChatMessage(MerDKP.opt.prefix.."<MerDKP> Out of search", "WHISPER", nil, who)
+            SendChatMessage(MerDKP.opt.prefix.."无记录", "WHISPER", nil, who)
             return
         end
         if not text or gsub(text,"%s+","") == "" then

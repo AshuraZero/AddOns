@@ -283,7 +283,7 @@ function CT_RaidTracker_OnEvent(self, event, ...)
 
     if ( event == "ADDON_LOADED" ) then
 		if (arg1 == ADDON_NAME) then
-			--ChatFrame_AddMessageEventFilter("CHAT_MSG_WHISPER_INFORM", whisperFilter);
+			ChatFrame_AddMessageEventFilter("CHAT_MSG_WHISPER_INFORM", whisperFilter);
 
 			CT_RaidTracker_RunVersionFix();
 			CT_RaidTracker_GetGameTimeOffset();
@@ -3388,8 +3388,8 @@ function whisperFilter(frame, event, msg, ...)
 
     if strfind(msg,MsgPrefix) and CT_RaidTracker_Options["FilterWhisper"] == 1 then
         return true;
-    elseif strfind(msg,MsgPrefix.."您当前DKP为") then
-    return true;
+    --elseif strfind(msg,MsgPrefix.."您当前DKP为") then
+    --return true;
     else
         return false,msg, ...
     end
