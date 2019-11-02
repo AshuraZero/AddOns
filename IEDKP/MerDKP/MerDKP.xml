@@ -5,7 +5,7 @@
     <Scripts>
       <OnClick>
         if ( self.sortType ) then
-        MerDKP:ColumnHeader_OnClick(self.sortType);
+        MerDKP_ColumnHeader_OnClick(self.sortType);
         end
       </OnClick>
     </Scripts>
@@ -57,7 +57,7 @@
         getglobal(self:GetName() .. "bg"):SetAlpha(0.1);
       </OnLoad>
       <OnClick>
-        MerDKP:DkpListButton_OnClick(arg1);
+        MerDKP_DkpListButton_OnClick(self,arg1);
       </OnClick>
       <OnDoubleClick>
         MerDKP_OpenPopupFrame("edit", MerDKP.tmp.id, self.name, self.class, self.dkp);
@@ -213,12 +213,12 @@
     </ThumbTexture>
   </Slider>
 
-  <Frame name="MerDKPFrame" toplevel="true" movable="true" parent="UIParent" enableMouse="true" hidden="true">
+  <Frame name="MerDKPFrame" toplevel="true" enableMouse="true" movable="true" parent="UIParent"  hidden="true">
     <Size>
       <AbsDimension x="438" y="512"/>
     </Size>
     <Anchors>
-      <Anchor point="CENTER"/>
+      <Anchor point="TOPLEFT"/>
     </Anchors>
     <HitRectInsets>
       <AbsInset left="0" right="30" top="0" bottom="70"/>
@@ -324,7 +324,7 @@
         </Anchors>
         <Scripts>
           <OnClick>
-            MerDKP:SubFrames_SelectTab(self:GetID());
+            MerDKP_SubFrames_SelectTab(self:GetID());
           </OnClick>
         </Scripts>
       </Button>
@@ -338,7 +338,7 @@
         </Anchors>
         <Scripts>
           <OnClick>
-            MerDKP:SubFrames_SelectTab(self:GetID());
+            MerDKP_SubFrames_SelectTab(self:GetID());
           </OnClick>
         </Scripts>
       </Button>
@@ -511,7 +511,7 @@
             </Anchors>
             <Scripts>
               <OnClick>
-                MerDKP:SendButton_OnClick();
+                MerDKP_SendButton_OnClick();
               </OnClick>
             </Scripts>
           </Button>
@@ -528,7 +528,7 @@
             </Anchors>
             <Scripts>
               <OnClick>
-                MerDKP:WhisperButton_OnClick();
+                MerDKP_WhisperButton_OnClick();
               </OnClick>
             </Scripts>
           </Button>
@@ -616,7 +616,7 @@
             </Layers>
             <Scripts>
               <OnClick>
-                MerDKP:RaidCheckButton_OnClick();
+                MerDKP_RaidCheckButton_OnClick();
               </OnClick>
             </Scripts>
             <NormalTexture file="Interface\Buttons\UI-CheckBox-Up"/>
@@ -691,7 +691,7 @@
                 getglobal(self:GetName() .. "HighlightTexture"):Hide();
               </OnLeave>
               <OnMouseUp>
-                MerDKP:ColumnHeader_OnClick(self.sortType);
+                MerDKP_ColumnHeader_OnClick(self.sortType);
               </OnMouseUp>
             </Scripts>
           </Frame>
@@ -969,8 +969,8 @@
             </Anchors>
             <Scripts>
               <OnClick>
-                MerDKP:InitDataFrom();
-                MerDKP:SubFrames_SelectTab(1);
+                MerDKP_InitDataFrom();
+                MerDKP_SubFrames_SelectTab(1);
               </OnClick>
             </Scripts>
           </Button>
@@ -1195,13 +1195,11 @@
         PanelTemplates_SetNumTabs(self, 2);
         PanelTemplates_SetTab(self, 1);
         PanelTemplates_UpdateTabs(self);
-        self:RegisterEvent("ADDON_LOADED");
-        self:RegisterEvent("PLAYER_LOGOUT");
-        self:RegisterEvent("CHAT_MSG_WHISPER");
-        self:RegisterEvent("CHAT_MSG_CHANNEL_NOTICE");
+        MerDKP_OnLoad(self);
+
       </OnLoad>
       <OnEvent>
-        MerDKP:OnEvent(self, event, ...);
+        MerDKP_OnEvent(self, event, ...);
       </OnEvent>
       <OnMouseDown>
         if (   button == "LeftButton" and IsAltKeyDown() ) then

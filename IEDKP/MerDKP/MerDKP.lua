@@ -1,52 +1,25 @@
 IEPrefix = "#IEDKP#";
 
-MerDKP = {}
-
-local M = MerDKP
-M.author = "AshuraZero"
-M.version = "1.13.2"
+SlashCmdList["MerDKP"] = function() MerDKPFrame:Show()  end
+SLASH_MerDKP1 = "/merdkp"
 
 if Mer_DKP_Table then
-        MerDKP_Table = {}
-        for k, v in pairs(Mer_DKP_Table) do
-                v.title = k
-                v.key = k
-                tinsert(MerDKP_Table, v)
-        end
+	MerDKP_Table = {}
+	for k, v in pairs(Mer_DKP_Table) do
+		v.title = k
+		v.key = k
+		tinsert(MerDKP_Table, v)
+	end
 end
 
-local function DropDownMember(self, id, name, dkp)
-    local id = MerDKP.tmp.id
-    if not id or not MerDKP.db[id] then return end
-    if self.value == "WHISPER" then
-        SendChatMessage(IEPrefix.."<"..MerDKP.db[id].title.."> "..name.."："..dkp.." DKP", "WHISPER", nil, name)
-    else
-        SendChatMessage("<"..MerDKP.db[id].title.."> "..name.."："..dkp.." DKP", self.value)
-    end
-end
 
-local function DropDownMinDKP(self)
-    local id = self:GetID()
-    UIDropDownMenu_SetSelectedID(MerDKPFrameListDropDownMinDKP, id)
-    MerDKP.tmp.DkpMin = self.value
-    MerDKP:InitDKP()
-end
-function DropDownChannel(self)
-    local id = self:GetID()
-    UIDropDownMenu_SetSelectedID(MerDKPFrameListDropDownChannel, id)
-    MerDKP.tmp.channel = self.value
-    if (self.value == "RAID" and GetNumGroupMembers() < 1)
-        or ((self.value == "GUILD" or self.value == "OFFICER") and not IsInGuild() )
-        or (self.value == "PARTY" and GetNumGroupMembers() < 1) then
-        MerDKPFrameListSendButton:Disable()
-    else
-        MerDKPFrameListSendButton:Enable()
-    end
-end
+--region variable
 
-M.db  = {}
+MerDKP = {}
 
-M.opt = {
+MerDKP.db = {}
+
+MerDKP.opt = {
     rp          = "ie", --查询指令
     mydkp       = "iedkp", --个人所有DKP查询指令
     rplist      = "ielist", --指令查询命令
@@ -66,8 +39,7 @@ M.opt = {
     Minimap     = 360, --小地图图标位置 0-隐藏
 }
 
-M.tmp = {
---xd
+MerDKP.tmp = {
     id          = 0, --GUI显示的DKP id 
     DkpMin      = -9000, --显示的最小dkp分数,太低的就不显示
     total       = 0, --列表总数
@@ -81,15 +53,15 @@ M.tmp = {
     list_class  = {},--显示职业
 }
 
-
-M.tmp.tbc = {
+MerDKP.tmp.tbc = {
     {text = "布甲", "牧师","法师","术士",},
     {text = "皮甲", "潜行者","德鲁伊",},
     {text = "锁甲", "猎人","萨满祭司",},
     {text = "板甲", "战士","圣骑士",},
     {text = "所有职业", "圣骑士","战士","牧师","法师","萨满祭司","德鲁伊","潜行者","猎人","术士",},
 }
-M.tmp.classes = {
+
+MerDKP.tmp.classes = {
     ["战士"]  = { hex = "|cffA39402", r = 0.78, g = 0.61, b = 0.43 },
     ["法师"]  = { hex = "|cff00FFFF", r = 0.41, g = 0.85, b = 0.94 },
     ["潜行者"]     = { hex = "|cffFFFF00", r = 0.95, g = 0.96, b = 0.41 },
@@ -100,7 +72,8 @@ M.tmp.classes = {
     ["术士"]  = { hex = "|cff8D54FB", r = 0.58, g = 0.51, b = 0.79 },
     ["圣骑士"]     = { hex = "|cffFF71A8", r = 0.96, g = 0.55, b = 0.73 },
 }
-M.tmp.initclass = {
+
+MerDKP.tmp.initclass = {
     ["战士"]  = "战士",
     ["法师"]  = "法师",
     ["潜行者"]     = "潜行者",
@@ -112,7 +85,8 @@ M.tmp.initclass = {
     ["圣骑士"]     = "圣骑士",
     ---自己添加要初始化的职业,如 ["MS"] = "牧师",
 }
-M.loc = {
+
+MerDKP.loc = {
     leftText = "(.+)离开了团队",
     totalText = "当前显示成员 (|cff3FFF3F%d/%d|r)",
     sendText = "确定发送?",
@@ -126,7 +100,7 @@ M.loc = {
     MerDKPFrameListRaidCheckButtonText = "显示当前团队",
 }
 
-M.DROPMENU = {
+MerDKP.DROPMENU = {
     channel ={
         { text = "团队频道", value = "RAID", func = DropDownChannel,},
         { text = "普通频道", value = "SAY", func = DropDownChannel,},
@@ -202,231 +176,63 @@ M.DROPMENU = {
     },
 }
 
-function M:OnVarsLoaded()
-    for k, v in ipairs(self.DROPMENU.checkbutton) do
-        getglobal("MerDKPFrameOptionCheckButtons"..k):Show()
-        getglobal("MerDKPFrameOptionCheckButtons"..k.."Text"):SetText(v.text)
-        getglobal("MerDKPFrameOptionCheckButtons"..k).tooltipText = v.tooltipText
-        getglobal("MerDKPFrameOptionCheckButtons"..k).key = v.key
-        if self.opt[v.key] then
-            getglobal("MerDKPFrameOptionCheckButtons"..k):SetChecked(1)
-        end
-    end
-    for k, v in ipairs(self.DROPMENU.slider) do
-        getglobal("MerDKPFrameOptionSliders"..k):Show()
-        getglobal("MerDKPFrameOptionSliders"..k.."Text"):SetText(v.text)
-        getglobal("MerDKPFrameOptionSliders"..k).tooltipText = v.tooltipText
-        getglobal("MerDKPFrameOptionSliders"..k).key = v.key
-        getglobal("MerDKPFrameOptionSliders"..k):SetMinMaxValues(v.Min, v.Max)
-        getglobal("MerDKPFrameOptionSliders"..k):SetValueStep(v.Step)
-        getglobal("MerDKPFrameOptionSliders"..k).Onshow = v.Onshow
-        getglobal("MerDKPFrameOptionSliders"..k).OnValueChang = v.OnValueChang
-    end
+MerDKP.tmp.SubFrames = {
+    "MerDKPFrameList",
+    "MerDKPFrameOption",
+}
 
-   --[[
-    MerDKP_ChatFrame_OnEvent = ChatFrame_OnEvent
-    ChatFrame_OnEvent = function(self,event)
-        if self.opt.HideWhisper and event == "CHAT_MSG_WHISPER" then
-            if strfind(arg1,"^"..MerDKP.opt.rp) or strlower(arg1)==MerDKP.opt.rplist or strlower(arg1)==MerDKP.opt.mydkp then
-                return
-            end
-        end
-        if self.opt.HideWhisper and event == "CHAT_MSG_WHISPER_INFORM" and strfind(arg1,"^"..IEPrefix) then
-            return
-        end
-        MerDKP_ChatFrame_OnEvent(self,event)      
-    end
-    ]]--
-    MerDKPFrameTab1:SetText(self.loc.MerDKPFrameTab1)
-    MerDKPFrameTab2:SetText(self.loc.MerDKPFrameTab2)
-    MerDKPFrameListBatEditButtonText:SetText(self.loc.MerDKPFrameListBatEditButtonText)
-    MerDKPFrameListWhisperButton:SetText(self.loc.MerDKPFrameListWhisperButton)
-    MerDKPFrameListRaidCheckButtonText:SetText(self.loc.MerDKPFrameListRaidCheckButtonText)
+gbkToBig5Table = {
+    ["盗贼"]  = "潜行者",    
+}
 
-    --[[if self.opt.Minimap == 0 then
-        MerDKPMinimapButton:Hide()
-    else
-        MerDKPMinimapButton:Show()
-        MerDKPMinimapButton:SetPoint("TOPLEFT", "Minimap", "TOPLEFT", 55 - (84 * cos(self.opt.Minimap)), (84 * sin(self.opt.Minimap)) - 55)
-    end--]]
+--end region variable
+
+
+--region event
+
+function MerDKP_OnLoad(this)
+        this:RegisterEvent("ADDON_LOADED");
+        this:RegisterEvent("PLAYER_LOGOUT");
+        this:RegisterEvent("CHAT_MSG_WHISPER");
+        this:RegisterEvent("CHAT_MSG_CHANNEL_NOTICE");
 end
 
-function M:OnEvent(this, event, ...)
-    
+function MerDKP_OnEvent(this, event, ...)
+	local arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9= ...;
+
+    if ( event == "ADDON_LOADED" ) then
+		MerDKP_ADDON_LOADED(arg1)
+	end
+
+	if ( event == "PLAYER_LOGOUT" ) then 
+		MerDKP_PLAYER_LOGOUT();
+	end
+
     if( event == "CHAT_MSG_WHISPER" ) then --Reviewed
-        local arg1, arg2= ...;
-        self:CHAT_MSG_WHISPER(arg1, arg2);
+        MerDKP_CHAT_MSG_WHISPER(arg1, arg2);
     end
+
     if event == "CHAT_MSG_CHANNEL_NOTICE" then
-        if arg1 == "YOU_JOINED" or arg1 == "YOU_CHANGED" then
-            for _, v in ipairs(self.DROPMENU.channel) do
-                if v.value == "CHANNEL"..arg8 then
-                    v.text = arg8..". "..arg9
-                    return
-                end
-            end
-            tinsert(self.DROPMENU.channel, {text = arg8..". "..arg9, value = "CHANNEL"..arg8, func = DropDownChannel})
-        elseif arg1 == "YOU_LEFT" then
-            for k, v in ipairs(self.DROPMENU.channel) do
-                if v.value == "CHANNEL"..arg8 then
-                    tremove(self.DROPMENU.channel, k)
-                end
-            end
-        end
+		--MerDKP_CHAT_MSG_CHANNEL_NOTICE(arg1, arg8, arg9);
         return
     end
-    if self[event] then
-        self[event](self, arg1, arg2)
-    end
+
+
+	if ( event == "CHAT_MSG_SYSTEM" ) then
+		MerDKP_CHAT_MSG_SYSTEM(arg1);
+	end
+
+    if ( event == "GROUP_ROSTER_UPDATE" ) then 
+		MerDKP_GROUP_ROSTER_UPDATE();
+
+	end
 end
 
-function M:CHAT_MSG_CHANNEL_NOTICE()
-
-end
-
-function M:CHAT_MSG_WHISPER(arg1, arg2)
-    DEFAULT_CHAT_FRAME:AddMessage(arg1.."|"..arg2);
-    if not self.opt.enabled then return end
-    arg1 = strlower(arg1)
-    DEFAULT_CHAT_FRAME:AddMessage(arg1.."|"..self.opt.rplist);
-    if arg1 == self.opt.rplist then
-        for i = 1, #self.db do
-            local replay = "<" .. self.db[i].title .. "> " .. self.opt.rp .. i
-            if self.db[i].whisper then
-                replay = replay .. " (or) " .. self.db[i].whisper
-            end
-            SendChatMessage(self.opt.prefix..replay, "WHISPER", nil, arg2)
-        end
-        return
-    end
-    if arg1 == self.opt.mydkp then
-        for i = 1, #self.db do
-            for _, v in ipairs(self.db[i]) do
-                if strlower(v.name) == strlower(arg2) then
-                    SendChatMessage(self.opt.prefix.."<"..self.db[i].title.."> "..arg2.."："..v.dkp.." DKP", "WHISPER", nil, arg2)
-                    break
-                end
-            end
-        end
-        return
-    end
-    if strfind(arg1, "^"..self.opt.rp.."%d+") then
-        id, text = select(3,strfind(arg1,"^"..self.opt.rp.."(%d+)(.*)"))
-        id = tonumber(id)
-        local tab = self.db[id]
-        if not tab then
-            SendChatMessage(self.opt.prefix.."<MerDKP> Out of search", "WHISPER", nil, arg2)
-            return
-        end
-        if not text or gsub(text,"%s+","") == "" then
-            for _, v in ipairs(tab) do
-                if strlower(v.name) == strlower(arg2) then
-                    SendChatMessage(self.opt.prefix.."<"..tab.title.."> "..arg2.."："..v.dkp.." DKP", "WHISPER", nil, arg2)
-                    break
-                end
-            end
-            return
-        end
-        for k in pairs(self.tmp.rp_class) do
-            self.tmp.rp_class[k] = nil
-        end
-        for k in pairs(self.tmp.rp_word) do
-            self.tmp.rp_word[k] = nil
-        end
-        for keyword in string.gmatch(text,"%S+") do
-            if self.tmp.classes[keyword] then
-                tinsert(self.tmp.rp_class,keyword)
-            else
-                tinsert(self.tmp.rp_word,keyword)
-            end
-        end
-        if self.opt.CurrentRaid then
-            tab = self.tmp.raidmembers
-        end
-        local j
-        for _, v in ipairs(self.tmp.rp_class) do
-            j = 1
-            for kk, vv in pairs(tab) do
-                if type(vv) == "table" and v == strlower(vv.class) then
-                    SendChatMessage(self.opt.prefix..j..". <"..(tab.title or self.db[id].title or "").."-"..vv.class.."> "..vv.name.."："..vv.dkp.." DKP", "WHISPER", nil, arg2)
-                    j = j + 1
-                    if j > 10 then break end
-                end
-            end
-        end
-        for _, v in ipairs(self.tmp.rp_word) do
-            j = 1
-            for kk, vv in pairs(tab) do
-                if self.opt.rpexact and type(vv) == "table" and v == strlower(vv.name) then
-                    SendChatMessage(self.opt.prefix.."<"..(tab.title or self.db[id].title or "").."-"..vv.class.."> "..vv.name.."："..vv.dkp.." DKP", "WHISPER", nil, arg2)
-                elseif not self.opt.rpexact and type(vv) == "table" and strfind(strlower(vv.name),v) then
-                    SendChatMessage(self.opt.prefix.."<"..(tab.title or self.db[id].title or "").."-"..vv.class.."> "..vv.name.."："..vv.dkp.." DKP", "WHISPER", nil, arg2)
-                    j = j + 1
-                    if j > 10 then break end
-                end
-            end
-        end
-        return
-    end
-    for i = 1, #self.db do
-        if self.db[i].whisper and strfind(arg1,"^"..self.db[i].whisper) then
-            local new_arg1 = gsub(arg1,self.db[i].whisper,self.opt.rp..i,1)
-            self:CHAT_MSG_WHISPER(new_arg1, arg2)
-        end
-    end
-end
-
-function M:CHAT_MSG_SYSTEM(arg1)
-    if strfind(arg1, self.loc.leftText) then
-        local name = select(3, strfind(arg1, self.loc.leftText))
-        self.tmp.raidmembers[name] = nil
-        if MerDKPFrameListRaidCheckButton:GetChecked() then
-            self:DeleteMember(name)
-            self:UpdateList()
-        end
-    end
-end
-
-function M:GROUP_ROSTER_UPDATE()
-    local numMembers = GetNumGroupMembers()
-    local toggle
-    if numMembers < 1 then
-        for k in pairs(self.tmp.raidmembers) do
-            self.tmp.raidmembers[k] = nil
-        end
-        self:InitDKP()
-        return
-    end
-    for i = 1, numMembers do
-        name, _, _, _, class, _, _, online = GetRaidRosterInfo(i)
-        if strfind(name,"%-") then
-            name = select(3, strfind(name, "(.-)%-"))
-        end
-        if not self.tmp.raidmembers[name] then
-            --dkp = self:GetDKPByName(name, class)
-            self.tmp.raidmembers[name] = {name=name,class=class,online=online,dkp=0}
-            toggle = true
-        end
-        if self.tmp.raidmembers[name].online ~= online then
-            self.tmp.raidmembers[name].online = online
-            if self.opt.IgnoreOffline then
-                toggle = true
-            else
-                self:UpdateList()
-            end
-        end
-    end
-    if toggle then
-        self:InitDKP()
-    end
-end
-
---function M:VARIABLES_LOADED()
-function M:ADDON_LOADED(arg1)
+function MerDKP_ADDON_LOADED(arg1)
     if (arg1 == "IEDKP") then   
         MerDKPDB = MerDKPDB or {}
-        self.opt = MerDKPDB.opt or self.opt
-        M.opt = {
+        MerDKP.opt = MerDKPDB.opt or MerDKP.opt
+        MerDKP.opt = {
             rp          = "ie", --查询指令
             mydkp       = "iedkp", --个人所有DKP查询指令
             rplist      = "ielist", --指令查询命令
@@ -446,213 +252,243 @@ function M:ADDON_LOADED(arg1)
             Minimap     = 360, --小地图图标位置 0-隐藏
         }   
         gbkToBig5();
-        self:InitDataFrom()
-        self:OnVarsLoaded()
+        MerDKP_InitDataFrom()
+        MerDKP_OnVarsLoaded()
     end
 end
 
-function M:PLAYER_LOGOUT()
+function MerDKP_OnVarsLoaded()
+    for k, v in ipairs(MerDKP.DROPMENU.checkbutton) do
+        getglobal("MerDKPFrameOptionCheckButtons"..k):Show()
+        getglobal("MerDKPFrameOptionCheckButtons"..k.."Text"):SetText(v.text)
+        getglobal("MerDKPFrameOptionCheckButtons"..k).tooltipText = v.tooltipText
+        getglobal("MerDKPFrameOptionCheckButtons"..k).key = v.key
+        if MerDKP.opt[v.key] then
+            getglobal("MerDKPFrameOptionCheckButtons"..k):SetChecked(1)
+        end
+    end
+    for k, v in ipairs(MerDKP.DROPMENU.slider) do
+        getglobal("MerDKPFrameOptionSliders"..k):Show()
+        getglobal("MerDKPFrameOptionSliders"..k.."Text"):SetText(v.text)
+        getglobal("MerDKPFrameOptionSliders"..k).tooltipText = v.tooltipText
+        getglobal("MerDKPFrameOptionSliders"..k).key = v.key
+        getglobal("MerDKPFrameOptionSliders"..k):SetMinMaxValues(v.Min, v.Max)
+        getglobal("MerDKPFrameOptionSliders"..k):SetValueStep(v.Step)
+        getglobal("MerDKPFrameOptionSliders"..k).Onshow = v.Onshow
+        getglobal("MerDKPFrameOptionSliders"..k).OnValueChang = v.OnValueChang
+    end
+
+   --[[
+    MerDKP_ChatFrame_OnEvent = ChatFrame_OnEvent
+    ChatFrame_OnEvent = function(self,event)
+        if MerDKP.opt.HideWhisper and event == "CHAT_MSG_WHISPER" then
+            if strfind(arg1,"^"..MerDKP.opt.rp) or strlower(arg1)==MerDKP.opt.rplist or strlower(arg1)==MerDKP.opt.mydkp then
+                return
+            end
+        end
+        if MerDKP.opt.HideWhisper and event == "CHAT_MSG_WHISPER_INFORM" and strfind(arg1,"^"..IEPrefix) then
+            return
+        end
+        MerDKP_ChatFrame_OnEvent(self,event)      
+    end
+    ]]--
+    MerDKPFrameTab1:SetText(MerDKP.loc.MerDKPFrameTab1)
+    MerDKPFrameTab2:SetText(MerDKP.loc.MerDKPFrameTab2)
+    MerDKPFrameListBatEditButtonText:SetText(MerDKP.loc.MerDKPFrameListBatEditButtonText)
+    MerDKPFrameListWhisperButton:SetText(MerDKP.loc.MerDKPFrameListWhisperButton)
+    MerDKPFrameListRaidCheckButtonText:SetText(MerDKP.loc.MerDKPFrameListRaidCheckButtonText)
+
+    --[[if MerDKP.opt.Minimap == 0 then
+        MerDKPMinimapButton:Hide()
+    else
+        MerDKPMinimapButton:Show()
+        MerDKPMinimapButton:SetPoint("TOPLEFT", "Minimap", "TOPLEFT", 55 - (84 * cos(MerDKP.opt.Minimap)), (84 * sin(MerDKP.opt.Minimap)) - 55)
+    end--]]
+end
+
+function MerDKP_PLAYER_LOGOUT()
     MerDKPDB = MerDKPDB or {}
-    MerDKPDB.opt = self.opt
-    if self.opt.SaveDkplist then
-        MerDKPDB.db = self.db
+    MerDKPDB.opt = MerDKP.opt
+    if MerDKP.opt.SaveDkplist then
+        MerDKPDB.db = MerDKP.db
     end
     MerDKPDB.savedtime = time()
 end
 
-function M:InitClass()
-    if self.opt.InitClasses then
-        for i = 1, #self.db do
-            for _, v in ipairs(self.db[i]) do
-                v.class = self.tmp.initclass[v.class] or UNKNOWN
+function MerDKP_CHAT_MSG_WHISPER(msg, who)
+	who = GetFixedUpUnitName(who);
+	CT_RaidTracker_Debug(msg, who, MerDKP.opt.rplist);
+    if not MerDKP.opt.enabled then return end
+
+    msg = strlower(msg)
+    if msg == MerDKP.opt.rplist then
+        for i = 1, #MerDKP.db do
+            local replay = "<" .. MerDKP.db[i].title .. "> " .. MerDKP.opt.rp .. i
+            if MerDKP.db[i].whisper then
+                replay = replay .. " (or) " .. MerDKP.db[i].whisper
             end
+            SendChatMessage(MerDKP.opt.prefix..replay, "WHISPER", nil, who)
+        end
+        return
+    end
+    if msg == MerDKP.opt.mydkp then
+        for i = 1, #MerDKP.db do
+            for _, v in ipairs(MerDKP.db[i]) do
+                if strlower(v.name) == strlower(who) then
+                    SendChatMessage(MerDKP.opt.prefix.."<"..MerDKP.db[i].title.."> "..who.."："..v.dkp.." DKP", "WHISPER", nil, who)
+                    break
+                end
+            end
+        end
+        return
+    end
+    if strfind(msg, "^"..MerDKP.opt.rp.."%d+") then
+        id, text = select(3,strfind(arg1,"^"..MerDKP.opt.rp.."(%d+)(.*)"))
+        id = tonumber(id)
+        local tab = MerDKP.db[id]
+        if not tab then
+            SendChatMessage(MerDKP.opt.prefix.."<MerDKP> Out of search", "WHISPER", nil, who)
+            return
+        end
+        if not text or gsub(text,"%s+","") == "" then
+            for _, v in ipairs(tab) do
+                if strlower(v.name) == strlower(who) then
+                    SendChatMessage(MerDKP.opt.prefix.."<"..tab.title.."> "..who.."："..v.dkp.." DKP", "WHISPER", nil, who)
+                    break
+                end
+            end
+            return
+        end
+        for k in pairs(MerDKP.tmp.rp_class) do
+            MerDKP.tmp.rp_class[k] = nil
+        end
+        for k in pairs(MerDKP.tmp.rp_word) do
+            MerDKP.tmp.rp_word[k] = nil
+        end
+        for keyword in string.gmatch(text,"%S+") do
+            if MerDKP.tmp.classes[keyword] then
+                tinsert(MerDKP.tmp.rp_class,keyword)
+            else
+                tinsert(MerDKP.tmp.rp_word,keyword)
+            end
+        end
+        if MerDKP.opt.CurrentRaid then
+            tab = MerDKP.tmp.raidmembers
+        end
+        local j
+        for _, v in ipairs(MerDKP.tmp.rp_class) do
+            j = 1
+            for kk, vv in pairs(tab) do
+                if type(vv) == "table" and v == strlower(vv.class) then
+                    SendChatMessage(MerDKP.opt.prefix..j..". <"..(tab.title or MerDKP.db[id].title or "").."-"..vv.class.."> "..vv.name.."："..vv.dkp.." DKP", "WHISPER", nil, who)
+                    j = j + 1
+                    if j > 10 then break end
+                end
+            end
+        end
+        for _, v in ipairs(MerDKP.tmp.rp_word) do
+            j = 1
+            for kk, vv in pairs(tab) do
+                if MerDKP.opt.rpexact and type(vv) == "table" and v == strlower(vv.name) then
+                    SendChatMessage(MerDKP.opt.prefix.."<"..(tab.title or MerDKP.db[id].title or "").."-"..vv.class.."> "..vv.name.."："..vv.dkp.." DKP", "WHISPER", nil, who)
+                elseif not MerDKP.opt.rpexact and type(vv) == "table" and strfind(strlower(vv.name),v) then
+                    SendChatMessage(MerDKP.opt.prefix.."<"..(tab.title or MerDKP.db[id].title or "").."-"..vv.class.."> "..vv.name.."："..vv.dkp.." DKP", "WHISPER", nil, who)
+                    j = j + 1
+                    if j > 10 then break end
+                end
+            end
+        end
+        return
+    end
+    for i = 1, #MerDKP.db do
+        if MerDKP.db[i].whisper and strfind(msg,"^"..MerDKP.db[i].whisper) then
+            local new_msg = gsub(msg, MerDKP.db[i].whisper, MerDKP.opt.rp..i, 1)
+            MerDKP_CHAT_MSG_WHISPER(new_msg, who)
         end
     end
 end
 
-function M:InitDKP()
-    if not self.tmp.id or not self.db[self.tmp.id] then return end
-    for k in pairs(self.tmp.LIST) do
-        self.tmp.LIST[k] = nil
-    end
-    if MerDKPFrameListRaidCheckButton:GetChecked() then
-        for k, v in pairs(self.tmp.raidmembers) do
-            v.dkp = self:GetDKPByName(k,v.class)
-            if self.tmp.list_class[v.class] and v.dkp >= self.tmp.DkpMin and not (self.opt.IgnoreOffline and v.online ~= 1) then
-                tinsert(self.tmp.LIST, v)
+function MerDKP_CHAT_MSG_CHANNEL_NOTICE(arg1, arg8, arg9)
+        if arg1 == "YOU_JOINED" or arg1 == "YOU_CHANGED" then
+            for _, v in ipairs(MerDKP.DROPMENU.channel) do
+                if v.value == "CHANNEL"..arg8 then
+                    v.text = arg8..". "..arg9
+                    return
+                end
+            end
+            tinsert(MerDKP.DROPMENU.channel, {text = arg8..". "..arg9, value = "CHANNEL"..arg8, func = DropDownChannel})
+        elseif arg1 == "YOU_LEFT" then
+            for k, v in ipairs(MerDKP.DROPMENU.channel) do
+                if v.value == "CHANNEL"..arg8 then
+                    tremove(MerDKP.DROPMENU.channel, k)
+                end
             end
         end
-    else
-        for k, v in ipairs(self.db[self.tmp.id]) do
-            if self.tmp.list_class[v.class] and v.dkp >= self.tmp.DkpMin then
-                tinsert(self.tmp.LIST, v)
-            end
-        end
-    end
-    if self.tmp.sortway == "desc" then
-        table.sort(self.tmp.LIST, function(a,b)
-            return a[self.tmp.sortkey] < b[self.tmp.sortkey]
-        end)
-    else
-        table.sort(self.tmp.LIST, function(a,b)
-            return a[self.tmp.sortkey] > b[self.tmp.sortkey]
-        end)
-    end
-    self.tmp.total = #self.db[self.tmp.id]
-    self:UpdateList()
 end
 
-function M:InitDataFrom(fromID)
-    fromID = fromID or self.opt.Datafrom
+function MerDKP_CHAT_MSG_SYSTEM(arg1)
+    if strfind(arg1, MerDKP.loc.leftText) then
+        local name = select(3, strfind(arg1, MerDKP.loc.leftText))
+        MerDKP.tmp.raidmembers[name] = nil
+        if MerDKPFrameListRaidCheckButton:GetChecked() then
+            MerDKP_DeleteMember(name)
+            MerDKP_UpdateList()
+        end
+    end
+end
+
+function MerDKP_GROUP_ROSTER_UPDATE()
+    local numMembers = GetNumGroupMembers()
+    local toggle
+    if numMembers < 1 then
+        for k in pairs(MerDKP.tmp.raidmembers) do
+            MerDKP.tmp.raidmembers[k] = nil
+        end
+        MerDKP_InitDKP()
+        return
+    end
+    for i = 1, numMembers do
+        name, _, _, _, class, _, _, online = GetRaidRosterInfo(i)
+        if strfind(name,"%-") then
+            name = select(3, strfind(name, "(.-)%-"))
+        end
+        if not MerDKP.tmp.raidmembers[name] then
+            --dkp = MerDKP_GetDKPByName(name, class)
+            MerDKP.tmp.raidmembers[name] = {name=name,class=class,online=online,dkp=0}
+            toggle = true
+        end
+        if MerDKP.tmp.raidmembers[name].online ~= online then
+            MerDKP.tmp.raidmembers[name].online = online
+            if MerDKP.opt.IgnoreOffline then
+                toggle = true
+            else
+                MerDKP_UpdateList()
+            end
+        end
+    end
+    if toggle then
+        MerDKP_InitDKP()
+    end
+end
+
+function MerDKP_InitDataFrom(fromID)
+    fromID = fromID or MerDKP.opt.Datafrom
     if fromID == 1 then --website
-        self.db = MerDKP_Table or {}
+        MerDKP.db = MerDKP_Table or {}
         MerDKPFrameListGuildRosterDKPButton:Hide()
     elseif fromID == 3 or fromID == 4 then --publicnote and officernote
         MerDKPFrameListGuildRosterDKPButton:Show()
     else --localost
-        self.db = MerDKPDB.db or {}
+        MerDKP.db = MerDKPDB.db or {}
         MerDKPFrameListGuildRosterDKPButton:Hide()
     end
-    self:InitClass()
-    for i = 1, #self.db do
-        table.sort(self.db[i], function(a,b)
+    MerDKP_InitClass()
+    for i = 1, #MerDKP.db do
+        table.sort(MerDKP.db[i], function(a,b)
             return (a.class<b.class) or (a.class==b.class and a.dkp>b.dkp)
         end)
     end
 end
-
-function M:DeleteMember(name, id)
-    local tab
-    if id then
-        tab = self.db[id]
-        if not tab then return end
-    else
-        tab = self.tmp.LIST
-    end
-    for k, v in ipairs(tab) do
-        if strlower(name) == strlower(v.name) then
-            tremove(tab,k)
-            return
-        end
-    end
-end
-
-function M:GetDKPByName(name, class, id)
-    id = id or self.tmp.id
-    if not id or not self.db[id] then
-        return 0, class
-    end
-    for _, v in ipairs(self.db[id]) do
-        if strlower(name) == strlower(v.name) then
-            v.class = class or v.class
-            return v.dkp, v.class
-        end
-    end
-    tinsert(self.db[id], { name=name, class=class or UNKNOWN, dkp=0, online=1 })
-    return 0, class
-end
-
-function M:EditMember(name, class, dkp, id)
-    id = id or self.tmp.id
-    if not id or not self.db[id] then return end
-    dkp = tonumber(dkp) or 0
-    dkp = tonumber(format("%.2f",dkp))
-    class = self.tmp.classes[class] and class or UNKNOWN
-    name = gsub(strlower(name), "%s", "")
-    if strlen(name) == 0 then return end
-    if strfind(name, "^%a") then name = strupper(strsub(name,1,1))..strsub(name,2,-1) end
-    local toggle
-    for _, v in ipairs(self.db[id]) do
-        if strlower(name) == strlower(v.name) then
-            v.dkp = v.dkp + dkp
-            v.class = class
-            toggle = true
-            break
-        end
-    end
-    if not toggle then
-        tinsert(self.db[id],{ name=name, class=class or UNKNOWN, dkp=dkp, online=1 })
-    end
-end
-
-function M:GuildRoster_GetMemberDKP(note, prefix)
-    for word in string.gmatch(note, "[^#]+") do
-        if strfind(word, "^"..prefix..":(%-?%d+%.?%d*)") then
-            dkp = select(3,strfind(word, "^"..prefix..":(%-?%d+%.?%d*)"))
-            dkp = tonumber(dkp) or 0
-            dkp = tonumber(format("%.2f",dkp))
-            return dkp
-        end
-    end
-end
-function M:GuildRoster_GetMemberNewNote(player)
-    local note = "#"
-    for i = 1, #self.db do
-        local dkp = self:GetDKPByName(player, nil, i)
-        note = note .. self.db[i].title .. ":" .. dkp .. "#"
-    end
-    return strsub(note,2,-2) or ""
-end
-function M:GuildRoster_GetMemberRank(player)
-    local numMembers = GetNumGuildMembers(true)
-    local name
-    for i = 1, numMembers do
-        name = GetGuildRosterInfo(i)
-        if strlower(name) == strlower(player) then
-            return i
-        end
-    end
-end
-function M:GuildRoster_UpdateNote(player)
-    local rank = self:GuildRoster_GetMemberRank(player)
-    if rank then
-        local note = self:GuildRoster_GetMemberNewNote(player)
-        if self.opt.Datafrom == 3 then
-            GuildRosterSetPublicNote(rank, note)
-        elseif self.opt.Datafrom == 4 then
-            GuildRosterSetOfficerNote(rank, note)
-        end
-    end
-end
-function M:GuildRoster_InitDKP()
-    if not IsInGuild() then return end
-    local numMembers = GetNumGuildMembers(true)
-    local name, class, publicnote, officernote, online, dkp
-    local tab = {}
-    local dkpTable = {
-        { title = "T4", whisper= "t4dkp" },
-        { title = "T5", whisper= "t5dkp" },
-        { title = "T6", whisper= "t6dkp" },
-    }
-    for k, v in ipairs(dkpTable) do
-        tab[k] = {}
-        tab[k].title = v.title
-        tab[k].whisper = v.whisper
-        for i = 1, numMembers do
-            name, _, _, _, class, _, publicnote, officernote, online = GetGuildRosterInfo(i)
-            if self.opt.Datafrom == 3 then
-                dkp = self:GuildRoster_GetMemberDKP(publicnote, v.title) or 0
-            elseif self.opt.Datafrom == 4 then
-                dkp = self:GuildRoster_GetMemberDKP(officernote, v.title) or 0
-            end
-            tinsert(tab[k], {name=name,class=class,online=1,dkp=dkp or 0})
-        end
-    end
-    return tab
-end
-
-function MerDKP_ColorValue(val)
-    if not val then
-        return ""
-    elseif tonumber(val) > 0 then
-        return "|cff3fff3f" .. val .. "|r"
-    elseif tonumber(val) < 0 then
-        return "|cffff3f3f" .. val .. "|r"
-    else
-        return "|cffafafaf" .. val .. "|r"
-    end
-end
-
 
 function MerDKPFrame_DropDownDkpType_Init(self)
     local info
@@ -664,81 +500,24 @@ function MerDKPFrame_DropDownDkpType_Init(self)
             local id = self:GetID()
             UIDropDownMenu_SetSelectedID(MerDKPFrameListColumnHeader3, id)
             MerDKP.tmp.id = id
-            MerDKP:InitDKP()
+            MerDKP_InitDKP()
         end
         UIDropDownMenu_AddButton(info)
     end
 end
+
 function MerDKPFrame_DropDownMinDKP_Init(self)
     for _, v in ipairs(MerDKP.DROPMENU.dkpscore) do
         v.checked = nil
         UIDropDownMenu_AddButton(v)
     end
 end
+
 function MerDKPFrame_DropDownChannel_Init(self)
     for _, v in ipairs(MerDKP.DROPMENU.channel) do
         v.checked = nil
         UIDropDownMenu_AddButton(v)
     end
-end
-
-function M:DkpListButton_OnClick(button)
-    if button == "RightButton" then
-        HideDropDownMenu(1)
-        MerDKPFrameDropDown.initialize = function(self)
-            for _, v in ipairs(MerDKP.DROPMENU.member) do
-                if v.isTitle then
-                    v.text = self.name
-                end
-                if v.value then
-                    v.arg1 = self.name
-                    v.arg2 = self.dkp
-                end
-                if v.value == "CLASS" then
-                    v.value = self.class
-                    UIDropDownMenu_AddButton(v)
-                    v.value = "CLASS"
-                else
-                    UIDropDownMenu_AddButton(v)
-                end
-            end
-        end
-        MerDKPFrameDropDown.displayMode = "MENU"
-        ToggleDropDownMenu(1, nil,MerDKPFrameDropDown, "cursor")
-    end
-end
-
-function M:RaidCheckButton_OnClick()
-    if MerDKPFrameListRaidCheckButton:GetChecked() then
-        MerDKPFrameListWhisperButton:Show()
-        MerDKPFrame:RegisterEvent("CHAT_MSG_SYSTEM")
-        MerDKPFrame:RegisterEvent("GROUP_ROSTER_UPDATE")
-        self:GROUP_ROSTER_UPDATE()
-    else
-        MerDKPFrameListWhisperButton:Hide()
-        MerDKPFrame:UnregisterEvent("CHAT_MSG_SYSTEM")
-        MerDKPFrame:UnregisterEvent("GROUP_ROSTER_UPDATE")
-    end
-    self:InitDKP()
-end
-function M:ColumnHeader_OnClick(key)
-    if self.tmp.sortway == "desc" then
-        self.tmp.sortway = "asc"
-        table.sort(self.tmp.LIST, function(a,b)
-            if a[key] and b[key] then
-                return  a[key] > b[key]
-            end
-        end)
-    else
-        self.tmp.sortway = "desc"
-        table.sort(self.tmp.LIST, function(a,b)
-            if a[key] and b[key] then
-                return  a[key] < b[key]
-            end
-        end)
-    end
-    self.tmp.sortkey = key
-    self:UpdateList()
 end
 
 function MerDKPFrame_DkpClass_OnLoad(self, id)
@@ -752,6 +531,7 @@ function MerDKPFrame_DkpClass_OnLoad(self, id)
         self:Hide()
     end
 end
+
 function MerDKPFrame_DkpClass_OnClick(self, id)
     if self:GetChecked() then
         if not MerDKP.tmp.list_class[self.class] then
@@ -760,8 +540,9 @@ function MerDKPFrame_DkpClass_OnClick(self, id)
     else
         MerDKP.tmp.list_class[self.class] = nil
     end
-    MerDKP:InitDKP()
+    MerDKP_InitDKP()
 end
+
 function MerDKPFrameClothButton_OnLoad(self, id)
     if MerDKP.tmp.tbc[id] then
         getglobal(self:GetName().."Text"):SetText(MerDKP.tmp.tbc[id].text)
@@ -770,6 +551,7 @@ function MerDKPFrameClothButton_OnLoad(self, id)
         self:Hide()
     end
 end
+
 function MerDKPFrameClothButton_OnClick(self, id)
     for k in pairs(MerDKP.tmp.list_class) do
         MerDKP.tmp.list_class[k] = nil
@@ -797,78 +579,100 @@ function MerDKPFrameClothButton_OnClick(self, id)
             getglobal("MerDKPFrameListCheckButton"..i):SetChecked(0)
         end
     end
-    MerDKP:InitDKP()
+    MerDKP_InitDKP()
 end
 
-function M:UpdateList()
-    local size = #self.tmp.LIST
-    local offset = FauxScrollFrame_GetOffset(MerDKPFrameListScrollFrame)
-    local id, button, list
-    MerDKPFrameListTotal:SetText(format(self.loc.totalText, size, self.tmp.total))
-    for i = 1, 13 do
-        id = i + offset
-        button = getglobal("MerDKPFrameListButton"..i)
-        list = self.tmp.LIST[id]
-        if size > 13 then
-            button:SetWidth(350)
-            getglobal("MerDKPFrameListButton"..i.."bg"):SetWidth(350)
-        else
-            button:SetWidth(370)
-            getglobal("MerDKPFrameListButton"..i.."bg"):SetWidth(370)
-        end
-        if id <= size then
-            button.id =  id
-            button.name = list.name
-            button.dkp = list.dkp
-            button.class = list.class
-            getglobal("MerDKPFrameListButton"..i.."Name"):SetText(list.name)
-            getglobal("MerDKPFrameListButton"..i.."Class"):SetText(list.class)
-            getglobal("MerDKPFrameListButton"..i.."DKP"):SetText(MerDKP_ColorValue(format("%.2f",list.dkp)))
-            local color = self.tmp.classes[list.class] or NORMAL_FONT_COLOR
-            getglobal("MerDKPFrameListButton"..i.."Name"):SetTextColor(color.r, color.g, color.b)
-            getglobal("MerDKPFrameListButton"..i.."Class"):SetTextColor(color.r, color.g, color.b)
-            getglobal("MerDKPFrameListButton"..i.."bg"):SetVertexColor(color.r, color.g, color.b)
-            if list.online ~= 1 then
-                getglobal("MerDKPFrameListButton"..i.."Name"):SetTextColor(0.4, 0.4, 0.4)
-                getglobal("MerDKPFrameListButton"..i.."Class"):SetTextColor(0.4, 0.4, 0.4)
-            end
-            button:Show()
-        else
-            button:Hide()
-        end
-    end
-    FauxScrollFrame_Update(MerDKPFrameListScrollFrame, size, 13, 16)
-end
 function MerDKPFrameList_OnVerticalScroll()
-    MerDKP:UpdateList()
+    MerDKP_UpdateList()
 end
 
-function M:SendButton_OnClick(yes)
-    if not yes and self.opt.ConfirmSend then
+function MerDKP_DkpListButton_OnClick(this, button)
+    if button == "RightButton" then
+        HideDropDownMenu(1)
+        MerDKPFrameDropDown.initialize = function(self)
+            for _, v in ipairs(MerDKP.DROPMENU.member) do
+                if v.isTitle then
+                    v.text = self.name
+                end
+                if v.value then
+                    v.arg1 = self.name
+                    v.arg2 = self.dkp
+                end
+                if v.value == "CLASS" then
+                    v.value = self.class
+                    UIDropDownMenu_AddButton(v)
+                    v.value = "CLASS"
+                else
+                    UIDropDownMenu_AddButton(v)
+                end
+            end
+        end
+        MerDKPFrameDropDown.displayMode = "MENU"
+        ToggleDropDownMenu(1, nil,MerDKPFrameDropDown, "cursor")
+    end
+end
+
+function MerDKP_RaidCheckButton_OnClick()
+    if MerDKPFrameListRaidCheckButton:GetChecked() then
+        MerDKPFrameListWhisperButton:Show()
+        MerDKPFrame:RegisterEvent("CHAT_MSG_SYSTEM")
+        MerDKPFrame:RegisterEvent("GROUP_ROSTER_UPDATE")
+        MerDKP_GROUP_ROSTER_UPDATE()
+    else
+        MerDKPFrameListWhisperButton:Hide()
+        MerDKPFrame:UnregisterEvent("CHAT_MSG_SYSTEM")
+        MerDKPFrame:UnregisterEvent("GROUP_ROSTER_UPDATE")
+    end
+    MerDKP_InitDKP()
+end
+
+function MerDKP_SendButton_OnClick(yes)
+    if not yes and MerDKP.opt.ConfirmSend then
         StaticPopup_Show("MerDKP_ConfirmSend")
         return
     end
-    if not self.tmp.id or not self.db[self.tmp.id] then return end
-    if self.tmp.channel == "GUILD" or self.tmp.channel == "RAID" or self.tmp.channel == "PARTY" or self.tmp.channel == "SAY" or self.tmp.channel == "OFFICER" then
-        for k, v in ipairs(self.tmp.LIST) do
-            SendChatMessage("<"..self.db[self.tmp.id].title.."-"..v.class.."> "..v.name.."："..v.dkp.." DKP", self.tmp.channel)
-            if k > self.opt.Outputmax then return end
+    if not MerDKP.tmp.id or not MerDKP.db[MerDKP.tmp.id] then return end
+    if MerDKP.tmp.channel == "GUILD" or MerDKP.tmp.channel == "RAID" or MerDKP.tmp.channel == "PARTY" or MerDKP.tmp.channel == "SAY" or MerDKP.tmp.channel == "OFFICER" then
+        for k, v in ipairs(MerDKP.tmp.LIST) do
+            SendChatMessage("<"..MerDKP.db[MerDKP.tmp.id].title.."-"..v.class.."> "..v.name.."："..v.dkp.." DKP", MerDKP.tmp.channel)
+            if k > MerDKP.opt.Outputmax then return end
         end
-    elseif strfind(self.tmp.channel, "CHANNEL%d+") then
-        local chanID = select(3,strfind(self.tmp.channel, "CHANNEL(%d+)"))
-        for k, v in ipairs(self.tmp.LIST) do
-            SendChatMessage("<"..self.db[self.tmp.id].title.."-"..v.class.."> "..v.name.."："..v.dkp.." DKP", "CHANNEL", nil, chanID)
-            if k > self.opt.Outputmax then return end
+    elseif strfind(MerDKP.tmp.channel, "CHANNEL%d+") then
+        local chanID = select(3,strfind(MerDKP.tmp.channel, "CHANNEL(%d+)"))
+        for k, v in ipairs(MerDKP.tmp.LIST) do
+            SendChatMessage("<"..MerDKP.db[MerDKP.tmp.id].title.."-"..v.class.."> "..v.name.."："..v.dkp.." DKP", "CHANNEL", nil, chanID)
+            if k > MerDKP.opt.Outputmax then return end
         end
     end
 end
-function M:WhisperButton_OnClick()
-    if not self.tmp.id or not self.db[self.tmp.id] then return end
-    for k, v in ipairs(self.tmp.LIST) do
+
+function MerDKP_WhisperButton_OnClick()
+    if not MerDKP.tmp.id or not MerDKP.db[MerDKP.tmp.id] then return end
+    for k, v in ipairs(MerDKP.tmp.LIST) do
         if v.online == 1 then
-        SendChatMessage(self.opt.prefix.."<"..self.db[self.tmp.id].title.."> "..v.name.."："..v.dkp.." DKP", "WHISPER", nil, v.name)
+        SendChatMessage(MerDKP.opt.prefix.."<"..MerDKP.db[MerDKP.tmp.id].title.."> "..v.name.."："..v.dkp.." DKP", "WHISPER", nil, v.name)
         end
     end
+end
+
+function MerDKP_ColumnHeader_OnClick(key)
+    if MerDKP.tmp.sortway == "desc" then
+        MerDKP.tmp.sortway = "asc"
+        table.sort(MerDKP.tmp.LIST, function(a,b)
+            if a[key] and b[key] then
+                return  a[key] > b[key]
+            end
+        end)
+    else
+        MerDKP.tmp.sortway = "desc"
+        table.sort(MerDKP.tmp.LIST, function(a,b)
+            if a[key] and b[key] then
+                return  a[key] < b[key]
+            end
+        end)
+    end
+    MerDKP.tmp.sortkey = key
+    MerDKP_UpdateList()
 end
 
 function MerDKP_OpenPopupFrame(action, id, name, class, dkp, text)
@@ -931,36 +735,84 @@ function MerDKP_OpenPopupFrame(action, id, name, class, dkp, text)
         MerDKPEditFrameDKPBox:SetText("")
     end
 end
+
 function MerDKP_SubmitPopupFrame(action)
     local id = MerDKPEditFrame.id
     if action == "delete" then
         local name = MerDKPEditFrame.name or ""
-        MerDKP:DeleteMember(name, id)
+        MerDKP_DeleteMember(name, id)
     elseif action == "edit" then
         local name = MerDKPEditFrame.name or ""
         local class = MerDKPEditFrameClassBox:GetText()
         local dkp = MerDKPEditFrameDKPBox:GetText()
-        MerDKP:EditMember(name, class, dkp, id)
+        MerDKP_EditMember(name, class, dkp, id)
     elseif action == "add" then
         local name = MerDKPEditFrameNameBox:GetText()
         local class = MerDKPEditFrameClassBox:GetText()
         local dkp = MerDKPEditFrameDKPBox:GetText()
-        MerDKP:EditMember(name, class, dkp, id)
+        MerDKP_EditMember(name, class, dkp, id)
     end
-    MerDKP:InitDKP()
+    MerDKP_InitDKP()
 end
+
+function MerDKP_SubFrames_SelectTab(id)
+    PanelTemplates_SetTab(MerDKPFrame, id)
+    for k, v in ipairs(MerDKP.tmp.SubFrames) do
+        if  k == id  then
+            getglobal(v):Show()
+        else
+            getglobal(v):Hide()
+        end
+    end
+end
+
+function DropDownMember(self, id, name, dkp)
+    local id = MerDKP.tmp.id
+    if not id or not MerDKP.db[id] then return end
+    if self.value == "WHISPER" then
+        SendChatMessage(IEPrefix.."<"..MerDKP.db[id].title.."> "..name.."："..dkp.." DKP", "WHISPER", nil, name)
+    else
+        SendChatMessage("<"..MerDKP.db[id].title.."> "..name.."："..dkp.." DKP", self.value)
+    end
+end
+
+function DropDownMinDKP(self)
+    local id = self:GetID()
+    UIDropDownMenu_SetSelectedID(MerDKPFrameListDropDownMinDKP , id)
+    MerDKP.tmp.DkpMin = self.value
+    MerDKP_InitDKP()
+end
+
+function DropDownChannel(self)
+    local id = self:GetID()
+    UIDropDownMenu_SetSelectedID(MerDKPFrameListDropDownChannel, id)
+    MerDKP.tmp.channel = self.value
+    if (self.value == "RAID" and GetNumGroupMembers() < 1)
+        or ((self.value == "GUILD" or self.value == "OFFICER") and not IsInGuild() )
+        or (self.value == "PARTY" and GetNumGroupMembers() < 1) then
+        MerDKPFrameListSendButton:Disable()
+    else
+        MerDKPFrameListSendButton:Enable()
+    end
+end
+
+--end region event
+
+
+--region static
 
 StaticPopupDialogs["MerDKP_ConfirmSend"] = {
     text = MerDKP.loc.sendText,
     button1 = ACCEPT,
     button2 = CANCEL,
     OnAccept = function(self)
-        MerDKP:SendButton_OnClick(true)
+        MerDKP_SendButton_OnClick(true)
     end,
     timeout = 0,
     whileDead = 1,
     hideOnEscape = 1,
 }
+
 StaticPopupDialogs["MerDKP_BatEditDkp"] = {
     text = MerDKP.loc.bateditText,
     button1 = ACCEPT,
@@ -982,7 +834,7 @@ StaticPopupDialogs["MerDKP_BatEditDkp"] = {
                 end
             end
         end
-        MerDKP:InitDKP()
+        MerDKP_InitDKP()
         self:GetParent():Hide()
     end,
     OnShow = function(self)
@@ -1009,7 +861,7 @@ StaticPopupDialogs["MerDKP_BatEditDkp"] = {
                 end
             end
         end
-        MerDKP:InitDKP()
+        MerDKP_InitDKP()
         self:GetParent():Hide()
     end,
     EditBoxOnEscapePressed = function(self)
@@ -1019,13 +871,14 @@ StaticPopupDialogs["MerDKP_BatEditDkp"] = {
     whileDead = 1,
     hideOnEscape = 1
 }
+
 StaticPopupDialogs["MerDKP_GuildRosterDKP"] = {
     text = MerDKP.loc.guildrosterdkp,
     button1 = ACCEPT,
     button2 = CANCEL,
     OnAccept = function()
-        MerDKP.db = MerDKP:GuildRoster_InitDKP() or {}
-        MerDKP:InitDataFrom(MerDKP.opt.Datafrom)
+        MerDKP.db = MerDKP_GuildRoster_InitDKP() or {}
+        MerDKP_InitDataFrom(MerDKP.opt.Datafrom)
     end,
     timeout = 0,
     whileDead = 1,
@@ -1033,24 +886,228 @@ StaticPopupDialogs["MerDKP_GuildRosterDKP"] = {
     hideOnEscape = 1,
 }
 
-M.tmp.SubFrames = {
-    "MerDKPFrameList",
-    "MerDKPFrameOption",
-}
+--end region static
 
-function M:SubFrames_SelectTab(id)
-    PanelTemplates_SetTab(MerDKPFrame, id)
-    for k, v in ipairs(self.tmp.SubFrames) do
-        if  k == id  then
-            getglobal(v):Show()
-        else
-            getglobal(v):Hide()
+
+--region function
+
+function MerDKP_InitClass()
+    if MerDKP.opt.InitClasses then
+        for i = 1, #MerDKP.db do
+            for _, v in ipairs(MerDKP.db[i]) do
+                v.class = MerDKP.tmp.initclass[v.class] or UNKNOWN
+            end
         end
     end
 end
 
-SlashCmdList["MerDKP"] = function() MerDKPFrame:Show()  end
-SLASH_MerDKP1 = "/merdkp"
+function MerDKP_InitDKP()
+    if not MerDKP.tmp.id or not MerDKP.db[MerDKP.tmp.id] then return end
+    for k in pairs(MerDKP.tmp.LIST) do
+        MerDKP.tmp.LIST[k] = nil
+    end
+    if MerDKPFrameListRaidCheckButton:GetChecked() then
+        for k, v in pairs(MerDKP.tmp.raidmembers) do
+            v.dkp = MerDKP_GetDKPByName(k,v.class)
+            if MerDKP.tmp.list_class[v.class] and v.dkp >= MerDKP.tmp.DkpMin and not (MerDKP.opt.IgnoreOffline and v.online ~= 1) then
+                tinsert(MerDKP.tmp.LIST, v)
+            end
+        end
+    else
+        for k, v in ipairs(MerDKP.db[MerDKP.tmp.id]) do
+            if MerDKP.tmp.list_class[v.class] and v.dkp >= MerDKP.tmp.DkpMin then
+                tinsert(MerDKP.tmp.LIST, v)
+            end
+        end
+    end
+    if MerDKP.tmp.sortway == "desc" then
+        table.sort(MerDKP.tmp.LIST, function(a,b)
+            return a[MerDKP.tmp.sortkey] < b[MerDKP.tmp.sortkey]
+        end)
+    else
+        table.sort(MerDKP.tmp.LIST, function(a,b)
+            return a[MerDKP.tmp.sortkey] > b[MerDKP.tmp.sortkey]
+        end)
+    end
+    MerDKP.tmp.total = #MerDKP.db[MerDKP.tmp.id]
+    MerDKP_UpdateList()
+end
+
+function MerDKP_DeleteMember(name, id)
+    local tab
+    if id then
+        tab = MerDKP.db[id]
+        if not tab then return end
+    else
+        tab = MerDKP.tmp.LIST
+    end
+    for k, v in ipairs(tab) do
+        if strlower(name) == strlower(v.name) then
+            tremove(tab,k)
+            return
+        end
+    end
+end
+
+function MerDKP_EditMember(name, class, dkp, id)
+    id = id or MerDKP.tmp.id
+    if not id or not MerDKP.db[id] then return end
+    dkp = tonumber(dkp) or 0
+    dkp = tonumber(format("%.2f",dkp))
+    class = MerDKP.tmp.classes[class] and class or UNKNOWN
+    name = gsub(strlower(name), "%s", "")
+    if strlen(name) == 0 then return end
+    if strfind(name, "^%a") then name = strupper(strsub(name,1,1))..strsub(name,2,-1) end
+    local toggle
+    for _, v in ipairs(MerDKP.db[id]) do
+        if strlower(name) == strlower(v.name) then
+            v.dkp = v.dkp + dkp
+            v.class = class
+            toggle = true
+            break
+        end
+    end
+    if not toggle then
+        tinsert(MerDKP.db[id],{ name=name, class=class or UNKNOWN, dkp=dkp, online=1 })
+    end
+end
+
+function MerDKP_GetDKPByName(name, class, id)
+    id = id or MerDKP.tmp.id
+    if not id or not MerDKP.db[id] then
+        return 0, class
+    end
+    for _, v in ipairs(MerDKP.db[id]) do
+        if strlower(name) == strlower(v.name) then
+            v.class = class or v.class
+            return v.dkp, v.class
+        end
+    end
+    tinsert(MerDKP.db[id], { name=name, class=class or UNKNOWN, dkp=0, online=1 })
+    return 0, class
+end
+
+function MerDKP_GuildRoster_InitDKP()
+    if not IsInGuild() then return end
+    local numMembers = GetNumGuildMembers(true)
+    local name, class, publicnote, officernote, online, dkp
+    local tab = {}
+    local dkpTable = {
+        { title = "T4", whisper= "t4dkp" },
+        { title = "T5", whisper= "t5dkp" },
+        { title = "T6", whisper= "t6dkp" },
+    }
+    for k, v in ipairs(dkpTable) do
+        tab[k] = {}
+        tab[k].title = v.title
+        tab[k].whisper = v.whisper
+        for i = 1, numMembers do
+            name, _, _, _, class, _, publicnote, officernote, online = GetGuildRosterInfo(i)
+            if MerDKP.opt.Datafrom == 3 then
+                dkp = MerDKP_GuildRoster_GetMemberDKP(publicnote, v.title) or 0
+            elseif MerDKP.opt.Datafrom == 4 then
+                dkp = MerDKP_GuildRoster_GetMemberDKP(officernote, v.title) or 0
+            end
+            tinsert(tab[k], {name=name,class=class,online=1,dkp=dkp or 0})
+        end
+    end
+    return tab
+end
+
+function MerDKP_GuildRoster_GetMemberDKP(note, prefix)
+    for word in string.gmatch(note, "[^#]+") do
+        if strfind(word, "^"..prefix..":(%-?%d+%.?%d*)") then
+            dkp = select(3,strfind(word, "^"..prefix..":(%-?%d+%.?%d*)"))
+            dkp = tonumber(dkp) or 0
+            dkp = tonumber(format("%.2f",dkp))
+            return dkp
+        end
+    end
+end
+
+function MerDKP_GuildRoster_GetMemberNewNote(player)
+    local note = "#"
+    for i = 1, #MerDKP.db do
+        local dkp = MerDKP_GetDKPByName(player, nil, i)
+        note = note .. MerDKP.db[i].title .. ":" .. dkp .. "#"
+    end
+    return strsub(note,2,-2) or ""
+end
+
+function MerDKP_GuildRoster_GetMemberRank(player)
+    local numMembers = GetNumGuildMembers(true)
+    local name
+    for i = 1, numMembers do
+        name = GetGuildRosterInfo(i)
+        if strlower(name) == strlower(player) then
+            return i
+        end
+    end
+end
+
+function MerDKP_GuildRoster_UpdateNote(player) --not used
+    local rank = MerDKP_GuildRoster_GetMemberRank(player)
+    if rank then
+        local note = MerDKP_GuildRoster_GetMemberNewNote(player)
+        if MerDKP.opt.Datafrom == 3 then
+            GuildRosterSetPublicNote(rank, note)
+        elseif MerDKP.opt.Datafrom == 4 then
+            GuildRosterSetOfficerNote(rank, note)
+        end
+    end
+end
+
+function MerDKP_ColorValue(val)
+    if not val then
+        return ""
+    elseif tonumber(val) > 0 then
+        return "|cff3fff3f" .. val .. "|r"
+    elseif tonumber(val) < 0 then
+        return "|cffff3f3f" .. val .. "|r"
+    else
+        return "|cffafafaf" .. val .. "|r"
+    end
+end
+
+function MerDKP_UpdateList()
+    local size = #MerDKP.tmp.LIST
+    local offset = FauxScrollFrame_GetOffset(MerDKPFrameListScrollFrame)
+    local id, button, list
+    MerDKPFrameListTotal:SetText(format(MerDKP.loc.totalText, size, MerDKP.tmp.total))
+    for i = 1, 13 do
+        id = i + offset
+        button = getglobal("MerDKPFrameListButton"..i)
+        list = MerDKP.tmp.LIST[id]
+        if size > 13 then
+            button:SetWidth(350)
+            getglobal("MerDKPFrameListButton"..i.."bg"):SetWidth(350)
+        else
+            button:SetWidth(370)
+            getglobal("MerDKPFrameListButton"..i.."bg"):SetWidth(370)
+        end
+        if id <= size then
+            button.id =  id
+            button.name = list.name
+            button.dkp = list.dkp
+            button.class = list.class
+            getglobal("MerDKPFrameListButton"..i.."Name"):SetText(list.name)
+            getglobal("MerDKPFrameListButton"..i.."Class"):SetText(list.class)
+            getglobal("MerDKPFrameListButton"..i.."DKP"):SetText(MerDKP_ColorValue(format("%.2f",list.dkp)))
+            local color = MerDKP.tmp.classes[list.class] or NORMAL_FONT_COLOR
+            getglobal("MerDKPFrameListButton"..i.."Name"):SetTextColor(color.r, color.g, color.b)
+            getglobal("MerDKPFrameListButton"..i.."Class"):SetTextColor(color.r, color.g, color.b)
+            getglobal("MerDKPFrameListButton"..i.."bg"):SetVertexColor(color.r, color.g, color.b)
+            if list.online ~= 1 then
+                getglobal("MerDKPFrameListButton"..i.."Name"):SetTextColor(0.4, 0.4, 0.4)
+                getglobal("MerDKPFrameListButton"..i.."Class"):SetTextColor(0.4, 0.4, 0.4)
+            end
+            button:Show()
+        else
+            button:Hide()
+        end
+    end
+    FauxScrollFrame_Update(MerDKPFrameListScrollFrame, size, 13, 16)
+end
 
 function gbkToBig5()
     for k,v in pairs(MerDKP_Table) do       
@@ -1062,7 +1119,4 @@ function gbkToBig5()
     end
 end
 
-gbkToBig5Table = 
-{
-    ["盗贼"]  = "潜行者",    
-}
+--end region function

@@ -1,4 +1,5 @@
 ﻿<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Script file="IEDKP.lua"/>
   <Frame name="IEDKPForm" hidden="true" toplevel="true" movable="true" enableMouse="true" enableKeyboard="true" clampedToScreen="true">
     <Size>
       <AbsDimension x="310" y="350" />
@@ -22,7 +23,78 @@
       </EdgeSize>
     </Backdrop>
     <Frames>
-      <Button name="$parentComponent9" inherits="IEDKPForm" text="关闭">
+      <Button name="$parentButtonX" toplevel="true" inherits="IEDKPForm" text="X">
+        <Size>
+          <AbsDimension x="15" y="15" />
+        </Size>
+        <Anchors>
+          <Anchor point="TOPLEFT">
+            <Offset>
+              <AbsDimension x="310" y="0" />
+            </Offset>
+          </Anchor>
+        </Anchors>
+        <Scripts>
+          <OnClick>
+            IEDKPForm:Hide();
+          </OnClick>
+        </Scripts>
+        <NormalTexture file="Interface\Buttons\UI-Panel-Button-Up">
+          <TexCoords left="0" right="0.625" top="0" bottom="0.6875" />
+        </NormalTexture>
+        <PushedTexture file="Interface\Buttons\UI-Panel-Button-Down">
+          <TexCoords left="0" right="0.625" top="0" bottom="0.6875" />
+        </PushedTexture>
+        <DisabledTexture file="Interface\Buttons\UI-Panel-Button-Disabled">
+          <TexCoords left="0" right="0.625" top="0" bottom="0.6875" />
+        </DisabledTexture>
+        <HighlightTexture file="Interface\Buttons\UI-Panel-Button-Highlight" alphaMode="ADD">
+          <TexCoords left="0" right="0.625" top="0" bottom="0.6875" />
+        </HighlightTexture>
+        <ButtonText name="$parentText">
+          <FontHeight>
+            <AbsValue val="10" />
+          </FontHeight>
+        </ButtonText>
+        <NormalFont style="GameFontNormal" font="Fonts\ZYKai_T.TTF">
+          <FontHeight>
+            <AbsValue val="15" />
+          </FontHeight>
+          <Color r="1" g="0.8196079" b="0" />
+          <Shadow>
+            <Color r="0" g="0" b="0" />
+            <Offset>
+              <AbsDimension x="1" y="-1" />
+            </Offset>
+          </Shadow>
+        </NormalFont>
+        <HighlightFont style="GameFontHighlight" font="Fonts\ZYKai_T.TTF">
+          <FontHeight>
+            <AbsValue val="15" />
+          </FontHeight>
+          <Color r="1" g="1" b="1" />
+          <Shadow>
+            <Color r="0" g="0" b="0" />
+            <Offset>
+              <AbsDimension x="1" y="-1" />
+            </Offset>
+          </Shadow>
+        </HighlightFont>
+        <DisabledFont style="GameFontDisable" font="Fonts\ZYKai_T.TTF">
+          <FontHeight>
+            <AbsValue val="15" />
+          </FontHeight>
+          <Color r="0.4901961" g="0.4901961" b="0.4901961" />
+          <Shadow>
+            <Color r="0" g="0" b="0" />
+            <Offset>
+              <AbsDimension x="1" y="-1" />
+            </Offset>
+          </Shadow>
+        </DisabledFont>
+        <PushedTextOffset x="0" y="0" />
+      </Button>
+      <Button name="$parentButtonClose" inherits="IEDKPForm" text="关闭">
         <Size>
           <AbsDimension x="137" y="18" />
         </Size>
@@ -34,7 +106,9 @@
           </Anchor>
         </Anchors>
         <Scripts>
-          <OnClick>IEDKPForm:Hide();</OnClick>
+          <OnClick>
+            IEDKPForm:Hide();
+          </OnClick>
         </Scripts>
         <NormalTexture file="Interface\Buttons\UI-Panel-Button-Up">
           <TexCoords left="0" right="0.625" top="0" bottom="0.6875" />
@@ -91,476 +165,20 @@
         </DisabledFont>
         <PushedTextOffset x="0" y="0" />
       </Button>
-      <Button name="$parentComponent8" text="计算器">
+      <Frame name="$parentLabel1">
         <Size>
-          <AbsDimension x="106" y="22" />
+          <AbsDimension x="213" y="17" />
         </Size>
         <Anchors>
           <Anchor point="TOPLEFT">
             <Offset>
-              <AbsDimension x="169" y="-290" />
-            </Offset>
-          </Anchor>
-        </Anchors>
-        <Scripts>
-          <OnClick>xcalc_windowdisplay();IEDKPForm:Hide();</OnClick>
-        </Scripts>
-        <NormalTexture file="Interface\Buttons\UI-Panel-Button-Up">
-          <TexCoords left="0" right="0.625" top="0" bottom="0.6875" />
-        </NormalTexture>
-        <PushedTexture file="Interface\Buttons\UI-Panel-Button-Down">
-          <TexCoords left="0" right="0.625" top="0" bottom="0.6875" />
-        </PushedTexture>
-        <DisabledTexture file="Interface\Buttons\UI-Panel-Button-Disabled">
-          <TexCoords left="0" right="0.625" top="0" bottom="0.6875" />
-        </DisabledTexture>
-        <HighlightTexture file="Interface\Buttons\UI-Panel-Button-Highlight" alphaMode="ADD">
-          <TexCoords left="0" right="0.625" top="0" bottom="0.6875" />
-        </HighlightTexture>
-        <ButtonText name="$parentText">
-          <FontHeight>
-            <AbsValue val="10" />
-          </FontHeight>
-        </ButtonText>
-        <NormalFont style="GameFontNormal" font="Fonts\ZYKai_T.TTF">
-          <FontHeight>
-            <AbsValue val="15" />
-          </FontHeight>
-          <Color r="1" g="0.8196079" b="0" />
-          <Shadow>
-            <Color r="0" g="0" b="0" />
-            <Offset>
-              <AbsDimension x="1" y="-1" />
-            </Offset>
-          </Shadow>
-        </NormalFont>
-        <HighlightFont style="GameFontHighlight" font="Fonts\ZYKai_T.TTF">
-          <FontHeight>
-            <AbsValue val="15" />
-          </FontHeight>
-          <Color r="1" g="1" b="1" />
-          <Shadow>
-            <Color r="0" g="0" b="0" />
-            <Offset>
-              <AbsDimension x="1" y="-1" />
-            </Offset>
-          </Shadow>
-        </HighlightFont>
-        <DisabledFont style="GameFontDisable" font="Fonts\ZYKai_T.TTF">
-          <FontHeight>
-            <AbsValue val="15" />
-          </FontHeight>
-          <Color r="0.4901961" g="0.4901961" b="0.4901961" />
-          <Shadow>
-            <Color r="0" g="0" b="0" />
-            <Offset>
-              <AbsDimension x="1" y="-1" />
-            </Offset>
-          </Shadow>
-        </DisabledFont>
-        <PushedTextOffset x="0" y="0" />
-      </Button>
-      <Button name="$parentComponent7" text="MerDKP设置">
-        <Size>
-          <AbsDimension x="106" y="22" />
-        </Size>
-        <Anchors>
-          <Anchor point="TOPLEFT">
-            <Offset>
-              <AbsDimension x="32" y="-290" />
-            </Offset>
-          </Anchor>
-        </Anchors>
-        <Scripts>
-          <OnClick>MerDKPFrame:Show();IEDKPForm:Hide();</OnClick>
-        </Scripts>
-        <NormalTexture file="Interface\Buttons\UI-Panel-Button-Up">
-          <TexCoords left="0" right="0.625" top="0" bottom="0.6875" />
-        </NormalTexture>
-        <PushedTexture file="Interface\Buttons\UI-Panel-Button-Down">
-          <TexCoords left="0" right="0.625" top="0" bottom="0.6875" />
-        </PushedTexture>
-        <DisabledTexture file="Interface\Buttons\UI-Panel-Button-Disabled">
-          <TexCoords left="0" right="0.625" top="0" bottom="0.6875" />
-        </DisabledTexture>
-        <HighlightTexture file="Interface\Buttons\UI-Panel-Button-Highlight" alphaMode="ADD">
-          <TexCoords left="0" right="0.625" top="0" bottom="0.6875" />
-        </HighlightTexture>
-        <ButtonText name="$parentText">
-          <FontHeight>
-            <AbsValue val="10" />
-          </FontHeight>
-        </ButtonText>
-        <NormalFont style="GameFontNormal" font="Fonts\ZYKai_T.TTF">
-          <FontHeight>
-            <AbsValue val="15" />
-          </FontHeight>
-          <Color r="1" g="0.8196079" b="0" />
-          <Shadow>
-            <Color r="0" g="0" b="0" />
-            <Offset>
-              <AbsDimension x="1" y="-1" />
-            </Offset>
-          </Shadow>
-        </NormalFont>
-        <HighlightFont style="GameFontHighlight" font="Fonts\ZYKai_T.TTF">
-          <FontHeight>
-            <AbsValue val="15" />
-          </FontHeight>
-          <Color r="1" g="1" b="1" />
-          <Shadow>
-            <Color r="0" g="0" b="0" />
-            <Offset>
-              <AbsDimension x="1" y="-1" />
-            </Offset>
-          </Shadow>
-        </HighlightFont>
-        <DisabledFont style="GameFontDisable" font="Fonts\ZYKai_T.TTF">
-          <FontHeight>
-            <AbsValue val="15" />
-          </FontHeight>
-          <Color r="0.4901961" g="0.4901961" b="0.4901961" />
-          <Shadow>
-            <Color r="0" g="0" b="0" />
-            <Offset>
-              <AbsDimension x="1" y="-1" />
-            </Offset>
-          </Shadow>
-        </DisabledFont>
-        <PushedTextOffset x="0" y="0" />
-      </Button>
-      <Button name="$parentComponent5" text="查询历史物品">
-        <Size>
-          <AbsDimension x="106" y="22" />
-        </Size>
-        <Anchors>
-          <Anchor point="TOPLEFT">
-            <Offset>
-              <AbsDimension x="32" y="-220" />
-            </Offset>
-          </Anchor>
-        </Anchors>
-        <Scripts>
-          <OnClick>CT_RaidTrackerItemOptionsFrame:Show();IEDKPForm:Hide();</OnClick>
-        </Scripts>
-        <NormalTexture file="Interface\Buttons\UI-Panel-Button-Up">
-          <TexCoords left="0" right="0.625" top="0" bottom="0.6875" />
-        </NormalTexture>
-        <PushedTexture file="Interface\Buttons\UI-Panel-Button-Down">
-          <TexCoords left="0" right="0.625" top="0" bottom="0.6875" />
-        </PushedTexture>
-        <DisabledTexture file="Interface\Buttons\UI-Panel-Button-Disabled">
-          <TexCoords left="0" right="0.625" top="0" bottom="0.6875" />
-        </DisabledTexture>
-        <HighlightTexture file="Interface\Buttons\UI-Panel-Button-Highlight" alphaMode="ADD">
-          <TexCoords left="0" right="0.625" top="0" bottom="0.6875" />
-        </HighlightTexture>
-        <ButtonText name="$parentText">
-          <FontHeight>
-            <AbsValue val="10" />
-          </FontHeight>
-        </ButtonText>
-        <NormalFont style= "GameFontNormal" font="Fonts\ZYKai_T.TTF">
-          <FontHeight>
-            <AbsValue val="15" />
-          </FontHeight>
-          <Color r="1" g="0.8196079" b="0" />
-          <Shadow>
-            <Color r="0" g="0" b="0" />
-            <Offset>
-              <AbsDimension x="1" y="-1" />
-            </Offset>
-          </Shadow>
-        </NormalFont>
-        <HighlightFont style="GameFontHighlight" font="Fonts\ZYKai_T.TTF">
-          <FontHeight>
-            <AbsValue val="15" />
-          </FontHeight>
-          <Color r="1" g="1" b="1" />
-          <Shadow>
-            <Color r="0" g="0" b="0" />
-            <Offset>
-              <AbsDimension x="1" y="-1" />
-            </Offset>
-          </Shadow>
-        </HighlightFont>
-        <DisabledFont style="GameFontDisable" font="Fonts\ZYKai_T.TTF">
-          <FontHeight>
-            <AbsValue val="15" />
-          </FontHeight>
-          <Color r="0.4901961" g="0.4901961" b="0.4901961" />
-          <Shadow>
-            <Color r="0" g="0" b="0" />
-            <Offset>
-              <AbsDimension x="1" y="-1" />
-            </Offset>
-          </Shadow>
-        </DisabledFont>
-        <PushedTextOffset x="0" y="0" />
-      </Button>
-      <Button name="$parentComponent4" text="CTRT设置面板">
-        <Size>
-          <AbsDimension x="106" y="22" />
-        </Size>
-        <Anchors>
-          <Anchor point="TOPLEFT">
-            <Offset>
-              <AbsDimension x="32" y="-248" />
-            </Offset>
-          </Anchor>
-        </Anchors>
-        <Scripts>
-          <OnClick>CT_RaidTrackerOptionsFrame:Show();IEDKPForm:Hide();</OnClick>
-        </Scripts>
-        <NormalTexture file="Interface\Buttons\UI-Panel-Button-Up">
-          <TexCoords left="0" right="0.625" top="0" bottom="0.6875" />
-        </NormalTexture>
-        <PushedTexture file="Interface\Buttons\UI-Panel-Button-Down">
-          <TexCoords left="0" right="0.625" top="0" bottom="0.6875" />
-        </PushedTexture>
-        <DisabledTexture file="Interface\Buttons\UI-Panel-Button-Disabled">
-          <TexCoords left="0" right="0.625" top="0" bottom="0.6875" />
-        </DisabledTexture>
-        <HighlightTexture file="Interface\Buttons\UI-Panel-Button-Highlight" alphaMode="ADD">
-          <TexCoords left="0" right="0.625" top="0" bottom="0.6875" />
-        </HighlightTexture>
-        <ButtonText name="$parentText">
-          <FontHeight>
-            <AbsValue val="10" />
-          </FontHeight>
-        </ButtonText>
-        <NormalFont style="GameFontNormal" font="Fonts\ZYKai_T.TTF">
-          <FontHeight>
-            <AbsValue val="15" />
-          </FontHeight>
-          <Color r="1" g="0.8196079" b="0" />
-          <Shadow>
-            <Color r="0" g="0" b="0" />
-            <Offset>
-              <AbsDimension x="1" y="-1" />
-            </Offset>
-          </Shadow>
-        </NormalFont>
-        <HighlightFont style="GameFontHighlight" font="Fonts\ZYKai_T.TTF">
-          <FontHeight>
-            <AbsValue val="15" />
-          </FontHeight>
-          <Color r="1" g="1" b="1" />
-          <Shadow>
-            <Color r="0" g="0" b="0" />
-            <Offset>
-              <AbsDimension x="1" y="-1" />
-            </Offset>
-          </Shadow>
-        </HighlightFont>
-        <DisabledFont style="GameFontDisable" font="Fonts\ZYKai_T.TTF">
-          <FontHeight>
-            <AbsValue val="15" />
-          </FontHeight>
-          <Color r="0.4901961" g="0.4901961" b="0.4901961" />
-          <Shadow>
-            <Color r="0" g="0" b="0" />
-            <Offset>
-              <AbsDimension x="1" y="-1" />
-            </Offset>
-          </Shadow>
-        </DisabledFont>
-        <PushedTextOffset x="0" y="0" />
-      </Button>
-      <Button name="$parentButton1" text="查询Raid记录">
-        <Size>
-          <AbsDimension x="106" y="22" />
-        </Size>
-        <Anchors>
-          <Anchor point="TOPLEFT">
-            <Offset>
-              <AbsDimension x="32" y="-192" />
-            </Offset>
-          </Anchor>
-        </Anchors>
-        <Scripts>
-          <OnClick>ShowUIPanel(CT_RaidTrackerFrame);IEDKPForm:Hide();</OnClick>
-        </Scripts>
-        <NormalTexture file="Interface\Buttons\UI-Panel-Button-Up">
-          <TexCoords left="0" right="0.625" top="0" bottom="0.6875" />
-        </NormalTexture>
-        <PushedTexture file="Interface\Buttons\UI-Panel-Button-Down">
-          <TexCoords left="0" right="0.625" top="0" bottom="0.6875" />
-        </PushedTexture>
-        <DisabledTexture file="Interface\Buttons\UI-Panel-Button-Disabled">
-          <TexCoords left="0" right="0.625" top="0" bottom="0.6875" />
-        </DisabledTexture>
-        <HighlightTexture file="Interface\Buttons\UI-Panel-Button-Highlight" alphaMode="ADD">
-          <TexCoords left="0" right="0.625" top="0" bottom="0.6875" />
-        </HighlightTexture>
-        <ButtonText name="$parentText">
-          <FontHeight>
-            <AbsValue val="10" />
-          </FontHeight>
-        </ButtonText>
-        <NormalFont style="GameFontNormal" font="Fonts\ZYKai_T.TTF">
-          <FontHeight>
-            <AbsValue val="15" />
-          </FontHeight>
-          <Color r="1" g="0.8196079" b="0" />
-          <Shadow>
-            <Color r="0" g="0" b="0" />
-            <Offset>
-              <AbsDimension x="1" y="-1" />
-            </Offset>
-          </Shadow>
-        </NormalFont>
-        <HighlightFont style="GameFontHighlight" font="Fonts\ZYKai_T.TTF">
-          <FontHeight>
-            <AbsValue val="15" />
-          </FontHeight>
-          <Color r="1" g="1" b="1" />
-          <Shadow>
-            <Color r="0" g="0" b="0" />
-            <Offset>
-              <AbsDimension x="1" y="-1" />
-            </Offset>
-          </Shadow>
-        </HighlightFont>
-        <DisabledFont style="GameFontDisable" font="Fonts\ZYKai_T.TTF">
-          <FontHeight>
-            <AbsValue val="15" />
-          </FontHeight>
-          <Color r="0.4901961" g="0.4901961" b="0.4901961" />
-          <Shadow>
-            <Color r="0" g="0" b="0" />
-            <Offset>
-              <AbsDimension x="1" y="-1" />
-            </Offset>
-          </Shadow>
-        </DisabledFont>
-        <PushedTextOffset x="0" y="0" />
-      </Button>
-      <Button name="$parentButton2" toplevel="true" text="X">
-        <Size>
-          <AbsDimension x="15" y="15" />
-        </Size>
-        <Anchors>
-          <Anchor point="TOPLEFT">
-            <Offset>
-              <AbsDimension x="281" y="-12" />
-            </Offset>
-          </Anchor>
-        </Anchors>
-        <Scripts>
-          <OnClick>IEDKPForm:Hide();</OnClick>
-        </Scripts>
-        <NormalTexture file="Interface\Buttons\UI-Panel-Button-Up">
-          <TexCoords left="0" right="0.625" top="0" bottom="0.6875" />
-        </NormalTexture>
-        <PushedTexture file="Interface\Buttons\UI-Panel-Button-Down">
-          <TexCoords left="0" right="0.625" top="0" bottom="0.6875" />
-        </PushedTexture>
-        <DisabledTexture file="Interface\Buttons\UI-Panel-Button-Disabled">
-          <TexCoords left="0" right="0.625" top="0" bottom="0.6875" />
-        </DisabledTexture>
-        <HighlightTexture file="Interface\Buttons\UI-Panel-Button-Highlight" alphaMode="ADD">
-          <TexCoords left="0" right="0.625" top="0" bottom="0.6875" />
-        </HighlightTexture>
-        <ButtonText name="$parentText">
-          <FontHeight>
-            <AbsValue val="10" />
-          </FontHeight>
-        </ButtonText>
-        <NormalFont style="GameFontNormal" font="Fonts\ZYKai_T.TTF">
-          <FontHeight>
-            <AbsValue val="15" />
-          </FontHeight>
-          <Color r="1" g="0.8196079" b="0" />
-          <Shadow>
-            <Color r="0" g="0" b="0" />
-            <Offset>
-              <AbsDimension x="1" y="-1" />
-            </Offset>
-          </Shadow>
-        </NormalFont>
-        <HighlightFont style="GameFontHighlight" font="Fonts\ZYKai_T.TTF">
-          <FontHeight>
-            <AbsValue val="15" />
-          </FontHeight>
-          <Color r="1" g="1" b="1" />
-          <Shadow>
-            <Color r="0" g="0" b="0" />
-            <Offset>
-              <AbsDimension x="1" y="-1" />
-            </Offset>
-          </Shadow>
-        </HighlightFont>
-        <DisabledFont style="GameFontDisable" font="Fonts\ZYKai_T.TTF">
-          <FontHeight>
-            <AbsValue val="15" />
-          </FontHeight>
-          <Color r="0.4901961" g="0.4901961" b="0.4901961" />
-          <Shadow>
-            <Color r="0" g="0" b="0" />
-            <Offset>
-              <AbsDimension x="1" y="-1" />
-            </Offset>
-          </Shadow>
-        </DisabledFont>
-        <PushedTextOffset x="0" y="0" />
-      </Button>
-      <Frame name="$parentTexture1">
-        <Size>
-          <AbsDimension x="80" y="80" />
-        </Size>
-        <Anchors>
-          <Anchor point="TOPLEFT">
-            <Offset>
-              <AbsDimension x="195" y="-190" />
+              <AbsDimension x="62" y="-12" />
             </Offset>
           </Anchor>
         </Anchors>
         <Layers>
           <Layer>
-            <Texture name="$parentTexture" setAllPoints="true" file="interface\AddOns\IEDKP\logo" alphaMode="ADD">
-              <TexCoords left="0" right="1" top="0" bottom="1" />
-            </Texture>
-          </Layer>
-        </Layers>
-      </Frame>
-      <Frame name="$parentTexture3">
-        <Size>
-          <AbsDimension x="64" y="64" />
-        </Size>
-        <Anchors>
-          <Anchor point="TOPLEFT">
-            <Offset>
-              <AbsDimension x="2" y="0" />
-            </Offset>
-          </Anchor>
-        </Anchors>
-        <Layers>
-          <Layer level="BACKGROUND">
-            <Texture name="$parentTexture" setAllPoints="false" file="interface\questframe\ui-questlog-bookicon">
-              <TexCoords left="0" right="1" top="0" bottom="1" />
-            </Texture>
-          </Layer>
-        </Layers>
-      </Frame>
-      <Frame name="$parentLabel5">
-        <Size>
-          <AbsDimension x="252" y="14" />
-        </Size>
-        <Anchors>
-          <Anchor point="TOPLEFT">
-            <Offset>
-              <AbsDimension x="32" y="-124" />
-            </Offset>
-          </Anchor>
-        </Anchors>
-        <Layers>
-          <Layer>
-            <FontString name="$parentLabel" font="Fonts\ZYKai_T.TTF" text="3.计算器 方便对数值/金币进行计算" justifyH="LEFT">
-              <Anchors>
-                <Anchor point="TOPLEFT" />
-                <Anchor point="BOTTOMRIGHT" />
-              </Anchors>
+            <FontString name="$parentLabel" setAllPoints="true" font="Fonts\ZYHei.TTF" text="IEDKP套件">
               <FontHeight>
                 <AbsValue val="12" />
               </FontHeight>
@@ -575,24 +193,20 @@
           </Layer>
         </Layers>
       </Frame>
-      <Frame name="$parentLabel4">
+      <Frame name="$parentLabel2">
         <Size>
-          <AbsDimension x="252" y="14" />
+          <AbsDimension x="253" y="18" />
         </Size>
         <Anchors>
           <Anchor point="TOPLEFT">
             <Offset>
-              <AbsDimension x="32" y="-108" />
+              <AbsDimension x="32" y="-70" />
             </Offset>
           </Anchor>
         </Anchors>
         <Layers>
           <Layer>
-            <FontString name="$parentLabel" font="Fonts\ZYKai_T.TTF" text="2.MerDKP,在游戏中密语/群发DKP积分" justifyH="LEFT">
-              <Anchors>
-                <Anchor point="TOPLEFT" />
-                <Anchor point="BOTTOMRIGHT" />
-              </Anchors>
+            <FontString name="$parentLabel" setAllPoints="true" font="Fonts\ZYHei.TTF" text="IEDKP套件包含以下：" justifyV="TOP" justifyH="LEFT">
               <FontHeight>
                 <AbsValue val="12" />
               </FontHeight>
@@ -639,48 +253,24 @@
           </Layer>
         </Layers>
       </Frame>
-      <Frame name="$parentLabel1">
+      <Frame name="$parentLabel4">
         <Size>
-          <AbsDimension x="213" y="17" />
+          <AbsDimension x="252" y="14" />
         </Size>
         <Anchors>
           <Anchor point="TOPLEFT">
             <Offset>
-              <AbsDimension x="62" y="-12" />
+              <AbsDimension x="32" y="-108" />
             </Offset>
           </Anchor>
         </Anchors>
         <Layers>
           <Layer>
-            <FontString name="$parentLabel" setAllPoints="true" font="Fonts\ZYHei.TTF" text="IEDKP套件">
-              <FontHeight>
-                <AbsValue val="12" />
-              </FontHeight>
-              <Color r="1" g="0.8196079" b="0" />
-              <Shadow>
-                <Color r="0" g="0" b="0" />
-                <Offset>
-                  <AbsDimension x="1" y="-1" />
-                </Offset>
-              </Shadow>
-            </FontString>
-          </Layer>
-        </Layers>
-      </Frame>
-      <Frame name="$parentLabel2">
-        <Size>
-          <AbsDimension x="253" y="18" />
-        </Size>
-        <Anchors>
-          <Anchor point="TOPLEFT">
-            <Offset>
-              <AbsDimension x="32" y="-70" />
-            </Offset>
-          </Anchor>
-        </Anchors>
-        <Layers>
-          <Layer>
-            <FontString name="$parentLabel" setAllPoints="true" font="Fonts\ZYHei.TTF" text="IEDKP套件包含以下：" justifyV="TOP" justifyH="LEFT">
+            <FontString name="$parentLabel" font="Fonts\ZYKai_T.TTF" text="2.MerDKP,在游戏中密语/群发DKP积分" justifyH="LEFT">
+              <Anchors>
+                <Anchor point="TOPLEFT" />
+                <Anchor point="BOTTOMRIGHT" />
+              </Anchors>
               <FontHeight>
                 <AbsValue val="12" />
               </FontHeight>
@@ -751,9 +341,288 @@
           </Layer>
         </Layers>
       </Frame>
+      <Button name="$parentButtonCTRT" text="查询Raid记录">
+        <Size>
+          <AbsDimension x="106" y="22" />
+        </Size>
+        <Anchors>
+          <Anchor point="TOPLEFT">
+            <Offset>
+              <AbsDimension x="32" y="-192" />
+            </Offset>
+          </Anchor>
+        </Anchors>
+        <Scripts>
+          <OnClick>
+            ShowUIPanel(CT_RaidTrackerFrame);
+            IEDKPForm:Hide();
+          </OnClick>
+        </Scripts>
+        <NormalTexture file="Interface\Buttons\UI-Panel-Button-Up">
+          <TexCoords left="0" right="0.625" top="0" bottom="0.6875" />
+        </NormalTexture>
+        <PushedTexture file="Interface\Buttons\UI-Panel-Button-Down">
+          <TexCoords left="0" right="0.625" top="0" bottom="0.6875" />
+        </PushedTexture>
+        <DisabledTexture file="Interface\Buttons\UI-Panel-Button-Disabled">
+          <TexCoords left="0" right="0.625" top="0" bottom="0.6875" />
+        </DisabledTexture>
+        <HighlightTexture file="Interface\Buttons\UI-Panel-Button-Highlight" alphaMode="ADD">
+          <TexCoords left="0" right="0.625" top="0" bottom="0.6875" />
+        </HighlightTexture>
+        <ButtonText name="$parentText">
+          <FontHeight>
+            <AbsValue val="10" />
+          </FontHeight>
+        </ButtonText>
+        <NormalFont style="GameFontNormal" font="Fonts\ZYKai_T.TTF">
+          <FontHeight>
+            <AbsValue val="15" />
+          </FontHeight>
+          <Color r="1" g="0.8196079" b="0" />
+          <Shadow>
+            <Color r="0" g="0" b="0" />
+            <Offset>
+              <AbsDimension x="1" y="-1" />
+            </Offset>
+          </Shadow>
+        </NormalFont>
+        <HighlightFont style="GameFontHighlight" font="Fonts\ZYKai_T.TTF">
+          <FontHeight>
+            <AbsValue val="15" />
+          </FontHeight>
+          <Color r="1" g="1" b="1" />
+          <Shadow>
+            <Color r="0" g="0" b="0" />
+            <Offset>
+              <AbsDimension x="1" y="-1" />
+            </Offset>
+          </Shadow>
+        </HighlightFont>
+        <DisabledFont style="GameFontDisable" font="Fonts\ZYKai_T.TTF">
+          <FontHeight>
+            <AbsValue val="15" />
+          </FontHeight>
+          <Color r="0.4901961" g="0.4901961" b="0.4901961" />
+          <Shadow>
+            <Color r="0" g="0" b="0" />
+            <Offset>
+              <AbsDimension x="1" y="-1" />
+            </Offset>
+          </Shadow>
+        </DisabledFont>
+        <PushedTextOffset x="0" y="0" />
+      </Button>
+      <Button name="$parentButtonCTRTIO" text="查询历史物品">
+        <Size>
+          <AbsDimension x="106" y="22" />
+        </Size>
+        <Anchors>
+          <Anchor point="TOPLEFT">
+            <Offset>
+              <AbsDimension x="32" y="-220" />
+            </Offset>
+          </Anchor>
+        </Anchors>
+        <Scripts>
+          <OnClick>CT_RaidTrackerItemOptionsFrame:Show();IEDKPForm:Hide();</OnClick>
+        </Scripts>
+        <NormalTexture file="Interface\Buttons\UI-Panel-Button-Up">
+          <TexCoords left="0" right="0.625" top="0" bottom="0.6875" />
+        </NormalTexture>
+        <PushedTexture file="Interface\Buttons\UI-Panel-Button-Down">
+          <TexCoords left="0" right="0.625" top="0" bottom="0.6875" />
+        </PushedTexture>
+        <DisabledTexture file="Interface\Buttons\UI-Panel-Button-Disabled">
+          <TexCoords left="0" right="0.625" top="0" bottom="0.6875" />
+        </DisabledTexture>
+        <HighlightTexture file="Interface\Buttons\UI-Panel-Button-Highlight" alphaMode="ADD">
+          <TexCoords left="0" right="0.625" top="0" bottom="0.6875" />
+        </HighlightTexture>
+        <ButtonText name="$parentText">
+          <FontHeight>
+            <AbsValue val="10" />
+          </FontHeight>
+        </ButtonText>
+        <NormalFont style= "GameFontNormal" font="Fonts\ZYKai_T.TTF">
+          <FontHeight>
+            <AbsValue val="15" />
+          </FontHeight>
+          <Color r="1" g="0.8196079" b="0" />
+          <Shadow>
+            <Color r="0" g="0" b="0" />
+            <Offset>
+              <AbsDimension x="1" y="-1" />
+            </Offset>
+          </Shadow>
+        </NormalFont>
+        <HighlightFont style="GameFontHighlight" font="Fonts\ZYKai_T.TTF">
+          <FontHeight>
+            <AbsValue val="15" />
+          </FontHeight>
+          <Color r="1" g="1" b="1" />
+          <Shadow>
+            <Color r="0" g="0" b="0" />
+            <Offset>
+              <AbsDimension x="1" y="-1" />
+            </Offset>
+          </Shadow>
+        </HighlightFont>
+        <DisabledFont style="GameFontDisable" font="Fonts\ZYKai_T.TTF">
+          <FontHeight>
+            <AbsValue val="15" />
+          </FontHeight>
+          <Color r="0.4901961" g="0.4901961" b="0.4901961" />
+          <Shadow>
+            <Color r="0" g="0" b="0" />
+            <Offset>
+              <AbsDimension x="1" y="-1" />
+            </Offset>
+          </Shadow>
+        </DisabledFont>
+        <PushedTextOffset x="0" y="0" />
+      </Button>
+      <Button name="$parentButtonCTRTO" text="CTRT设置面板">
+        <Size>
+          <AbsDimension x="106" y="22" />
+        </Size>
+        <Anchors>
+          <Anchor point="TOPLEFT">
+            <Offset>
+              <AbsDimension x="32" y="-248" />
+            </Offset>
+          </Anchor>
+        </Anchors>
+        <Scripts>
+          <OnClick>CT_RaidTrackerOptionsFrame:Show();IEDKPForm:Hide();</OnClick>
+        </Scripts>
+        <NormalTexture file="Interface\Buttons\UI-Panel-Button-Up">
+          <TexCoords left="0" right="0.625" top="0" bottom="0.6875" />
+        </NormalTexture>
+        <PushedTexture file="Interface\Buttons\UI-Panel-Button-Down">
+          <TexCoords left="0" right="0.625" top="0" bottom="0.6875" />
+        </PushedTexture>
+        <DisabledTexture file="Interface\Buttons\UI-Panel-Button-Disabled">
+          <TexCoords left="0" right="0.625" top="0" bottom="0.6875" />
+        </DisabledTexture>
+        <HighlightTexture file="Interface\Buttons\UI-Panel-Button-Highlight" alphaMode="ADD">
+          <TexCoords left="0" right="0.625" top="0" bottom="0.6875" />
+        </HighlightTexture>
+        <ButtonText name="$parentText">
+          <FontHeight>
+            <AbsValue val="10" />
+          </FontHeight>
+        </ButtonText>
+        <NormalFont style="GameFontNormal" font="Fonts\ZYKai_T.TTF">
+          <FontHeight>
+            <AbsValue val="15" />
+          </FontHeight>
+          <Color r="1" g="0.8196079" b="0" />
+          <Shadow>
+            <Color r="0" g="0" b="0" />
+            <Offset>
+              <AbsDimension x="1" y="-1" />
+            </Offset>
+          </Shadow>
+        </NormalFont>
+        <HighlightFont style="GameFontHighlight" font="Fonts\ZYKai_T.TTF">
+          <FontHeight>
+            <AbsValue val="15" />
+          </FontHeight>
+          <Color r="1" g="1" b="1" />
+          <Shadow>
+            <Color r="0" g="0" b="0" />
+            <Offset>
+              <AbsDimension x="1" y="-1" />
+            </Offset>
+          </Shadow>
+        </HighlightFont>
+        <DisabledFont style="GameFontDisable" font="Fonts\ZYKai_T.TTF">
+          <FontHeight>
+            <AbsValue val="15" />
+          </FontHeight>
+          <Color r="0.4901961" g="0.4901961" b="0.4901961" />
+          <Shadow>
+            <Color r="0" g="0" b="0" />
+            <Offset>
+              <AbsDimension x="1" y="-1" />
+            </Offset>
+          </Shadow>
+        </DisabledFont>
+        <PushedTextOffset x="0" y="0" />
+      </Button>
+      <Button name="$parentButtonMerDKP" text="MerDKP设置">
+        <Size>
+          <AbsDimension x="106" y="22" />
+        </Size>
+        <Anchors>
+          <Anchor point="TOPLEFT">
+            <Offset>
+              <AbsDimension x="32" y="-290" />
+            </Offset>
+          </Anchor>
+        </Anchors>
+        <Scripts>
+          <OnClick>MerDKPFrame:Show();IEDKPForm:Hide();</OnClick>
+        </Scripts>
+        <NormalTexture file="Interface\Buttons\UI-Panel-Button-Up">
+          <TexCoords left="0" right="0.625" top="0" bottom="0.6875" />
+        </NormalTexture>
+        <PushedTexture file="Interface\Buttons\UI-Panel-Button-Down">
+          <TexCoords left="0" right="0.625" top="0" bottom="0.6875" />
+        </PushedTexture>
+        <DisabledTexture file="Interface\Buttons\UI-Panel-Button-Disabled">
+          <TexCoords left="0" right="0.625" top="0" bottom="0.6875" />
+        </DisabledTexture>
+        <HighlightTexture file="Interface\Buttons\UI-Panel-Button-Highlight" alphaMode="ADD">
+          <TexCoords left="0" right="0.625" top="0" bottom="0.6875" />
+        </HighlightTexture>
+        <ButtonText name="$parentText">
+          <FontHeight>
+            <AbsValue val="10" />
+          </FontHeight>
+        </ButtonText>
+        <NormalFont style="GameFontNormal" font="Fonts\ZYKai_T.TTF">
+          <FontHeight>
+            <AbsValue val="15" />
+          </FontHeight>
+          <Color r="1" g="0.8196079" b="0" />
+          <Shadow>
+            <Color r="0" g="0" b="0" />
+            <Offset>
+              <AbsDimension x="1" y="-1" />
+            </Offset>
+          </Shadow>
+        </NormalFont>
+        <HighlightFont style="GameFontHighlight" font="Fonts\ZYKai_T.TTF">
+          <FontHeight>
+            <AbsValue val="15" />
+          </FontHeight>
+          <Color r="1" g="1" b="1" />
+          <Shadow>
+            <Color r="0" g="0" b="0" />
+            <Offset>
+              <AbsDimension x="1" y="-1" />
+            </Offset>
+          </Shadow>
+        </HighlightFont>
+        <DisabledFont style="GameFontDisable" font="Fonts\ZYKai_T.TTF">
+          <FontHeight>
+            <AbsValue val="15" />
+          </FontHeight>
+          <Color r="0.4901961" g="0.4901961" b="0.4901961" />
+          <Shadow>
+            <Color r="0" g="0" b="0" />
+            <Offset>
+              <AbsDimension x="1" y="-1" />
+            </Offset>
+          </Shadow>
+        </DisabledFont>
+        <PushedTextOffset x="0" y="0" />
+      </Button>
       <Frame name="$parentTexture2">
         <Size>
-          <AbsDimension x="440" y="400" />
+          <AbsDimension x="310" y="350" />
         </Size>
         <Anchors>
           <Anchor point="TOPLEFT">
@@ -764,7 +633,7 @@
         </Anchors>
         <Layers>
           <Layer level="BACKGROUND">
-            <Texture name="$parentTexture" setAllPoints="true" file="interface\itemsocketingframe\ui-itemsocketingframe" alphaMode="ALPHAKEY">
+            <Texture name="$parentTexture" setAllPoints="true" file="Interface\QuestFrame\UI-QuestLog-BookIcon" alphaMode="ALPHAKEY">
               <TexCoords left="0" right="1" top="0" bottom="1" />
             </Texture>
           </Layer>
@@ -773,8 +642,13 @@
     </Frames>
     <Scripts>
       <OnLoad>
-        tinsert(UISpecialFrames,self:GetName());SlashCmdList["IEDKP"] = function() ShowUIPanel(CT_RaidTrackerFrame);
-        MerDKPFrame:Show();  end;SLASH_IEDKP1 = "/iedkp"
+        tinsert(UISpecialFrames,self:GetName());
+        SlashCmdList["IEDKP"] = function()
+        ShowUIPanel(CT_RaidTrackerFrame);
+        MerDKPFrame:Show();
+        IEDKPForm:Show();
+        end;
+        SLASH_IEDKP1 = "/iedkp"
       </OnLoad>
     </Scripts>
   </Frame>
@@ -871,34 +745,4 @@
       </OnLoad>
     </Scripts>
   </Frame>
-  <!--Button name="MerDKPMinimapButton" parent="Minimap" toplevel="true" hidden="false">
-        <Size>
-            <AbsDimension x="34" y="34"/>
-        </Size>
-        <Anchors>
-            <Anchor point="CENTER" relativeTo="MinimapBackdrop">
-                <Offset>
-                    <AbsDimension x="-63" y="-13"/>
-                </Offset>
-            </Anchor>
-        </Anchors>
-        <Scripts>
-            <OnLoad>
-                self.tooltipText = "IEDKP插件";   
-            </OnLoad>
-            <OnClick>IEDKPForm:Show();</OnClick>
-            <OnEnter>
-                if ( self.tooltipText ) then
-                    GameTooltip:SetOwner(self, "ANCHOR_LEFT");
-                    GameTooltip:SetText(self.tooltipText, nil, nil, nil, nil, 1);
-                    GameTooltip:Show();
-                end
-            </OnEnter>
-            <OnLeave>
-                GameTooltip:Hide();
-            </OnLeave>
-        </Scripts>
-        <NormalTexture file="Interface\AddOns\IEDKP\mblogo"/>
-        <HighlightTexture alphaMode="ADD" file="Interface\Minimap\UI-Minimap-ZoomButton-Highlight"/>
-    </Button-->
 </Ui>

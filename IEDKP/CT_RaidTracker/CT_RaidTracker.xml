@@ -2477,7 +2477,7 @@
             getglobal(self:GetName() .. "HighlightTexture"):Hide();
           </OnLeave>
           <OnMouseUp>
-            MerDKP:ColumnHeader_OnClick(self.sortType);
+            MerDKP_ColumnHeader_OnClick(self.sortType);
           </OnMouseUp>
         </Scripts>
       </Frame>
