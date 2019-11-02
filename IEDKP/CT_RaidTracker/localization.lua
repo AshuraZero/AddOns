@@ -1,4 +1,4 @@
-﻿--localization for CN Classic
+--localization for CN Classic
 	ADDON_NAME = "IEDKP"
 
     --CT_ITEMREG = "(|c%x+|Hitem:%d+:%d+:%d+:%d+:%d+:%d+:(%-?%d+):(%-?%d+):%d+|h%[.-%]|h|r)%";

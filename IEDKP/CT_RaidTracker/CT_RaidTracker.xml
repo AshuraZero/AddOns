@@ -1091,7 +1091,6 @@
           </Layer>
         </Layers>
       </Frame>
-
       <Frame name="CT_RaidTrackerHighlightFrame" hidden="true">
         <Size>
           <AbsDimension x="293" y="16"/>

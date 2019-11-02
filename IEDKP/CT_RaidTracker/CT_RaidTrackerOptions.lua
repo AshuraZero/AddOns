@@ -1,4 +1,4 @@
-﻿function CT_RaidTracker_OptionsFrame_OnShow()
+function CT_RaidTracker_OptionsFrame_OnShow()
     CT_RaidTrackerOptionsFrameMinQualitySlider:SetValue(CT_RaidTracker_Options["MinQuality"]);
     CT_RaidTrackerOptionsFrameAskCostSlider:SetValue(CT_RaidTracker_Options["AskCost"]);
     CT_RaidTrackerOptionsFrameGetDKPValueSlider:SetValue(CT_RaidTracker_Options["GetDkpValue"]);    

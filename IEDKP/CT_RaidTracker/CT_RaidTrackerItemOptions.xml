@@ -1,4 +1,4 @@
-﻿<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/ 
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/ 
 ..\FrameXML\UI.xsd">
   <Script file="CT_RaidTrackerItemOptions.lua"/>
 
@@ -106,7 +106,7 @@
         </Texture>
 
         <!-- Frame header label -->
-        <FontString inherits="GameFontNormalSmall" text="CT_RaidTracker 战利品选项">
+        <FontString inherits="GameFontNormalSmall" text="战利品选项">
           <Anchors>
             <Anchor point="TOP">
               <Offset>

@@ -1,6 +1,7 @@
+UIPanelWindows["CT_RaidTrackerFrame"] = { area = "left", pushable = 1, whileDead = 1 };
+
 SLASH_RAIDTRACKER1 = "/raidtracker";
 SLASH_RAIDTRACKER2 = "/rt";
-
 SlashCmdList["RAIDTRACKER"] = function(msg)
     local _, _, command, args = string.find(msg, "(%w+)%s?(.*)");
     if(command) then
@@ -168,7 +169,6 @@ if not MerDKP_Table then
     MerDKP_Table = {}
 end
 
-UIPanelWindows["CT_RaidTrackerFrame"] = { area = "left", pushable = 1, whileDead = 1 };
 
 if (not ieReloadUI) then
     StaticPopupDialogs["IE_RELOADUI"] = {
@@ -263,7 +263,7 @@ CT_RaidTracker_Options = {
 --region event
 
 function CT_RaidTracker_OnLoad(this)
-    CT_RaidTrackerTitleText:SetText("CT_RaidTracker");
+    CT_RaidTrackerTitleText:SetText("团队活动记录");
     -- Register events
     this:RegisterEvent("CHAT_MSG_LOOT");
     this:RegisterEvent("CHAT_MSG_SYSTEM");
@@ -3333,7 +3333,7 @@ function CT_RaidTracker_Update_MerDKP(raidid)
    --     if change~=0 then
             local changed = setDKP(name,dkp_init+change)            
             if changed == true and UnitInRaid(name) and CT_RaidTracker_Options["AutoWhisper"] == 1 then
-                SendChatMessage(IEPrefix.."您当前DKP为"..(dkp_init+change)..",本次获得"..change..",活动前DKP为"..dkp_init, "WHISPER", nil, name);
+                SendChatMessage(MsgPrefix.."您当前DKP为"..(dkp_init+change)..",本次获得"..change..",活动前DKP为"..dkp_init, "WHISPER", nil, name);
             end
     --    end
         end       
@@ -3386,9 +3386,9 @@ end
 
 function whisperFilter(frame, event, msg, ...)
 
-    if strfind(msg,IEPrefix) and CT_RaidTracker_Options["FilterWhisper"] == 1 then
+    if strfind(msg,MsgPrefix) and CT_RaidTracker_Options["FilterWhisper"] == 1 then
         return true;
-    elseif strfind(msg,IEPrefix.."您当前DKP为") then
+    elseif strfind(msg,MsgPrefix.."您当前DKP为") then
     return true;
     else
         return false,msg, ...

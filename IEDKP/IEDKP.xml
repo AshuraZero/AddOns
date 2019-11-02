@@ -1,4 +1,4 @@
-﻿<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <Script file="IEDKP.lua"/>
   <Frame name="IEDKPForm" hidden="true" toplevel="true" movable="true" enableMouse="true" enableKeyboard="true" clampedToScreen="true">
     <Size>
@@ -341,7 +341,7 @@
           </Layer>
         </Layers>
       </Frame>
-      <Button name="$parentButtonCTRT" text="查询Raid记录">
+      <Button name="$parentButtonCTRT" text="团队活动记录">
         <Size>
           <AbsDimension x="106" y="22" />
         </Size>
@@ -413,7 +413,7 @@
         </DisabledFont>
         <PushedTextOffset x="0" y="0" />
       </Button>
-      <Button name="$parentButtonCTRTIO" text="查询历史物品">
+      <Button name="$parentButtonCTRTIO" text="战利品选项">
         <Size>
           <AbsDimension x="106" y="22" />
         </Size>
@@ -425,7 +425,10 @@
           </Anchor>
         </Anchors>
         <Scripts>
-          <OnClick>CT_RaidTrackerItemOptionsFrame:Show();IEDKPForm:Hide();</OnClick>
+          <OnClick>
+            CT_RaidTrackerItemOptionsFrame:Show();
+            IEDKPForm:Hide();
+          </OnClick>
         </Scripts>
         <NormalTexture file="Interface\Buttons\UI-Panel-Button-Up">
           <TexCoords left="0" right="0.625" top="0" bottom="0.6875" />
@@ -482,7 +485,7 @@
         </DisabledFont>
         <PushedTextOffset x="0" y="0" />
       </Button>
-      <Button name="$parentButtonCTRTO" text="CTRT设置面板">
+      <Button name="$parentButtonCTRTO" text="活动记录设置">
         <Size>
           <AbsDimension x="106" y="22" />
         </Size>
@@ -494,7 +497,10 @@
           </Anchor>
         </Anchors>
         <Scripts>
-          <OnClick>CT_RaidTrackerOptionsFrame:Show();IEDKPForm:Hide();</OnClick>
+          <OnClick>
+            CT_RaidTrackerOptionsFrame:Show();
+            IEDKPForm:Hide();
+          </OnClick>
         </Scripts>
         <NormalTexture file="Interface\Buttons\UI-Panel-Button-Up">
           <TexCoords left="0" right="0.625" top="0" bottom="0.6875" />
@@ -551,7 +557,7 @@
         </DisabledFont>
         <PushedTextOffset x="0" y="0" />
       </Button>
-      <Button name="$parentButtonMerDKP" text="MerDKP设置">
+      <Button name="$parentButtonMerDKP" text="团队分数查询">
         <Size>
           <AbsDimension x="106" y="22" />
         </Size>
@@ -563,7 +569,10 @@
           </Anchor>
         </Anchors>
         <Scripts>
-          <OnClick>MerDKPFrame:Show();IEDKPForm:Hide();</OnClick>
+          <OnClick>
+            ShowUIPanel(MerDKPFrame);
+            IEDKPForm:Hide();
+          </OnClick>
         </Scripts>
         <NormalTexture file="Interface\Buttons\UI-Panel-Button-Up">
           <TexCoords left="0" right="0.625" top="0" bottom="0.6875" />
@@ -643,106 +652,20 @@
     <Scripts>
       <OnLoad>
         tinsert(UISpecialFrames,self:GetName());
-        SlashCmdList["IEDKP"] = function()
-        ShowUIPanel(CT_RaidTrackerFrame);
-        MerDKPFrame:Show();
-        IEDKPForm:Show();
-        end;
-        SLASH_IEDKP1 = "/iedkp"
+        CT_RaidTracker_OnLoad(self);
       </OnLoad>
-    </Scripts>
-  </Frame>
-  <Frame name="MerDKPMinimap" parent="Minimap" enableMouse="true" movable="true" hidden="false" frameStrata="LOW">
-    <Size>
-      <AbsDimension x="32" y="32"/>
-    </Size>
-    <Anchors>
-      <Anchor point="TOPLEFT" relativeTo="Minimap" relativePoint="LEFT">
-        <Offset>
-          <AbsDimension x="-30" y="10"/>
-        </Offset>
-      </Anchor>
-    </Anchors>
-    <Frames>
-      <Button name="MerDKPMinimapButton">
-        <HighlightTexture alphaMode="ADD" file="Interface\Minimap\UI-Minimap-ZoomButton-Highlight"/>
-        <DisabledTexture file="Interface\Minimap\UI-Minimap-ZoomOutButton-Disabled"/>
-        <Size>
-          <AbsDimension x="33" y="33"/>
-        </Size>
-        <Anchors>
-          <Anchor point="TOPLEFT">
-            <Offset>
-              <AbsDimension x="0" y="0"/>
-            </Offset>
-          </Anchor>
-        </Anchors>
-        <Layers>
-          <Layer level="BORDER">
-            <Texture name="$parentIcon" file="Interface\AddOns\IEDKP\mblogo">
-              <Size>
-                <AbsDimension x="20" y="20"/>
-              </Size>
-              <Anchors>
-                <Anchor point="CENTER">
-                  <Offset>
-                    <AbsDimension x="-1" y="0"/>
-                  </Offset>
-                </Anchor>
-              </Anchors>
-            </Texture>
-          </Layer>
-          <Layer level="OVERLAY">
-            <Texture name="$parentBorder" file="Interface\Minimap\MiniMap-TrackingBorder">
-              <Size>
-                <AbsDimension x="52" y="52"/>
-              </Size>
-              <Anchors>
-                <Anchor point="TOPLEFT"/>
-              </Anchors>
-            </Texture>
-          </Layer>
-        </Layers>
-        <Scripts>
-          <OnLoad>
-            getglobal(self:GetName().."Icon"):SetVertexColor(1, 1, 0);
-            self.tooltipText = "IEDKP插件";
-          </OnLoad>
-          <OnClick>
-            ShowUIPanel(CT_RaidTrackerFrame);
-            MerDKPFrame:Show();
-          </OnClick>
-          <OnMouseDown>
-            if ( button == "RightButton" ) then
-            MerDKPMinimap:StartMoving();
-            MerDKPMinimap.isMoving = true;
-            MerDKPMinimap:SetScript("OnUpdate", snapMinimap);
-            end
-          </OnMouseDown>
-          <OnMouseUp>
-            if ( button == "RightButton" ) then
-            MerDKPMinimap:StopMovingOrSizing();
-            MerDKPMinimap.isMoving = false;
-            MerDKPMinimap:SetScript("OnUpdate", nil);
-            end
-          </OnMouseUp>
-          <OnEnter>
-            if ( self.tooltipText ) then
-            GameTooltip:SetOwner(self, "ANCHOR_LEFT");
-            GameTooltip:SetText(self.tooltipText, nil, nil, nil, nil, 1);
-            GameTooltip:Show();
-            end
-          </OnEnter>
-          <OnLeave>
-            GameTooltip:Hide();
-          </OnLeave>
-        </Scripts>
-      </Button>
-    </Frames>
-    <Scripts>
-      <OnLoad>
-        self:RegisterEvent("VARIABLES_LOADED");
-      </OnLoad>
+      <OnMouseDown>
+        if ( button == "LeftButton" and IsAltKeyDown() ) then
+        self.isMoving = true;
+        self:StartMoving();
+        end
+      </OnMouseDown>
+      <OnMouseUp>
+        if ( self.isMoving ) then
+        self:StopMovingOrSizing();
+        self.isMoving = false;
+        end
+      </OnMouseUp>
     </Scripts>
   </Frame>
 </Ui>

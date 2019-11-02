@@ -1,7 +1,11 @@
-IEPrefix = "#IEDKP#";
+UIPanelWindows["MerDKPFrame"] = { area = "left", pushable = 1, whileDead = 1 };
 
-SlashCmdList["MerDKP"] = function() MerDKPFrame:Show()  end
 SLASH_MerDKP1 = "/merdkp"
+SlashCmdList["MerDKP"] = function(msg) 
+	ShowUIPanel(MerDKPFrame);   
+end
+
+MsgPrefix = "#IEDKP#";
 
 if Mer_DKP_Table then
 	MerDKP_Table = {}
@@ -36,7 +40,6 @@ MerDKP.opt = {
 
     Datafrom    = 1, -- 数据来源 1-website 2-local 3-publicnote 4-officernote
     Outputmax   = 20, --一次性发送的最多条数
-    Minimap     = 360, --小地图图标位置 0-隐藏
 }
 
 MerDKP.tmp = {
@@ -151,20 +154,6 @@ MerDKP.DROPMENU = {
             MerDKP.opt.Outputmax = self:GetValue()
           end,
         },
-        --[[{ text = "迷你地图按钮位置", Min = 0, Max = 360, Step = 1, key = "Minimap",
-          tooltipText = "设置迷你地图按钮的位置",
-          Onshow = function(self) self:SetValue(MerDKP.opt.Minimap) end,
-          OnValueChang = function(self)
-            getglobal(this:GetName().."Value"):SetText(self:GetValue())
-            --MerDKP.opt.Minimap = self:GetValue()
-            if MerDKP.opt.Minimap == 0 then
-                MerDKPMinimapButton:Hide()
-            else
-                MerDKPMinimapButton:Show()
-                MerDKPMinimapButton:SetPoint("TOPLEFT", "Minimap", "TOPLEFT", 55 - (84 * cos(MerDKP.opt.Minimap)), (84 * sin(MerDKP.opt.Minimap)) - 55)
-            end
-          end,
-        },--]]
         { text = "数据信息来源设置", Min = 1, Max = 4, Step = 1, key = "Datafrom",
           tooltipText = "设置数据来源，网站:本地计算机:公共注释:官员注释",
           Onshow = function(self) self:SetValue(MerDKP.opt.Datafrom) end,
@@ -191,10 +180,12 @@ gbkToBig5Table = {
 --region event
 
 function MerDKP_OnLoad(this)
-        this:RegisterEvent("ADDON_LOADED");
-        this:RegisterEvent("PLAYER_LOGOUT");
-        this:RegisterEvent("CHAT_MSG_WHISPER");
-        this:RegisterEvent("CHAT_MSG_CHANNEL_NOTICE");
+    MerDKPFrameText:SetText("团队分数查询");
+
+	this:RegisterEvent("ADDON_LOADED");
+	this:RegisterEvent("PLAYER_LOGOUT");
+	this:RegisterEvent("CHAT_MSG_WHISPER");
+	this:RegisterEvent("CHAT_MSG_CHANNEL_NOTICE");
 end
 
 function MerDKP_OnEvent(this, event, ...)
@@ -216,7 +207,6 @@ function MerDKP_OnEvent(this, event, ...)
 		--MerDKP_CHAT_MSG_CHANNEL_NOTICE(arg1, arg8, arg9);
         return
     end
-
 
 	if ( event == "CHAT_MSG_SYSTEM" ) then
 		MerDKP_CHAT_MSG_SYSTEM(arg1);
@@ -249,7 +239,6 @@ function MerDKP_ADDON_LOADED(arg1)
 
             Datafrom    = 1, -- 数据来源 1-website 2-local 3-publicnote 4-officernote
             Outputmax   = 20, --一次性发送的最多条数
-            Minimap     = 360, --小地图图标位置 0-隐藏
         }   
         gbkToBig5();
         MerDKP_InitDataFrom()
@@ -286,7 +275,7 @@ function MerDKP_OnVarsLoaded()
                 return
             end
         end
-        if MerDKP.opt.HideWhisper and event == "CHAT_MSG_WHISPER_INFORM" and strfind(arg1,"^"..IEPrefix) then
+        if MerDKP.opt.HideWhisper and event == "CHAT_MSG_WHISPER_INFORM" and strfind(arg1,"^"..MsgPrefix) then
             return
         end
         MerDKP_ChatFrame_OnEvent(self,event)      
@@ -298,12 +287,6 @@ function MerDKP_OnVarsLoaded()
     MerDKPFrameListWhisperButton:SetText(MerDKP.loc.MerDKPFrameListWhisperButton)
     MerDKPFrameListRaidCheckButtonText:SetText(MerDKP.loc.MerDKPFrameListRaidCheckButtonText)
 
-    --[[if MerDKP.opt.Minimap == 0 then
-        MerDKPMinimapButton:Hide()
-    else
-        MerDKPMinimapButton:Show()
-        MerDKPMinimapButton:SetPoint("TOPLEFT", "Minimap", "TOPLEFT", 55 - (84 * cos(MerDKP.opt.Minimap)), (84 * sin(MerDKP.opt.Minimap)) - 55)
-    end--]]
 end
 
 function MerDKP_PLAYER_LOGOUT()
@@ -770,7 +753,7 @@ function DropDownMember(self, id, name, dkp)
     local id = MerDKP.tmp.id
     if not id or not MerDKP.db[id] then return end
     if self.value == "WHISPER" then
-        SendChatMessage(IEPrefix.."<"..MerDKP.db[id].title.."> "..name.."："..dkp.." DKP", "WHISPER", nil, name)
+        SendChatMessage(MsgPrefix.."<"..MerDKP.db[id].title.."> "..name.."："..dkp.." DKP", "WHISPER", nil, name)
     else
         SendChatMessage("<"..MerDKP.db[id].title.."> "..name.."："..dkp.." DKP", self.value)
     end

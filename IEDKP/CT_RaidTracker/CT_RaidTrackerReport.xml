@@ -1,4 +1,4 @@
-﻿<Ui>
+<Ui>
   <Script file="CT_RaidTrackerReport.lua"/>
   <Frame name="MerReportFrame" toplevel="true" movable="true" parent="UIParent" enableMouse="true" hidden="true">
     <Size>

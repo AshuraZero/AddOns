@@ -1,4 +1,4 @@
-﻿CT_RaidTracker_ItemOptions_selected = nil;
+CT_RaidTracker_ItemOptions_selected = nil;
 
 function CT_RaidTracker_ItemOptions_ScrollBar_Update()
     table.sort(CT_RaidTracker_ItemOptions, function(a1, a2) return a1["id"] < a2["id"]; end);

@@ -7,8 +7,18 @@
 ## Author: AshuraZero
 ## Version: 1.13.2.20191030
 ## DefaultState: Disabled
-## SavedVariables: CT_RaidTracker_Online,CT_RaidTracker_RaidLog,CT_RaidTracker_Options,CT_RaidTracker_SortOptions,CT_RaidTracker_ItemOptions,CT_RaidTracker_ItemOptions_selected,CT_RaidTracker_VersionFix,CT_RaidTracker_GetCurrentRaid,CT_RaidTracker_TimeOffsetStatus,CT_RaidTracker_CustomZoneTriggers,CT_RaidTracker_TTout,CT_RaidTracker_Items,DKPSystem,MerDKPDB
+## SavedVariables: CT_RaidTracker_Online,CT_RaidTracker_RaidLog,CT_RaidTracker_Options,CT_RaidTracker_SortOptions,CT_RaidTracker_ItemOptions,CT_RaidTracker_ItemOptions_selected,CT_RaidTracker_VersionFix,CT_RaidTracker_GetCurrentRaid,CT_RaidTracker_TimeOffsetStatus,CT_RaidTracker_CustomZoneTriggers,CT_RaidTracker_Items,DKPSystem,MerDKPDB, IEDKP_FuBarOptions
 
+Libs\AceLibrary\AceLibrary.lua
+Libs\AceOO-2.0\AceOO-2.0.lua
+Libs\AceEvent-2.0\AceEvent-2.0.lua
+Libs\AceDB-2.0\AceDB-2.0.lua
+Libs\AceConsole-2.0\AceConsole-2.0.lua
+Libs\AceAddon-2.0\AceAddon-2.0.lua
+Libs\AceLocale-2.2\AceLocale-2.2.lua
+Libs\Dewdrop-2.0\Dewdrop-2.0.lua
+Libs\Tablet-2.0\Tablet-2.0.lua
+Libs\FuBarPlugin-2.0\FuBarPlugin-2.0.lua
 CT_RaidTracker\CT_RaidTrackerOptions.xml
 CT_RaidTracker\CT_RaidTrackerItemOptions.xml
 CT_RaidTracker\CT_RaidTracker.xml

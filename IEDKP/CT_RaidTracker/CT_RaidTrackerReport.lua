@@ -1,4 +1,4 @@
-﻿
+
 local L = {
     ["Raid Start:"]     = "活動時間：",
     ["Raid Zone:"]      = "活動地點：",
