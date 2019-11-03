@@ -678,6 +678,16 @@ function CT_RaidTracker_Delete(self, id, type, typeid)
             end
             CT_RaidTrackerFrame.type = "events";
         end
+    elseif ( type == "event" ) then
+
+        for key, val in pairs(CT_RaidTracker_RaidLog[id]["BossKills"]) do
+			CT_RaidTracker_Debug("BossKills",key,val,typeid)
+            if key == typeid then
+                tremove(CT_RaidTracker_RaidLog[id]["BossKills"],key);  
+            end
+        end
+        CT_RaidTracker_Update_MerDKP(id);
+
     elseif ( type == "item" ) then
         local itemplayer, itemitemid, itemtime;
         itemplayer = self:GetParent().itemplayer;
@@ -1271,9 +1281,10 @@ function CT_RaidTracker_DetailScrollFrameBoss_Update()
             getglobal("CT_RaidTrackerBosses" .. line).raidid = raidid;
             getglobal("CT_RaidTrackerBosses" .. line .. "MouseOver"):Hide();
             getglobal("CT_RaidTrackerBosses" .. line .. "HitArea"):Show();
+            getglobal("CT_RaidTrackerBosses" .. line .. "DeleteButton"):Show();
 
             getglobal("CT_RaidTrackerBosses" .. line .. "Boss"):SetText(val["boss"].." "..dkp.." DKP");
-            getglobal("CT_RaidTrackerBosses" .. line .. "Time"):SetText(getn(val["attendees"]).."人参与-点击查看");
+            getglobal("CT_RaidTrackerBosses" .. line .. "Time"):SetText(getn(val["attendees"]).."人参与-查看");
             getglobal("CT_RaidTrackerBosses" .. line):Show();
         else
             getglobal("CT_RaidTrackerBosses" .. line):Hide();
@@ -1831,7 +1842,6 @@ function CT_RaidTracker_JoinLeaveSave() --Reviewed
     if((strlen(player_name) > 0)) then
 		local name = GetFixedUpUnitName(player_name);
         local sDate = CT_RaidTracker_Date();
-        CT_RaidTracker_Debug("CT_RaidTracker_JoinLeave", name, player_note);
         if (CT_RaidTrackerJoinLeaveFrame.type == "Join") then 
             tinsert( CT_RaidTracker_RaidLog[CT_RaidTrackerJoinLeaveFrame.raidid]["Join"],
 				{
@@ -1973,8 +1983,6 @@ function CT_RaidTracker_SaveNote()
     if(CT_RaidTrackerEditNoteFrame.itemplayer and CT_RaidTrackerEditNoteFrame.itemitemid and CT_RaidTrackerEditNoteFrame.itemtime) then
         lootid = CT_RaidTracker_GetLootId(raidid, CT_RaidTrackerEditNoteFrame.itemplayer, CT_RaidTrackerEditNoteFrame.itemitemid, CT_RaidTrackerEditNoteFrame.itemtime)
     end
-    
-    CT_RaidTracker_Debug("CT_RaidTracker_SaveNote", raidid, type, lootid);
     
     if ( strlen(text) == 0 ) then
         text = nil;
@@ -2292,7 +2300,7 @@ function CT_RaidTracker_EditNote_OnShow(this)
             text = "";
         end
     end
-    
+    CT_RaidTracker_Debug("CT_RaidTracker_EditNote_OnShow",text);
     if ( text ) then
         getglobal(this:GetName() .. "NoteEB"):SetText(text);
         getglobal(this:GetName() .. "NoteEB"):HighlightText();
@@ -2627,7 +2635,6 @@ function CT_RaidTracker_LootGet(arg1)
                     end
                 end
                 
-                CT_RaidTracker_Debug(sPlayer, sColor, sItem, sName);
                 CT_RaidTracker_Update();
                 CT_RaidTracker_UpdateView();
             end

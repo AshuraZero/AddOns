@@ -159,7 +159,6 @@
           </OnLeave>
         </Scripts>
       </Button>
-
     </Frames>
     <Scripts>
       <OnLoad>
@@ -355,7 +354,6 @@
             CT_RaidTrackerEditNoteFrame.id = self:GetParent().raidid;
             CT_RaidTrackerEditNoteFrame.playerid = self:GetParent().playername;
             CT_RaidTrackerEditNoteFrame:Show();
-            DEFAULT_CHAT_FRAME:AddMessage("NoteButtonOnClick");
           </OnClick>
           <OnEnter>
             GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
@@ -423,6 +421,17 @@
           </Anchors>
         </FontString>
       </Layer>
+      <Layer level="OVERLAY">
+        <FontString name="$parentDeleteText" inherits="QuestFont" justifyH="RIGHT" text="[X]">
+          <Anchors>
+            <Anchor point="RIGHT">
+              <Offset>
+                <AbsDimension x="-2" y="0"/>
+              </Offset>
+            </Anchor>
+          </Anchors>
+        </FontString>
+      </Layer>
       <Layer level="BACKGROUND">
         <Texture file="Interface\Tooltips\UI-Tooltip-Background" name="$parentMouseOver" hidden="true"/>
       </Layer>
@@ -449,6 +458,40 @@
           </OnLeave>
         </Scripts>
       </Button>
+      <Button name="$parentDeleteButton" frameStrata="HIGH" hidden="false">
+        <Size>
+          <AbsDimension x="18" y="16"/>
+        </Size>
+        <Anchors>
+          <Anchor point="RIGHT">
+            <Offset>
+              <AbsDimension x="-2" y="0"/>
+            </Offset>
+          </Anchor>
+        </Anchors>
+        <Scripts>
+          <OnClick>
+            CT_RaidTrackerAcceptDeleteFrame.id = self:GetParent().raidid;
+            CT_RaidTrackerAcceptDeleteFrame.typeid = self:GetParent().bossid
+            CT_RaidTrackerAcceptDeleteFrame.type = "event";
+            CT_RaidTrackerAcceptDeleteFrame.header = "删除事件";
+            CT_RaidTrackerAcceptDeleteFrame:Show();
+          </OnClick>
+          <OnEnter>
+            getglobal(self:GetParent():GetName() .. "DeleteText"):SetTextColor(0.8, 0.5, 0);
+            GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
+            GameTooltip:ClearLines();
+            GameTooltip:AddLine("点击删除", 1, 0.7, 0);
+            GameTooltip:Show();
+            getglobal(self:GetParent():GetName() .. "MouseOver"):Show();
+          </OnEnter>
+          <OnLeave>
+            getglobal(self:GetParent():GetName() .. "MouseOver"):Hide();
+            getglobal(self:GetParent():GetName() .. "DeleteText"):SetTextColor(0, 0, 0);
+            GameTooltip:Hide();
+          </OnLeave>
+        </Scripts>
+      </Button>
       <Button name="$parentNoteButton" frameStrata="HIGH" hidden="false">
         <Size>
           <AbsDimension x="16" y="16"/>
@@ -456,7 +499,7 @@
         <Anchors>
           <Anchor point="RIGHT">
             <Offset>
-              <AbsDimension x="-10" y="0"/>
+              <AbsDimension x="-24" y="0"/>
             </Offset>
           </Anchor>
         </Anchors>
@@ -559,7 +602,6 @@
         </FontString>
       </Layer>
       <Layer level="BACKGROUND">
-
         <Texture file="Interface\Tooltips\UI-Tooltip-Background" name="$parentMouseOver" hidden="true">
           <Size>
             <AbsDimension x="215" y="40"/>
