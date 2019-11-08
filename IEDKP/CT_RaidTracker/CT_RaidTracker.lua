@@ -120,7 +120,6 @@ SlashCmdList["RAIDTRACKER"] = function(msg)
         end
         CT_RaidTracker_ItemOptions_ScrollBar_Update();
         CT_RaidTrackerItemOptionsFrame:Show();
-        
     elseif(command == "options") then
         CT_RaidTrackerOptionsFrame:Show();
     elseif(command == "o") then

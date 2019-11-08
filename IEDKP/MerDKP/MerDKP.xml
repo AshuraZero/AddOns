@@ -10,7 +10,6 @@
       </OnClick>
     </Scripts>
   </Button>
-
   <Button name="MerDKPFrameListButtonTemplate" virtual="true" hidden="true">
     <Size>
       <AbsDimension x="370" y="16"/>
@@ -212,7 +211,6 @@
       </Size>
     </ThumbTexture>
   </Slider>
-
   <Frame name="MerDKPFrame" toplevel="true" enableMouse="true" movable="true" parent="UIParent"  hidden="true">
     <Size>
       <AbsDimension x="438" y="512"/>
@@ -1215,15 +1213,14 @@
       </OnMouseUp>
     </Scripts>
   </Frame>
-
   <Frame name="MerDKPEditFrame" toplevel="true" enableMouse="true" hidden="true" parent="MerDKPFrame">
     <Size>
       <AbsDimension x="212" y="180"/>
     </Size>
     <Anchors>
-      <Anchor point="CENTER" relativeTo="MerDKPFrame">
+      <Anchor point="LEFT" relativeTo="CT_RaidTrackerFrameView2Button" relativePoint="RIGHT">
         <Offset>
-          <AbsDimension x="0" y="-10"/>
+          <AbsDimension x="10" y="0"/>
         </Offset>
       </Anchor>
     </Anchors>

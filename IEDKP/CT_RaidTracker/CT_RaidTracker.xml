@@ -898,6 +898,7 @@
       </Layer>
     </Layers>
     <Frames>
+      <!--最上面：新建，结束，设置，删除-->>
       <Frame name="CT_RaidTrackerExpandButtonFrame">
         <Size>
           <AbsDimension x="54" y="32"/>
@@ -983,6 +984,7 @@
           </Button>
         </Frames>
       </Frame>
+      <!--右上X关闭-->>
       <Button name="CT_RaidTrackerFrameCloseButton" inherits="UIPanelCloseButton">
         <Anchors>
           <Anchor point="TOPRIGHT" relativeTo="CT_RaidTrackerFrame" relativePoint="TOPRIGHT">
@@ -992,9 +994,11 @@
           </Anchor>
         </Anchors>
       </Button>
+
+      <!--最下面：查看事件，查看物品，保存数据-->>
       <Button name="CT_RaidTrackerFrameView2Button" inherits="UIPanelButtonTemplate" text="查看事件">
         <Size>
-          <AbsDimension x="125" y="21"/>
+          <AbsDimension x="80" y="21"/>
         </Size>
         <Anchors>
           <Anchor point="BOTTOMLEFT" relativeTo="CT_RaidTrackerFrame" relativePoint="BOTTOMLEFT">
@@ -1010,44 +1014,15 @@
           </OnClick>
         </Scripts>
       </Button>
-      <Button name="CT_RaidTrackerFrameBackButton" inherits="UIPanelButtonTemplate" text="保存数据">
-        <Size>
-          <AbsDimension x="77" y="21"/>
-        </Size>
-        <Anchors>
-          <Anchor point="BOTTOMRIGHT" relativeTo="CT_RaidTrackerFrame" relativePoint="BOTTOMRIGHT">
-            <Offset>
-              <AbsDimension x="-43" y="54"/>
-            </Offset>
-          </Anchor>
-        </Anchors>
-        <Scripts>
-          <OnClick>
-            if (ieReloadUI) then
-            ieReloadUI()
-            else
-            ReloadUI();
-            end
-          </OnClick>
-          <OnEnter>
-            GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
-            GameTooltip:ClearLines();
-            GameTooltip:AddLine("点击保存当前的插件数据,并重载插件\n以免掉线,游戏报错,死机引起的数据丢失\n除上述情况外,无需手动保存数据", 1, 0.7, 0);
-            GameTooltip:Show();
-          </OnEnter>
-          <OnLeave>
-            GameTooltip:Hide();
-          </OnLeave>
-        </Scripts>
-      </Button>
+      
       <Button name="CT_RaidTrackerFrameViewButton" inherits="UIPanelButtonTemplate" text="查看物品">
         <Size>
-          <AbsDimension x="123" y="21"/>
+          <AbsDimension x="80" y="21"/>
         </Size>
         <Anchors>
           <Anchor point="LEFT" relativeTo="CT_RaidTrackerFrameView2Button" relativePoint="RIGHT">
             <Offset>
-              <AbsDimension x="1" y="0"/>
+              <AbsDimension x="0" y="0"/>
             </Offset>
           </Anchor>
         </Anchors>
@@ -1070,6 +1045,52 @@
             --                      self:SetText("战利品");
             --                   end
           </OnClick>
+        </Scripts>
+      </Button>
+      <Button name="CT_RaidTrackerFrameViewPlayerListButton" inherits="UIPanelButtonTemplate" text="查看成员">
+        <Size>
+          <AbsDimension x="80" y="21"/>
+        </Size>
+        <Anchors>
+          <Anchor point="LEFT" relativeTo="CT_RaidTrackerFrameViewButton" relativePoint="RIGHT">
+            <Offset>
+              <AbsDimension x="0" y="0"/>
+            </Offset>
+          </Anchor>
+        </Anchors>
+        <Scripts>
+          <OnClick>
+          </OnClick>
+        </Scripts>
+      </Button>
+      <Button name="CT_RaidTrackerFrameBackButton" inherits="UIPanelButtonTemplate" text="保存数据">
+        <Size>
+          <AbsDimension x="80" y="21"/>
+        </Size>
+        <Anchors>
+          <Anchor point="LEFT" relativeTo="CT_RaidTrackerFrameViewPlayerListButton" relativePoint="RIGHT">
+            <Offset>
+              <AbsDimension x="0" y="0"/>
+            </Offset>
+          </Anchor>
+        </Anchors>
+        <Scripts>
+          <OnClick>
+            if (ieReloadUI) then
+            ieReloadUI()
+            else
+            ReloadUI();
+            end
+          </OnClick>
+          <OnEnter>
+            GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
+            GameTooltip:ClearLines();
+            GameTooltip:AddLine("点击保存当前的插件数据,并重载插件\n以免掉线,游戏报错,死机引起的数据丢失\n除上述情况外,无需手动保存数据", 1, 0.7, 0);
+            GameTooltip:Show();
+          </OnEnter>
+          <OnLeave>
+            GameTooltip:Hide();
+          </OnLeave>
         </Scripts>
       </Button>
 
