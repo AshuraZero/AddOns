@@ -894,6 +894,7 @@
               </Offset>
             </Anchor>
           </Anchors>
+
         </FontString>
       </Layer>
     </Layers>
@@ -993,6 +994,17 @@
             </Offset>
           </Anchor>
         </Anchors>
+        <Scripts>
+          <OnEnter>
+            GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
+            GameTooltip:ClearLines();
+            GameTooltip:AddLine("按住ALT鼠标左键点击标题拖动窗口", 1, 0.7, 0);
+            GameTooltip:Show();
+          </OnEnter>
+          <OnLeave>
+            GameTooltip:Hide();
+          </OnLeave>
+        </Scripts>
       </Button>
 
       <!--最下面：查看事件，查看物品，保存数据-->>
@@ -1058,8 +1070,18 @@
           </Anchor>
         </Anchors>
         <Scripts>
-          <OnClick>
-          </OnClick>
+		  <OnLoad>
+			CT_RaidTrackerFrameViewPlayerListButton:Disable();
+		  </OnLoad>
+          <OnEnter>
+            GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
+            GameTooltip:ClearLines();
+            GameTooltip:AddLine("替补功能敬请期待", 1, 0.7, 0);
+            GameTooltip:Show();
+          </OnEnter>
+          <OnLeave>
+            GameTooltip:Hide();
+          </OnLeave>
         </Scripts>
       </Button>
       <Button name="CT_RaidTrackerFrameBackButton" inherits="UIPanelButtonTemplate" text="保存数据">
