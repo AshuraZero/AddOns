@@ -6,7 +6,7 @@
 ## Notes-zhCN: 记录团队活动参与人员及物品等信息并可以导出字符串
 
 ## Author: AshuraZero
-## Version: 1.13.2.20191030
+## Version: 1.13.2.20191123
 ## SavedVariables: CT_RaidTracker_Online, CT_RaidTracker_RaidLog, CT_RaidTracker_Options, CT_RaidTracker_SortOptions, CT_RaidTracker_ItemOptions, CT_RaidTracker_ItemOptions_selected, CT_RaidTracker_VersionFix, CT_RaidTracker_GetCurrentRaid, CT_RaidTracker_TimeOffsetStatus,CT_RaidTracker_CustomZoneTriggers
 ## OptionalDeps: CT_MasterMod, HoB_DKP, AdvancedItemTooltip, dkpposter, EasyDKP
 localization.lua

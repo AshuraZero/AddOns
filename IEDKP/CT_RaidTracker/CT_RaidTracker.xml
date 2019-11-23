@@ -1014,7 +1014,6 @@
           </OnClick>
         </Scripts>
       </Button>
-      
       <Button name="CT_RaidTrackerFrameViewButton" inherits="UIPanelButtonTemplate" text="查看物品">
         <Size>
           <AbsDimension x="80" y="21"/>
@@ -1234,7 +1233,7 @@
         </Anchors>
         <Scripts>
           <OnVerticalScroll>
-            FauxScrollFrame_OnVerticalScroll(self,arg1,16, CT_RaidTracker_Update);
+            FauxScrollFrame_OnVerticalScroll(self,offset,16, CT_RaidTracker_Update);
           </OnVerticalScroll>
         </Scripts>
       </ScrollFrame>
@@ -1251,7 +1250,7 @@
         </Anchors>
         <Scripts>
           <OnVerticalScroll>
-            FauxScrollFrame_OnVerticalScroll(self,arg1,18, CT_RaidTracker_DetailScrollFramePlayers_Update);
+            FauxScrollFrame_OnVerticalScroll(self,offset,18, CT_RaidTracker_DetailScrollFramePlayers_Update);
           </OnVerticalScroll>
         </Scripts>
         <Frames>
@@ -1440,7 +1439,7 @@
         </Anchors>
         <Scripts>
           <OnVerticalScroll>
-            FauxScrollFrame_OnVerticalScroll(self,arg1,18, CT_RaidTracker_DetailScrollFramePlayer_Update);
+            FauxScrollFrame_OnVerticalScroll(self,offset,18, CT_RaidTracker_DetailScrollFramePlayer_Update);
           </OnVerticalScroll>
         </Scripts>
         <Frames>
@@ -1623,7 +1622,7 @@
         </Layers>
         <Scripts>
           <OnVerticalScroll>
-            FauxScrollFrame_OnVerticalScroll(self,arg1,18, CT_RaidTracker_DetailScrollFrameBoss_Update);
+            FauxScrollFrame_OnVerticalScroll(self,offset,18, CT_RaidTracker_DetailScrollFrameBoss_Update);
           </OnVerticalScroll>
         </Scripts>
         <Frames>
@@ -1690,8 +1689,6 @@
                   </OnClick>
                 </Scripts>
               </Button>
-
-
               <Button name="CT_RaidTrackerPlayerBossesTab1" inherits="CT_RaidTrackerTabTemplate" text="事件 - DKP" id="1">
                 <Size>
                   <AbsDimension x="163" y="24"/>
@@ -1796,7 +1793,6 @@
                   <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="CT_RaidTrackerBosses9"/>
                 </Anchors>
               </Frame>
-
               <Frame name="CT_RaidTrackerBosses11" inherits="CT_RaidTrackerBossTemplate" id="11">
                 <Anchors>
                   <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="CT_RaidTrackerBosses10"/>
@@ -1819,7 +1815,7 @@
         </Anchors>
         <Scripts>
           <OnVerticalScroll>
-            FauxScrollFrame_OnVerticalScroll(self,arg1,41, CT_RaidTracker_DetailScrollFrameItems_Update);
+            FauxScrollFrame_OnVerticalScroll(self,offset,41, CT_RaidTracker_DetailScrollFrameItems_Update);
           </OnVerticalScroll>
         </Scripts>
         <Frames>
