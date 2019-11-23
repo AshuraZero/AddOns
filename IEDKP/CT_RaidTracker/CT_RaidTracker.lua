@@ -289,7 +289,7 @@ function CT_RaidTracker_OnEvent(self, event, ...)
             CT_RaidTracker_Options["Timezone"] = 0;
             CT_RaidTracker_Options["AutoBossChangeMinTime"] = 120;
 
-            MerDKP_Table_init = deepcopy(MerDKP_Table);        
+            MerDKP_Table_init = deepcopy(MerDKP_Table);
             if CT_RaidTracker_GetCurrentRaid then
                 CT_RaidTracker_Update_MerDKP(CT_RaidTracker_GetCurrentRaid);
             end
@@ -2295,7 +2295,7 @@ function CT_RaidTracker_EditNote_OnShow(this)
         CT_RaidTracker_DKPSystemDropDown:Show();
         getglobal(this:GetName() .. "Title"):SetText("选择要使用的DKP系统");
         getglobal(this:GetName() .. "Editing"):SetText("如果没有从网站下载数据请直接点确定");
-        if MerDKP_Table[DKPSystem]~=nil then       
+        if MerDKP_Table[DKPSystem]~=nil then
             text = MerDKP_Table[DKPSystem]["title"];
         elseif DKPSystem == 0 and getn(MerDKP_Table)~=0 then
             text = MerDKP_Table[1]["title"];

@@ -2040,6 +2040,18 @@
       <OnEvent>
         CT_RaidTracker_OnEvent(self, event, ...);
       </OnEvent>
+      <OnMouseDown>
+        if ( button == "LeftButton" and IsAltKeyDown() ) then
+        self.isMoving = true;
+        self:StartMoving();
+        end
+      </OnMouseDown>
+      <OnMouseUp>
+        if ( self.isMoving ) then
+        self:StopMovingOrSizing();
+        self.isMoving = false;
+        end
+      </OnMouseUp>
     </Scripts>
   </Frame>
   <Frame name="CT_RaidTrackerAcceptDeleteFrame" toplevel="true" frameStrata="DIALOG" movable="true" enableMouse="true" hidden="true" parent="CT_RaidTrackerFrame">
@@ -2657,6 +2669,18 @@
       <OnHide>
         PlaySound(SOUNDKIT.U_CHAT_SCROLL_BUTTON);
       </OnHide>
+      <OnMouseDown>
+        if ( button == "LeftButton" and IsAltKeyDown() ) then
+        self.isMoving = true;
+        self:StartMoving();
+        end
+      </OnMouseDown>
+      <OnMouseUp>
+        if ( self.isMoving ) then
+        self:StopMovingOrSizing();
+        self.isMoving = false;
+        end
+      </OnMouseUp>
     </Scripts>
   </Frame>
   <Frame name="URLFrame" toplevel="true" frameStrata="DIALOG" movable="true" enableMouse="true" hidden="true" parent="UIParent" enableKeyboard="true">
@@ -3365,6 +3389,18 @@
       <OnHide>
         PlaySound(SOUNDKIT.U_CHAT_SCROLL_BUTTON);
       </OnHide>
+      <OnMouseDown>
+        if ( button == "LeftButton" and IsAltKeyDown() ) then
+        self.isMoving = true;
+        self:StartMoving();
+        end
+      </OnMouseDown>
+      <OnMouseUp>
+        if ( self.isMoving ) then
+        self:StopMovingOrSizing();
+        self.isMoving = false;
+        end
+      </OnMouseUp>
     </Scripts>
   </Frame>
   <GameTooltip name="CT_RTTooltip" inherits="GameTooltipTemplate" parent="UIParent" hidden="false">
