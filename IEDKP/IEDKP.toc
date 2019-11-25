@@ -5,7 +5,7 @@
 ## Notes: Counts raid loot and attendance
 ## Notes-zhCN: 记录团队活动参与人员及物品等信息并可以导出字符串
 ## Author: AshuraZero
-## Version: 1.13.2.20191123
+## Version: 1.13.2.20191125
 ## DefaultState: Disabled
 ## SavedVariables: CT_RaidTracker_Online,CT_RaidTracker_RaidLog,CT_RaidTracker_Options,CT_RaidTracker_SortOptions,CT_RaidTracker_ItemOptions,CT_RaidTracker_ItemOptions_selected,CT_RaidTracker_VersionFix,CT_RaidTracker_GetCurrentRaid,CT_RaidTracker_TimeOffsetStatus,CT_RaidTracker_CustomZoneTriggers,CT_RaidTracker_Items,DKPSystem,MerDKPDB, IEDKP_FuBarOptions
 
@@ -20,7 +20,6 @@ Libs\Dewdrop-2.0\Dewdrop-2.0.lua
 Libs\Tablet-2.0\Tablet-2.0.lua
 Libs\FuBarPlugin-2.0\FuBarPlugin-2.0.lua
 
-CT_RaidTracker\GroupFunctions.lua
 CT_RaidTracker\CT_RaidTrackerOptions.xml
 CT_RaidTracker\CT_RaidTrackerItemOptions.xml
 CT_RaidTracker\CT_RaidTracker.xml
@@ -29,6 +28,4 @@ MerDKP\dkp_list.lua
 MerDKP\MerDKP.lua
 MerDKP\MerDKP.xml
 
-GroupFunctions.lua
-IEDKP_PlayerList.xml
 IEDKP.xml

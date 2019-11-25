@@ -262,7 +262,7 @@ CT_RaidTracker_Options = {
 --region event
 
 function CT_RaidTracker_OnLoad(this)
-    CT_RaidTrackerTitleText:SetText("团队活动记录 v20191123");
+    CT_RaidTrackerTitleText:SetText("团队活动记录 v20191125");
     -- Register events
     this:RegisterEvent("CHAT_MSG_LOOT");
     this:RegisterEvent("CHAT_MSG_SYSTEM");
@@ -1695,8 +1695,8 @@ function CT_RaidTracker_RaidsRightClickMenu_Initialize(self,level)
     end
     
     if (level == 1) then
-        raidid = self:GetID() + FauxScrollFrame_GetOffset(CT_RaidTrackerListScrollFrame);
-        
+        raidid = self:GetParent():GetID() + FauxScrollFrame_GetOffset(CT_RaidTrackerListScrollFrame);
+
         info = {};
         if ( CT_RaidTracker_RaidLog[raidid]["key"] ) then
             info.text = "编辑开始时间 ("..CT_RaidTracker_RaidLog[raidid]["key"]..")";
