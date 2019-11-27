@@ -566,7 +566,7 @@
             </Anchor>
           </Anchors>
         </FontString>
-        <FontString name="$parentLooted"  font="Fonts\ZYKai_C.TTF" justifyH="LEFT" text="拾取信息">
+        <FontString name="$parentLooted"  inherits="QuestFont"  justifyH="LEFT" text="拾取信息">
           <Size>
             <AbsDimension x="215" y="12"/>
           </Size>

@@ -2981,7 +2981,7 @@ function CT_RaidTracker_GetTime(dDate)
 end
 
 function CT_RaidTracker_GameTimeFrame_Update()
-    CT_RaidTracker_GameTimeFrame_Update_Original();
+    --CT_RaidTracker_GameTimeFrame_Update_Original();
     local hour, minute = GetGameTime();
     local time = ((hour * 60) + minute) * 60;
     if(not CT_RaidTracker_TimeOffsetStatus) then
@@ -3008,7 +3008,7 @@ function CT_RaidTracker_GameTimeFrame_Update()
             CT_RaidTracker_TimeOffset = 0;
         end
         CT_RaidTracker_Debug("CT_RaidTracker_TimeOffset", CT_RaidTracker_TimeOffset);
-        GameTimeFrame_Update = CT_RaidTracker_GameTimeFrame_Update_Original;
+        --GameTimeFrame_Update = CT_RaidTracker_GameTimeFrame_Update_Original;
         CT_RaidTracker_TimeOffsetStatus = nil;
     end
 end
@@ -3020,7 +3020,7 @@ function CT_RaidTracker_GetGameTimeOffset()
     if(not CT_RaidTracker_GameTimeFrame_Update_Original) then
         CT_RaidTracker_GameTimeFrame_Update_Original = GameTimeFrame_Update;
     end
-    GameTimeFrame_Update = CT_RaidTracker_GameTimeFrame_Update;
+    --GameTimeFrame_Update = CT_RaidTracker_GameTimeFrame_Update;
     return;
 end
 
