@@ -203,7 +203,7 @@ end
 MerDKP_Table_init = {};
 
 CT_RaidTracker_Version = "Classic 1.13.2";
-CT_RaidTracker_Revision = "20191030";
+CT_RaidTracker_Revision = "20191127";
 CT_RaidTracker_Online = { };
 CT_RaidTracker_Events = { };
 CT_RaidTracker_RaidLog = { };
@@ -262,7 +262,7 @@ CT_RaidTracker_Options = {
 --region event
 
 function CT_RaidTracker_OnLoad(this)
-    CT_RaidTrackerTitleText:SetText("团队活动记录 v20191125");
+    CT_RaidTrackerTitleText:SetText("团队活动记录 v"..CT_RaidTracker_Revision);
     -- Register events
     this:RegisterEvent("CHAT_MSG_LOOT");
     this:RegisterEvent("CHAT_MSG_SYSTEM");
